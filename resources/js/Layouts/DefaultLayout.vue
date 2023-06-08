@@ -2,7 +2,9 @@
   <header
     class="fixed w-full z-50 h-[60px] bg-white shadow-md flex items-center justify-between px-10"
   >
-    <div class="min-w-[55px]">LOGO</div>
+    <div class="max-w-[150px]">
+      <img src="/images/logo.svg" class="min-w-[60px]" />
+    </div>
     <div class="flex items-center justify-center gap-10">
       <Link href="/" class="text-lg text-gray-900 hover:underline cursor-pointer">
         Jobs
