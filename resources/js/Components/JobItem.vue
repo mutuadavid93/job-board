@@ -1,0 +1,57 @@
+<template>
+  <div
+    class="flex items-center justify-between mt-8 border border-gray-300 hover:border-gray-500 shadow-md rounded-lg p-3 py-5 w-full"
+  >
+    <div class="flex items-center justify-start">
+      <div class="relative">
+        <button
+          type="button"
+          class="flex flex-col items-center justify-center absolute -top-8 -left-6 z-10 bg-white rounded-full p-3 border border-gray-400 shadow-xl -ml-5"
+        >
+          <img
+            src="https://larajobs.com/logos/lX7Cf4BxhcaTRXDIL7sdEnej6rAt3sH3Q0MHzyWC.png"
+            class="min-w-[35px] max-h-[35px]"
+          />
+        </button>
+      </div>
+      <div class="ml-8">
+        <div class="font-extralight text-[15px]">Membersy</div>
+        <div class="font-extrabold text-md">Software Engineer</div>
+        <div class="font-extralight text-[15px]">Full Time</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="flex items-center justify-end mr-2">
+        <Web fillColor="#C1C5CD" :size="23" class="mr-2" />
+        <span class="text-[13px] mr-2">Remote / Austin TX / USA</span>
+        <CalendarBlankOutline fillColor="#C1C5CD" :size="23" class="mx-2" />
+        <span class="text-[13px]">2w</span>
+      </div>
+      <div class="flex items-center justify-start mt-2">
+        <button class="px-3 py-1 text-[13px] border border-gray-300 rounded-md mr-2">
+          Fullstack
+        </button>
+        <button class="px-3 py-1 text-[13px] border border-gray-300 rounded-md mr-2">
+          Laravel
+        </button>
+        <button class="px-3 py-1 text-[13px] border border-gray-300 rounded-md mr-2">
+          PHP
+        </button>
+        <button class="px-3 py-1 text-[13px] border border-gray-300 rounded-md mr-2">
+          TailwindCSS
+        </button>
+        <button class="px-3 py-1 text-[13px] border border-gray-300 rounded-md mr-2">
+          VueJS
+        </button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import Web from "vue-material-design-icons/Web.vue";
+import CalendarBlankOutline from "vue-material-design-icons/CalendarBlankOutline.vue";
+</script>
+
+<style lang="scss" scoped></style>

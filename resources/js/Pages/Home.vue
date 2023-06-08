@@ -32,6 +32,7 @@
         <img src="/images/hero-banner.png" class="w-full object-cover" />
       </div>
 
+      <!-- Content section -->
       <div class="mx-auto max-w-[850px] mt-10">
         <div class="flex items-center justify-between bg-gray-300 rounded-lg p-5">
           <div class="flex items-center">
@@ -58,6 +59,27 @@
             </div>
           </div>
         </div>
+
+        <div class="mt-8 flex items-center justify-between">
+          <div
+            class="flex items-center justify-start gap-2 rounded-lg bg-orange-200 hover:bg-orange-300 p-2 text-orange-700"
+          >
+            <button class="rounded-md bg-orange-500 p-1.5 cursor-default">
+              <BullhornOutline fillColor="#C2410C" :size="32" />
+            </button>
+            Have you considered contracted staff augmentation? LaraJobs Consultants ➡️
+            <div class="mx-3"></div>
+          </div>
+
+          <button
+            class="flex items-center border border-gray-300 shadow-xl p-3.5 rounded-lg"
+          >
+            Filter
+            <ArrowDownThin :size="27" class="-ml-1" />
+          </button>
+        </div>
+
+        <JobItem v-for="index in 10" :key="index" />
       </div>
     </div>
   </DefaultLayout>
@@ -66,6 +88,9 @@
 <script setup>
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import Magnify from "vue-material-design-icons/Magnify.vue";
+import BullhornOutline from "vue-material-design-icons/BullhornOutline.vue";
+import ArrowDownThin from "vue-material-design-icons/ArrowDownThin.vue";
+import JobItem from "@/Components/JobItem.vue";
 </script>
 
 <style lang="scss" scoped></style>
