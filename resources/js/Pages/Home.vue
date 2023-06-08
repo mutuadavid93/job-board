@@ -2,7 +2,7 @@
   <Head title="Home" />
 
   <DefaultLayout>
-    <div class="w-full pb-10 pt-[56px]">
+    <div class="w-full pb-10">
       <div class="flex items-center justify-center min-w-[1100px] relative">
         <!-- Image overlay -->
         <div class="absolute w-full h-full bg-[#F4F4F5] bg-opacity-80" />
