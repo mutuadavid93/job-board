@@ -23,7 +23,7 @@
 
     <div></div>
 
-    <div class="fixed top-0 right-0 mt-2 pr-10 flex items-center">
+    <div class="fixed z-100 top-0 right-0 mt-2 pr-10 flex items-center">
       <button
         class="p-2 mr-4 px-4 border text-md border-blue-600 bg-blue-200 hover:bg-white hover:text-blue-500"
       >
