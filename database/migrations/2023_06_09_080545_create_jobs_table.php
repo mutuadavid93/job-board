@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->text("description");
             $table->foreignId("category_id")->constrained()->onDelete('cascade');
             $table->foreignId("company_id")->constrained("companies", "id")->onDelete('cascade');
-            $table->string("location");
+            $table->foreignId("location_id")->constrained("locations", "id")->onDelete('cascade');
             $table->string("employment_type");
             $table->decimal('salary', 10, 2); // Precision: 10, Scale: 2 i.e. 10 digits with two decimal points
             $table->timestamp("application_deadline");
