@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Company;
 use App\Models\Category;
+use App\Models\Location;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,7 +24,7 @@ class JobFactory extends Factory
             'description' => fake()->paragraph(),
             'category_id' => Category::pluck('id')->random(),
             'company_id' => Company::pluck('id')->random(),
-            'location' => fake()->city(),
+            'location_id' => Location::pluck('id')->random(),
             'employment_type' => fake()->randomElement(['Full-time', 'Part-time', 'Contract']),
             'salary' => fake()->randomFloat(2, 1000, 50000),
             'application_deadline' => fake()->dateTimeBetween('+1 week', '+1 month'),
