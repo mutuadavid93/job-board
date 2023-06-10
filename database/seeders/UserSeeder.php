@@ -16,11 +16,11 @@ class UserSeeder extends Seeder
     {
         // Retrieve all available roles
         $roles = Role::all();
-        $count = 100;
+        $users = 3;
 
         // Fake couple users
         User::factory()
-            ->count($count)
+            ->count($users)
             ->create()
             ->each(function ($user) use ($roles) {
                 $randomRole = $roles->random();
