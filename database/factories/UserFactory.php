@@ -32,6 +32,7 @@ class UserFactory extends Factory
             // Replace with the logic to store the file path
             'profile_picture' => "https://picsum.photos/id/{$randomId}/132/132",
             'address' => fake()->address(),
+            'banned' => false,
         ];
     }
 

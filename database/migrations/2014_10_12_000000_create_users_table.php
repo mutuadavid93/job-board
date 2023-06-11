@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->text("bio");
             $table->string("profile_picture"); // Hook this to S3 or Disk to actual file
             $table->text("address");
+            $table->boolean("banned")->default(false);
 
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
