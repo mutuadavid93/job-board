@@ -126,6 +126,7 @@
 </template>
 
 <script setup>
+import { Head } from "@inertiajs/vue3";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import Magnify from "vue-material-design-icons/Magnify.vue";
 import BullhornOutline from "vue-material-design-icons/BullhornOutline.vue";
