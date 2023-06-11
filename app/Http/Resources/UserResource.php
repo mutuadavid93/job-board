@@ -8,7 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class UserResource extends JsonResource
 {
     // Disable the wrapping of the outermost resource,
-    
+
     // TIP: Unwrapping inside UserResource is better than doing it inside AppServiceProvider
     // which unwraps all future resources.
     public function __construct($resource)
@@ -30,6 +30,7 @@ class UserResource extends JsonResource
             "email" => $this->email,
             "roles" => $this->getRoleNames(),
             "permissions" => $this->getPermissionNames(),
+            "profile_picture" => $this->profile_picture
         ];
     }
 }

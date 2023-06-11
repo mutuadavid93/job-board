@@ -39,10 +39,10 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    // Admin Page Guarded
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
-});
+// Route::middleware(['auth', 'role:admin'])->group(function () {
+//     // Admin Page Guarded
+// });
+Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 
 
 require __DIR__ . '/auth.php';

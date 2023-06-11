@@ -1,9 +1,10 @@
 <template>
-  <div v-if="hasRole('admin')">Welcome Admin</div>
-  <div v-else>We noticed you are not an admin</div>
+  <AdminLayout> Roles listing </AdminLayout>
 </template>
 
 <script setup>
+import AdminLayout from "@/Layouts/AdminLayout.vue";
 import usePermission from "@/Composables/permissions";
-const { hasRole } = usePermission();
+
+// const { hasRole } = usePermission();
 </script>
