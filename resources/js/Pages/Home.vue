@@ -73,7 +73,7 @@
           </button>
         </div>
 
-        <JobItem v-for="index in 10" :key="index" />
+        <JobItem v-for="image in 10" :key="image" :image="`https://picsum.photos/id/${image}/160/160`" />
 
         <div class="my-8">
           <h2 class="font-extrabold mb-5">Tags</h2>
@@ -133,6 +133,9 @@ import BullhornOutline from "vue-material-design-icons/BullhornOutline.vue";
 import ArrowDownThin from "vue-material-design-icons/ArrowDownThin.vue";
 import PartnersLogo from "@/Components/PartnersLogo.vue";
 import JobItem from "@/Components/JobItem.vue";
+
+const randomNumber = Math.floor(Math.random() * (76 - 55 + 1)) + 55;
+
 </script>
 
 <style lang="scss" scoped></style>

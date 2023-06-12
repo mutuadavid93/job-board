@@ -2,12 +2,12 @@
   <header
     class="w-full z-50 h-[60px] bg-white shadow-md flex items-center justify-between px-10"
   >
-    <div class="max-w-[150px]">
+    <Link :href="route('home')" class="max-w-[150px]">
       <img src="/images/logo.svg" class="min-w-[60px]" />
-    </div>
+    </Link>
 
     <div class="flex items-center justify-center gap-10">
-      <Link href="/" class="text-lg text-gray-900 hover:underline cursor-pointer">
+      <Link :href="route('jobs.index')" class="text-lg text-gray-900 hover:underline cursor-pointer">
         Jobs
       </Link>
       <Link href="/" class="text-lg text-gray-900 hover:underline cursor-pointer">
@@ -16,7 +16,7 @@
       <Link href="/" class="text-lg text-gray-900 hover:underline cursor-pointer">
         Twitter
       </Link>
-      <Link href="/" class="text-lg text-gray-900 hover:underline cursor-pointer">
+      <Link :href="route('login')" class="text-lg text-gray-900 hover:underline cursor-pointer">
         Login
       </Link>
     </div>
@@ -53,7 +53,7 @@
       <div class="mt-3 text-gray-600 text-xl">Modern McGuire Productions</div>
 
       <div class="flex items-center justify-center mt-12">
-        <div class="cursor-pointer text-gray-600 hover:text-black mr-8">Jobs</div>
+        <Link :href="route('jobs.index')" class="cursor-pointer text-gray-600 hover:text-black mr-8">Jobs</Link>
         <div class="cursor-pointer text-gray-600 hover:text-black mr-8">Consultants</div>
         <div class="cursor-pointer text-gray-600 hover:text-black mr-8">Contact</div>
         <div class="cursor-pointer text-gray-600 hover:text-black mr-8">RSS</div>
