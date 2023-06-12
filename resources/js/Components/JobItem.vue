@@ -8,10 +8,7 @@
           type="button"
           class="flex flex-col items-center justify-center absolute -top-8 -left-6 z-10 bg-white rounded-full p-3 border border-gray-400 shadow-xl -ml-5"
         >
-          <img
-            src="https://larajobs.com/logos/lX7Cf4BxhcaTRXDIL7sdEnej6rAt3sH3Q0MHzyWC.png"
-            class="min-w-[35px] max-h-[35px]"
-          />
+          <img :src="image || '/images/nologo.svg'" class="min-w-[35px] max-h-[35px] rounded-full" />
         </button>
       </div>
       <div class="ml-8">
@@ -52,6 +49,7 @@
 <script setup>
 import Web from "vue-material-design-icons/Web.vue";
 import CalendarBlankOutline from "vue-material-design-icons/CalendarBlankOutline.vue";
+defineProps({ image: String });
 </script>
 
 <style lang="scss" scoped></style>

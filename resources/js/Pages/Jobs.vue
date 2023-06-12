@@ -228,6 +228,10 @@
               </div>
             </div>
           </form>
+
+          <div class="-mb-4 font-bold">Live Preview</div>
+          <!-- https://larajobs.com/logos/lX7Cf4BxhcaTRXDIL7sdEnej6rAt3sH3Q0MHzyWC.png -->
+          <JobItem image=""/>
         </div>
 
         <div>
@@ -343,6 +347,7 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
+import JobItem from "@/Components/JobItem.vue";
 
 defineProps({
   canResetPassword: {
