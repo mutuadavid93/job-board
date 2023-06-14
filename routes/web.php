@@ -28,8 +28,12 @@ use Inertia\Inertia;
 
 Route::get("/", fn() => Inertia::render('Home'))->name("home");
 Route::post("/checkout", [JobController::class, "checkout"])->name("checkout.index");
-Route::post("/success", [JobController::class, "checkout"])->name("checkout.success");
-Route::post("/cancel", [JobController::class, "checkout"])->name("checkout.cancel");
+Route::get("/success", [JobController::class, "success"])->name("checkout.success");
+Route::post("/cancel", [JobController::class, "cancel"])->name("checkout.cancel");
+
+// TIP: To test locally, Log into terminal and Run below command
+// stripe listen --forward-to localhost:8000/webhook
+Route::post('/webhook', [JobController::class, 'webhook'])->name('checkout.webhook');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
