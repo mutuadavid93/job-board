@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,9 @@ use Inertia\Inertia;
 // });
 
 Route::get("/", fn() => Inertia::render('Home'))->name("home");
+Route::post("/checkout", [JobController::class, "checkout"])->name("checkout.index");
+Route::post("/success", [JobController::class, "checkout"])->name("checkout.success");
+Route::post("/cancel", [JobController::class, "checkout"])->name("checkout.cancel");
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
