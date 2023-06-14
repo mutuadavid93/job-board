@@ -218,20 +218,35 @@
                 </div>
               </div>
 
-              <div class="flex items-center justify-center mt-5">
-                <button
+              <!-- <div class="flex items-center justify-center mt-5">
+                <Link
+                  :href="route('checkout')"
+                  as="button"
+                  method="post"
                   class="rounded-lg p-2 px-4 text-white bg-blue-600 hover:bg-[#374151]"
                   type="button"
                 >
                   Checkout
-                </button>
-              </div>
+                </Link>
+              </div> -->
             </div>
+          </form>
+
+          <form action="/create-checkout-session" class="flex items-center justify-center mt-5">
+            <Link
+              :href="route('checkout.index')"
+              as="button"
+              method="post"
+              class="rounded-lg p-2 px-4 text-white bg-blue-600 hover:bg-[#374151]"
+              type="button"
+            >
+              Checkout
+            </Link>
           </form>
 
           <div class="-mb-4 font-bold">Live Preview</div>
           <!-- https://larajobs.com/logos/lX7Cf4BxhcaTRXDIL7sdEnej6rAt3sH3Q0MHzyWC.png -->
-          <JobItem image=""/>
+          <JobItem image="" />
         </div>
 
         <div>
