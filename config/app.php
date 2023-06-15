@@ -60,6 +60,7 @@ return [
     'asset_url' => env('ASSET_URL'),
 
     'stripe_secret_key' => env('STRIPE_SECRET'),
+    'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
 
 
     /*
