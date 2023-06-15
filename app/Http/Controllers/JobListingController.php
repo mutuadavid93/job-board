@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Job;
+use App\Jobs\NotifyPaymentSucceededJob;
 use Inertia\Inertia;
 use App\Models\Order;
 use Stripe\StripeClient;
+use App\Models\JobListing;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class JobController extends Controller
+class JobListingController extends Controller
 {
     public function checkout()
     {
-        $jobs = Job::all();
+        $jobs = JobListing::all();
         $lineItems = [];
         $lineItems = [];
         $total_price = 0;
@@ -118,14 +119,7 @@ class JobController extends Controller
         switch ($event->type) {
             case 'checkout.session.completed':
                 $session = $event->data->object;
-
-                $order = Order::where('session_id', $session->id)->first();
-                if ($order && $order->status === 'unpaid') {
-                    $order->status = 'paid';
-                    $order->save();
-                    // Send email to customer
-                }
-
+                NotifyPaymentSucceededJob::dispatch($session->id);
             // ... handle other event types
             default:
                 echo 'Received unknown event type ' . $event->type;
