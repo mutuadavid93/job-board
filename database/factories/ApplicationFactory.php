@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Job;
 use App\Models\User;
+use App\Models\JobListing;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +20,7 @@ class ApplicationFactory extends Factory
     {
         return [
             'user_id' => User::pluck('id')->random(),
-            'job_id' => Job::pluck('id')->random(),
+            'joblisting_id' => JobListing::pluck('id')->random(),
             'cover_letter' => fake()->paragraph(),
             'resume' => 'path/to/resume.pdf',
             'status' => fake()->randomElement(['Pending', 'Accepted', 'Rejected']),

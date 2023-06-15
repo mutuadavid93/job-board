@@ -10,8 +10,8 @@ class Company extends Model
     use HasFactory;
 
 
-    public function jobs()
+    public function joblistings()
     {
-        return $this->hasMany(Job::class);
+        return $this->hasMany(JobListing::class);
     }
 }

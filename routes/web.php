@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\JobController;
+use App\Http\Controllers\JobListingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -27,13 +27,13 @@ use Inertia\Inertia;
 // });
 
 Route::get("/", fn() => Inertia::render('Home'))->name("home");
-Route::post("/checkout", [JobController::class, "checkout"])->name("checkout.index");
-Route::get("/success", [JobController::class, "success"])->name("checkout.success");
-Route::post("/cancel", [JobController::class, "cancel"])->name("checkout.cancel");
+Route::post("/checkout", [JobListingController::class, "checkout"])->name("checkout.index");
+Route::get("/success", [JobListingController::class, "success"])->name("checkout.success");
+Route::post("/cancel", [JobListingController::class, "cancel"])->name("checkout.cancel");
 
 // TIP: To test locally, Log into terminal and Run below command
 // stripe listen --forward-to localhost:8000/webhook
-Route::post('/webhook', [JobController::class, 'webhook'])->name('checkout.webhook');
+Route::post('/webhook', [JobListingController::class, 'webhook'])->name('checkout.webhook');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -45,6 +45,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get("/jobs", fn() => Inertia::render('Jobs'))->name("jobs.index");
+Route::get("/joblistings", fn() => Inertia::render('Jobs'))->name("jobs.index");
 
 require __DIR__ . '/auth.php';

@@ -7,10 +7,32 @@ Create UserSeeder
 - $ php artisan make:seeder UserSeeder
 
 
-###### Laravel Cashier
+# Jobs and Queues :: 
 
-Create a migration which makes use of a specific table
-- $ php artisan make:migration "update users table with subscriptions" --table=users
+Create Queue table
+- $ php artisan queue:table
 
-A migration which creates a subscriptions table
-- $ php artisan make:migration "create subscriptions table" --create=subscriptions
+Run a Job's migration
+- $ php artisan migrate
+
+Create the Job to run in the queue
+- $ php artisan make:job NotifyPaymentSucceededJob
+
+Finally run the worker to execute jobs on the queue
+- $ php artisan queue:work
+
+
+# Tasks are scheduled using command:
+
+Create a command. Remind these are suited for tasks that need to happen regularly 
+without manual intervention e.g. Sending Reminders To Customers, Clearing Trash Bin e.t.c.
+- $ php artisan make:command RemindOfUnpaidOrders
+
+Start the Scheduled Command
+- $ php artisan app:remind-of-unpaid-orders
+
+
+# Send Notifications 
+
+Create a notification
+- $ php artisan make:notification RemindOfUnpaidOrdersNotification
