@@ -19,6 +19,7 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "laravel-precognition-vue-inertia": "^0.3.2",
         "vue-material-design-icons": "^5.2.0"
     }
 }

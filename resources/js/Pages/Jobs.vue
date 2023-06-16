@@ -52,13 +52,16 @@
           </form>
 
           <div class="flex items-center justify-between">
-            <Link href="#" class="text-sm mb-4 text-blue-500">Forgot your password?</Link>
-            <span class="text-sm mb-4 text-gray-600"
-              >No account? We'll set one up below.</span
-            >
+            <Link :href="route('password.request')" class="text-sm mb-4 text-blue-500">
+              Forgot your password?
+            </Link>
+
+            <Link :href="route('register')" class="text-sm mb-4 text-gray-600">
+              No account? We'll set one up below.
+            </Link>
           </div>
 
-          <form action="#">
+          <form action="#" @submit.prevent="submitJobPost">
             <div>
               <label for="job-title" class="block text-[#3E4857] font-extrabold"
                 >Job Title</label
@@ -66,11 +69,13 @@
               <input
                 type="text"
                 id="job-title"
+                @change="jobPostForm.validate('title')"
                 class="w-full border border-gray-400 rounded-lg bg-[#F9FAFB] shadow-md mb-2"
               />
               <span class="text-[13px] text-[#6B7280]"
                 >Example: "Senior Laravel Developer", "Software Engineer"</span
               >
+              <span v-if="errors" class="text-red-700 block mt-2 text-[13px]">{{ errors.title }}</span>
             </div>
 
             <div class="mt-5">
@@ -185,7 +190,7 @@
                 <div class="font-extrabold text-[#24C560]">$747.00</div>
               </div>
 
-              <div class="mt-5 bg-[#DBEAFE] rounded-lg py-5 px-4 pb-8">
+              <!-- <div class="mt-5 bg-[#DBEAFE] rounded-lg py-5 px-4 pb-8">
                 <div class="text-center text-[16px] font-bold">
                   Enhance Your Listing. Get More Leads.
                 </div>
@@ -216,23 +221,26 @@
                     class="w-full bg-white border rounded-md"
                   />
                 </div>
-              </div>
+              </div> -->
 
-              <!-- <div class="flex items-center justify-center mt-5">
+              <div class="flex items-center justify-center">
                 <Link
-                  :href="route('checkout')"
+                  :href="route('jobs.store')"
                   as="button"
                   method="post"
-                  class="rounded-lg p-2 px-4 text-white bg-blue-600 hover:bg-[#374151]"
+                  class="rounded-lg p-2 px-4 text-white bg-blue-600 hover:bg-[#374151] my-5"
                   type="button"
                 >
-                  Checkout
+                  Submit
                 </Link>
-              </div> -->
+              </div>
             </div>
           </form>
 
-          <form action="/create-checkout-session" class="flex items-center justify-center mt-5">
+          <!-- <form
+            action="/create-checkout-session"
+            class="flex items-center justify-center mt-5"
+          >
             <Link
               :href="route('checkout.index')"
               as="button"
@@ -242,7 +250,7 @@
             >
               Checkout
             </Link>
-          </form>
+          </form> -->
 
           <div class="-mb-4 font-bold">Live Preview</div>
           <!-- https://larajobs.com/logos/lX7Cf4BxhcaTRXDIL7sdEnej6rAt3sH3Q0MHzyWC.png -->
@@ -354,6 +362,7 @@
 <script setup>
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
+import { useForm as precognitionForm } from "laravel-precognition-vue-inertia";
 import OfficeBuildingOutline from "vue-material-design-icons/OfficeBuildingOutline.vue";
 
 import Checkbox from "@/Components/Checkbox.vue";
@@ -371,6 +380,7 @@ defineProps({
   status: {
     type: String,
   },
+  errors: Object,
 });
 
 const loginForm = useForm({
@@ -384,4 +394,15 @@ const submit = () => {
     onFinish: () => loginForm.reset("password"),
   });
 };
+
+// Validate Job Post
+const jobPostForm = precognitionForm("post", "/joblistings", {
+  title: "",
+});
+
+const submitJobPost = () =>
+  jobPostForm.submit({
+    preserveScroll: true,
+    onSuccess: () => form.reset(),
+  });
 </script>

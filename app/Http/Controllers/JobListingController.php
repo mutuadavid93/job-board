@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreJobListingRequest;
 use App\Jobs\NotifyPaymentSucceededJob;
 use Inertia\Inertia;
 use App\Models\Order;
@@ -12,6 +13,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class JobListingController extends Controller
 {
+    public function store(StoreJobListingRequest $request)
+    {
+        // Store Job Data
+        dd($request);
+    }
+
     public function checkout()
     {
         $jobs = JobListing::all();

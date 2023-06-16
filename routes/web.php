@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\JobListingController;
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\JobListingController;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,5 +47,10 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get("/joblistings", fn() => Inertia::render('Jobs'))->name("jobs.index");
+
+// HINT: Using Precognition
+Route::post('/joblistings', [JobListingController::class, 'store'])
+    ->middleware([HandlePrecognitiveRequests::class])
+    ->name('jobs.store');
 
 require __DIR__ . '/auth.php';

@@ -36,3 +36,11 @@ Start the Scheduled Command
 
 Create a notification
 - $ php artisan make:notification RemindOfUnpaidOrdersNotification
+
+
+# FormRequest Validation
+
+- $ php artisan make:request StoreJobListingRequest
+
+NOTE: You can as well use Precognition
+[see - Precognition](https://laravel.com/docs/10.x/precognition#introduction)
