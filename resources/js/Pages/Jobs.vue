@@ -9,7 +9,7 @@
           </div>
 
           <form
-            @submit.prevent="submit"
+            @submit.prevent="submitLoginForm"
             class="flex items-center justify-between p-4 bg-[#F3F4F6] rounded-lg mb-2"
           >
             <div>
@@ -61,7 +61,7 @@
             </Link>
           </div>
 
-          <form action="#" @submit.prevent="submitJobPost">
+          <form action="#" @submit.prevent="submit">
             <div>
               <label for="job-title" class="block text-[#3E4857] font-extrabold"
                 >Job Title</label
@@ -69,13 +69,57 @@
               <input
                 type="text"
                 id="job-title"
-                @change="jobPostForm.validate('title')"
+                v-model="form.title"
                 class="w-full border border-gray-400 rounded-lg bg-[#F9FAFB] shadow-md mb-2"
               />
               <span class="text-[13px] text-[#6B7280]"
                 >Example: "Senior Laravel Developer", "Software Engineer"</span
               >
-              <span v-if="errors" class="text-red-700 block mt-2 text-[13px]">{{ errors.title }}</span>
+              <span
+                v-if="$page.props.errors.title"
+                class="text-red-700 block mt-2 text-[13px]"
+              >
+                {{ $page.props.errors.title }}
+              </span>
+            </div>
+
+            <div class="mt-5">
+              <label for="experience_level" class="block text-[#3E4857] font-extrabold"
+                >Experience Level</label
+              >
+              <select
+                id="experience_level"
+                class="w-full border border-gray-400 bg-[#F9FAFB]"
+                v-model="form.experience_level"
+              >
+                <option value="Senior Level" class="text-[14px]">Senior Level</option>
+                <option value="Mid Level" class="text-[14px]">Mid Level</option>
+                <option value="Entry Level" class="text-[14px]">Entry Level</option>
+                <option value="Internship" class="text-[14px]">Internship</option>
+              </select>
+            </div>
+
+            <div class="mt-5">
+              <label for="job-description" class="block text-[#3E4857] font-extrabold"
+                >Job Description</label
+              >
+              <Editor
+                :api-key="tinymce"
+                :init="{
+                  plugins: 'lists link image table code help wordcount',
+                }"
+                id="job-description"
+                v-model="form.description"
+              />
+              <span class="text-[13px] text-[#6B7280]"
+                >Example: "Introduction", "Role", "Qualifications" etc.
+              </span>
+              <span
+                v-if="$page.props.errors.description"
+                class="text-red-700 block mt-2 text-[13px]"
+              >
+                {{ $page.props.errors.description }}
+              </span>
             </div>
 
             <div class="mt-5">
@@ -85,10 +129,17 @@
               <input
                 type="text"
                 id="job-location"
+                v-model="form.location"
                 class="w-full border border-gray-400 rounded-lg bg-[#F9FAFB] shadow-md mb-2"
               />
               <span class="text-[13px] text-[#6B7280]"
                 >Example: "Remote", "Remote / USA", "New York City", "Remote GMT-5", etc.
+              </span>
+              <span
+                v-if="$page.props.errors.location"
+                class="text-red-700 block mt-2 text-[13px]"
+              >
+                {{ $page.props.errors.location }}
               </span>
             </div>
 
@@ -99,6 +150,7 @@
               <select
                 id="employment-type"
                 class="w-full border border-gray-400 bg-[#F9FAFB]"
+                v-model="form.employment_type"
               >
                 <option value="Full Time" class="text-[14px]">Full Time</option>
                 <option value="Part Time" class="text-[14px]">Part Time</option>
@@ -109,18 +161,31 @@
                 <option value="Per Diem" class="text-[14px]">Per Diem</option>
                 <option value="Other" class="text-[14px]">Other</option>
               </select>
+              <span
+                v-if="$page.props.errors.employment_type"
+                class="text-red-700 block mt-2 text-[13px]"
+              >
+                {{ $page.props.errors.employment_type }}
+              </span>
 
               <div class="mt-5">
                 <label for="salary" class="block text-[#3E4857] font-extrabold"
                   >Salary(optional)
                 </label>
                 <input
-                  type="text"
+                  type="number"
                   id="salary"
+                  v-model="form.salary"
                   class="w-full border border-[#D1D5DB] rounded-lg bg-[#F9FAFB] shadow-md mb-2"
                 />
                 <span class="text-[13px] text-[#6B7280]"
                   >Examples: "$120,000 – $145,000 USD", "€80,000 — €102,000"
+                </span>
+                <span
+                  v-if="$page.props.errors.salary"
+                  class="text-red-700 block mt-2 text-[13px]"
+                >
+                  {{ $page.props.errors.salary }}
                 </span>
               </div>
 
@@ -129,13 +194,36 @@
                 <div
                   class="flex items-center justify-start gap-4 bg-[#F9FAFB] p-4 rounded-lg"
                 >
-                  <OfficeBuildingOutline fillColor="#AAAAAC" :size="50" />
+                  <img
+                    v-if="!!imageDisplay"
+                    :src="imageDisplay"
+                    class="min-w-[50px] max-h-[50px] rounded-full"
+                  />
+                  <OfficeBuildingOutline v-else fillColor="#AAAAAC" :size="50" />
                   <label
                     for="select-file"
                     class="text-[#6B7280] text-sm font-extrabold p-2 rounded-xl border border-[#D1D5DB]"
                     >Select File
                   </label>
-                  <input class="hidden" type="file" id="select-file" />
+                  <input
+                    @input="getUploadedImage($event)"
+                    class="hidden"
+                    type="file"
+                    id="select-file"
+                  />
+                  <progress
+                    v-if="form.progress"
+                    :value="form.progress.percentage"
+                    max="100"
+                  >
+                    {{ form.progress.percentage }}%
+                  </progress>
+                  <span
+                    v-if="$page.props.errors.company_logo"
+                    class="text-red-700 block mt-2 text-[13px]"
+                  >
+                    {{ $page.props.errors.company_logo }}
+                  </span>
                 </div>
                 <span class="text-[13px] text-[#6B7280]"
                   >130x130 is best, but any works</span
@@ -149,9 +237,16 @@
                 <input
                   type="text"
                   id="tags"
+                  v-model="form.tags"
                   class="w-full border border-[#D1D5DB] rounded-lg bg-[#F9FAFB] shadow-md mb-2"
                 />
                 <span class="text-[13px] text-[#6B7280]">Max of five tags </span>
+                <span
+                  v-if="$page.props.errors.tags"
+                  class="text-red-700 block mt-2 text-[13px]"
+                >
+                  {{ $page.props.errors.tags }}
+                </span>
               </div>
 
               <div class="mt-5 rounded-lg border-2 border-[#D1D5DB] px-4 py-4">
@@ -159,27 +254,59 @@
                   Enhance Your Listing. Get More Leads.
                 </div>
                 <div class="flex items-center justify-start gap-2 mt-4">
-                  <input type="checkbox" id="company-logo" checked />
+                  <input type="checkbox" id="company-logo" v-model="form.logo_present" />
                   <label for="company-logo"
                     >Show your company logo in the listing (+$49)</label
                   >
+                  <span
+                    v-if="$page.props.errors.logo_present"
+                    class="text-red-700 block mt-2 text-[13px]"
+                  >
+                    {{ $page.props.errors.logo_present }}
+                  </span>
                 </div>
                 <div class="flex items-center justify-start gap-2 mt-4">
-                  <input type="checkbox" id="highlight-listing" />
+                  <input
+                    type="checkbox"
+                    id="highlight-listing"
+                    v-model="form.list_highlighted"
+                  />
                   <label for="highlight-listing"
                     >Boost your listing to the top of the page every 7 days (+$399)</label
                   >
+                  <span
+                    v-if="$page.props.errors.list_highlighted"
+                    class="text-red-700 block mt-2 text-[13px]"
+                  >
+                    {{ $page.props.errors.list_highlighted }}
+                  </span>
                 </div>
                 <div class="flex items-center justify-start gap-2 mt-4">
-                  <input type="checkbox" id="boost-listing" />
+                  <input
+                    type="checkbox"
+                    id="boost-listing"
+                    v-model="form.listing_boosted"
+                  />
                   <label for="boost-listing"
                     >Boost your listing to the top of the page every day to maximize
                     exposure (+$1499)</label
                   >
+                  <span
+                    v-if="$page.props.errors.listing_boosted"
+                    class="text-red-700 block mt-2 text-[13px]"
+                  >
+                    {{ $page.props.errors.listing_boosted }}
+                  </span>
                 </div>
                 <div class="flex items-center justify-start gap-2 mt-4">
-                  <input type="checkbox" id="repost" />
+                  <input type="checkbox" id="repost" v-model="form.tobe_reposted" />
                   <label for="repost">Repost automatically when listing expires</label>
+                  <span
+                    v-if="$page.props.errors.tobe_reposted"
+                    class="text-red-700 block mt-2 text-[13px]"
+                  >
+                    {{ $page.props.errors.tobe_reposted }}
+                  </span>
                 </div>
               </div>
 
@@ -187,7 +314,7 @@
                 class="mt-5 flex items-center justify-between px-4 py-5 bg-[#E5E7EB] rounded-lg"
               >
                 <div class="font-extrabold">Price</div>
-                <div class="font-extrabold text-[#24C560]">$747.00</div>
+                <div class="font-extrabold text-[#24C560]">{{ price }}</div>
               </div>
 
               <!-- <div class="mt-5 bg-[#DBEAFE] rounded-lg py-5 px-4 pb-8">
@@ -224,15 +351,13 @@
               </div> -->
 
               <div class="flex items-center justify-center">
-                <Link
-                  :href="route('jobs.store')"
-                  as="button"
-                  method="post"
+                <button
+                  type="submit"
+                  :disabled="form.processing"
                   class="rounded-lg p-2 px-4 text-white bg-blue-600 hover:bg-[#374151] my-5"
-                  type="button"
                 >
                   Submit
-                </Link>
+                </button>
               </div>
             </div>
           </form>
@@ -360,10 +485,11 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
-import { useForm as precognitionForm } from "laravel-precognition-vue-inertia";
 import OfficeBuildingOutline from "vue-material-design-icons/OfficeBuildingOutline.vue";
+import Editor from "@tinymce/tinymce-vue";
 
 import Checkbox from "@/Components/Checkbox.vue";
 import GuestLayout from "@/Layouts/GuestLayout.vue";
@@ -380,7 +506,7 @@ defineProps({
   status: {
     type: String,
   },
-  errors: Object,
+  tinymce: String,
 });
 
 const loginForm = useForm({
@@ -389,20 +515,54 @@ const loginForm = useForm({
   remember: false,
 });
 
-const submit = () => {
+const submitLoginForm = () => {
   loginForm.post(route("login"), {
     onFinish: () => loginForm.reset("password"),
   });
 };
 
-// Validate Job Post
-const jobPostForm = precognitionForm("post", "/joblistings", {
-  title: "",
+let price = ref("$747.00");
+let imageDisplay = ref("");
+let error = ref(null);
+
+const form = useForm(() => {
+  return {
+    title: "",
+    location: "",
+    description: "",
+    experience_level: "Senior Level",
+    employment_type: "",
+    company_logo: "",
+    salary: 0,
+    tags: "",
+    logo_present: true,
+    list_highlighted: false,
+    tobe_reposted: false,
+    listing_boosted: false,
+  };
 });
 
-const submitJobPost = () =>
-  jobPostForm.submit({
-    preserveScroll: true,
-    onSuccess: () => form.reset(),
+const submit = () => {
+  form.post(route("jobs.store"), {
+    forceFormData: true,
+    // preserveState: true, // Preserve form input values
+    preserveScroll: true, // Preserve scroll position
+    onFinish: () => {
+      // Reset the form fields back to defaults
+      form.reset();
+
+      // Clear all errors...
+      form.clearErrors();
+    },
+    onError: (errors) => {
+      errors && errors.company_logo ? (error.value = errors.company_logo) : "";
+    },
   });
+};
+
+const getUploadedImage = (event) => {
+  // convert the file into an object url
+  imageDisplay.value = URL.createObjectURL(event.target.files[0]);
+  form.company_logo = event.target.files[0];
+};
 </script>

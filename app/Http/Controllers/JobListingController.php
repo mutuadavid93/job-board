@@ -13,10 +13,22 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class JobListingController extends Controller
 {
+    public function index()
+    {
+        $tinymce = env("TinyMCE_API_KEY");
+        return Inertia::render('Jobs', ["tinymce" => $tinymce]);
+    }
+
     public function store(StoreJobListingRequest $request)
     {
+        // The request has already been validated at this point
+        // Retrieve the validated data using $request->validated()
+        $data = $request->validated();
+
         // Store Job Data
-        dd($request);
+
+        dd($data);
+        // return redirect()->route('jobs.index');
     }
 
     public function checkout()

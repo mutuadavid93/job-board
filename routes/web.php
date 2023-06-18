@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JobListingController;
-use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +27,7 @@ use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 // });
 
 Route::get("/", fn() => Inertia::render('Home'))->name("home");
+Route::get("/test-form", fn() => Inertia::render('TestForm'))->name("test.form");
 Route::post("/checkout", [JobListingController::class, "checkout"])->name("checkout.index");
 Route::get("/success", [JobListingController::class, "success"])->name("checkout.success");
 Route::post("/cancel", [JobListingController::class, "cancel"])->name("checkout.cancel");
@@ -46,11 +46,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get("/joblistings", fn() => Inertia::render('Jobs'))->name("jobs.index");
+Route::get("/joblistings", [JobListingController::class, "index"])->name("jobs.index");
 
 // HINT: Using Precognition
-Route::post('/joblistings', [JobListingController::class, 'store'])
-    ->middleware([HandlePrecognitiveRequests::class])
-    ->name('jobs.store');
+Route::post('/joblistings', [JobListingController::class, 'store'])->name('jobs.store');
 
 require __DIR__ . '/auth.php';

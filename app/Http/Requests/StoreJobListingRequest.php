@@ -22,7 +22,17 @@ class StoreJobListingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|max:5',
+            'title' => 'required|string|max:20',
+            'location' => 'required|string|max:20',
+            'company_logo' => 'required|file|image|max:2048',
+            'description' => 'required|string|max:65535 ',
+            'employment_type' => 'required|string',
+            'salary' => 'required|numeric|min:0',
+
+            // 'application_deadline' => 'required|date',
+            'experience_level' => 'required|string',
+            // 'skills' => 'required|string',
+            // 'remote' => 'boolean',
         ];
     }
 }
