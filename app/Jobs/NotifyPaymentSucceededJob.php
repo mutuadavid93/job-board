@@ -2,6 +2,20 @@
 
 namespace App\Jobs;
 
+
+
+/*
+|--------------------------------------------------------------------------
+| This ia Queued Job
+|--------------------------------------------------------------------------
+|
+| SerializesModels Trait ::
+| Eloquent models and their loaded relationships will be gracefully serialized and
+| unserialized when the job is processing.
+|
+*/
+
+
 use App\Models\Order;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
