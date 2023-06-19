@@ -28,6 +28,7 @@ class JobListingFactory extends Factory
             'employment_type' => fake()->randomElement(['Full-time', 'Part-time', 'Contract']),
             'salary' => fake()->randomFloat(2, 1000, 50000),
             // 'application_deadline' => fake()->dateTimeBetween('+1 week', '+1 month'),
+            'repost_date' => fake()->dateTimeBetween('+1 week', '+1 month'),
             'experience_level' => fake()->randomElement(['Entry Level', 'Mid Level', 'Senior Level', 'Internship']),
             // 'skills' => fake()->sentence(3),
             // 'remote' => false,
