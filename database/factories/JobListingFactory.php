@@ -27,10 +27,10 @@ class JobListingFactory extends Factory
             'location_id' => Location::pluck('id')->random(),
             'employment_type' => fake()->randomElement(['Full-time', 'Part-time', 'Contract']),
             'salary' => fake()->randomFloat(2, 1000, 50000),
-            'application_deadline' => fake()->dateTimeBetween('+1 week', '+1 month'),
-            'experience_level' => fake()->randomElement(['Entry Level', 'Mid Level', 'Senior Level']),
-            'skills' => fake()->sentence(3),
-            'remote' => false,
+            // 'application_deadline' => fake()->dateTimeBetween('+1 week', '+1 month'),
+            'experience_level' => fake()->randomElement(['Entry Level', 'Mid Level', 'Senior Level', 'Internship']),
+            // 'skills' => fake()->sentence(3),
+            // 'remote' => false,
         ];
     }
 }
