@@ -24,4 +24,9 @@ class JobListing extends Model
     {
         return $this->hasMany(Location::class);
     }
+
+    public function enhancements()
+    {
+        return $this->hasMany(Enhancement::class);
+    }
 }
