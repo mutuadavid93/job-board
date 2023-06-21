@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreJobListingRequest;
+use App\Http\Resources\AllJobListingsCollection;
 use App\Jobs\NotifyPaymentSucceededJob;
 use Inertia\Inertia;
 use App\Models\Order;
@@ -19,12 +20,29 @@ class JobListingController extends Controller
         return Inertia::render('Jobs', ["tinymce" => $tinymce]);
     }
 
+    public function displayJobs()
+    {
+        // Get all job_listings in descending order, orderedBy `created_at` field
+        $jobListings = JobListing::latest("created_at")->get();
+
+        // Pass the job_listings through the resource collection.
+        // TIP: Brings back a joblisting and it's associated items e.g. company, category e.t.c
+        $jobListingResource = new AllJobListingsCollection($jobListings);
+
+        return Inertia::render('Home', ["joblistings" => $jobListingResource]);
+    }
+
     public function store(StoreJobListingRequest $request)
     {
         // The request has already been validated at this point
         // Retrieve the validated data using $request->validated()
         $data = $request->validated();
 
+        // category Data
+
+
+        // company Data
+        // location Data
         // Store Job Data
 
         dd($data);

@@ -8,12 +8,15 @@
           type="button"
           class="flex flex-col items-center justify-center absolute -top-8 -left-6 z-10 bg-white rounded-full p-3 border border-gray-400 shadow-xl -ml-5"
         >
-          <img :src="image || '/images/nologo.svg'" class="min-w-[35px] max-h-[35px] rounded-full" />
+          <img
+            :src="image || '/images/nologo.svg'"
+            class="min-w-[35px] max-h-[35px] rounded-full"
+          />
         </button>
       </div>
       <div class="ml-8">
         <div class="font-extralight text-[15px]">Membersy</div>
-        <div class="font-extrabold text-md">Software Engineer</div>
+        <div class="font-extrabold text-md">{{ joblisting?.title }}</div>
         <div class="font-extralight text-[15px]">Full Time</div>
       </div>
     </div>
@@ -49,7 +52,7 @@
 <script setup>
 import Web from "vue-material-design-icons/Web.vue";
 import CalendarBlankOutline from "vue-material-design-icons/CalendarBlankOutline.vue";
-defineProps({ image: String });
+defineProps({ image: String, joblisting: Object });
 </script>
 
 <style lang="scss" scoped></style>

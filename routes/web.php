@@ -26,7 +26,7 @@ use App\Http\Controllers\JobListingController;
 //     ]);
 // });
 
-Route::get("/", fn() => Inertia::render('Home'))->name("home");
+Route::get("/", [JobListingController::class, "displayJobs"])->name("home");
 Route::get("/test-form", fn() => Inertia::render('TestForm'))->name("test.form");
 Route::post("/checkout", [JobListingController::class, "checkout"])->name("checkout.index");
 Route::get("/success", [JobListingController::class, "success"])->name("checkout.success");

@@ -33,6 +33,7 @@ class StoreJobListingRequest extends FormRequest
             'experience_level' => 'required|string',
             // 'skills' => 'required|string',
             // 'remote' => 'boolean',
+            'company_name' => 'required|string',
         ];
     }
 }
