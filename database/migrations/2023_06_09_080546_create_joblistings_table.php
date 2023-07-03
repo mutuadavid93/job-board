@@ -10,20 +10,16 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('job_listings', function (Blueprint $table) {
+        Schema::create('joblistings', function (Blueprint $table) {
             $table->id();
-
-            $table->string("title");
-            $table->text("description");
-            $table->foreignId("category_id")->constrained()->onDelete('cascade');
-            $table->foreignId("company_id")->constrained("companies", "id")->onDelete('cascade');
-            $table->foreignId("location_id")->constrained("locations", "id")->onDelete('cascade');
-            $table->string("employment_type");
+            $table->string("title"); // e.g. Software Engineer
+            $table->string("location"); // "Remote", "Remote / USA", "New York City", "Remote GMT-5", etc.
+            $table->string("company_name"); // 
+            $table->string("company_logo"); // 
+            $table->text("description"); // Very Long Section with Titles and Lists
+            $table->string("employment_type"); // Full Time, Part Time
             $table->decimal('salary', 10, 2); // Precision: 10, Scale: 2 i.e. 10 digits with two decimal points
-            $table->timestamp("application_deadline");
-            $table->string("experience_level");
-            $table->text("skills");
-            $table->boolean("remote")->default(false);
+            $table->string("experience_level"); // Senior, Entry
 
             $table->timestamps();
         });
@@ -34,6 +30,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('jobs');
+        Schema::dropIfExists('joblistings');
     }
 };

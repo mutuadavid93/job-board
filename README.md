@@ -40,7 +40,7 @@ Create a notification
 
 # FormRequest Validation
 
-- $ php artisan make:request StoreJobListingRequest
+- $ php artisan make:request StoreJoblistingRequest
 
 NOTE: You can as well use Precognition
 [see - Precognition](https://laravel.com/docs/10.x/precognition#introduction)
@@ -58,4 +58,4 @@ resource.
 
 Similar to resource but this time with multiple models which have relationships.
 Best fit for related models.
-- $ php artisan make:resource AllJobListingsCollection --collection
+- $ php artisan make:resource AllJoblistingsCollection --collection

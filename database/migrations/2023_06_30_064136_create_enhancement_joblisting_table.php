@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('enhancements', function (Blueprint $table) {
-            $table->foreignId('job_listing_id')->nullable()->constrained('job_listings');
+        Schema::create('enhancement_joblisting', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId("enhancement_id")->constrained();
+            $table->foreignId("joblisting_id")->constrained();
+            $table->timestamps();
         });
     }
 
@@ -21,9 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('enhancements', function (Blueprint $table) {
-            $table->dropForeign(['job_listing_id']);
-            $table->dropColumn('job_listing_id');
-        });
+        Schema::dropIfExists('enhancement_joblisting');
     }
 };

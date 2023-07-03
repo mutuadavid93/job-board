@@ -10,10 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('enhancements', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-            $table->string("slug");
+            // $table->foreignId("joblisting_id")->constrained()->onDelete("cascade");
+            $table->string("type"); // e.g. type of enhancement (e.g., "Logo", "Boost")
+            $table->timestamp("expiration_date");
+            $table->boolean("recurring");
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('enhancements');
     }
 };

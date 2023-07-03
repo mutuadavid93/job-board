@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreJobListingRequest;
-use App\Http\Resources\AllJobListingsCollection;
+use App\Http\Requests\StoreJoblistingRequest;
+use App\Http\Resources\AllJoblistingsCollection;
 use App\Jobs\NotifyPaymentSucceededJob;
 use Inertia\Inertia;
 use App\Models\Order;
 use Stripe\StripeClient;
-use App\Models\JobListing;
+use App\Models\Joblisting;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class JobListingController extends Controller
+class JoblistingController extends Controller
 {
     public function index()
     {
@@ -23,27 +23,16 @@ class JobListingController extends Controller
     public function displayJobs()
     {
         // Get all job_listings in descending order, orderedBy `created_at` field
-        $jobListings = JobListing::latest("created_at")->get();
+        $joblistings = Joblisting::with("enhancements")->get();
 
-        // Pass the job_listings through the resource collection.
-        // TIP: Brings back a joblisting and it's associated items e.g. company, category e.t.c
-        $jobListingResource = new AllJobListingsCollection($jobListings);
-
-        return Inertia::render('Home', ["joblistings" => $jobListingResource]);
+        return Inertia::render('Home', ["joblistings" => $joblistings]);
     }
 
-    public function store(StoreJobListingRequest $request)
+    public function store(StoreJoblistingRequest $request)
     {
         // The request has already been validated at this point
         // Retrieve the validated data using $request->validated()
         $data = $request->validated();
-
-        // category Data
-
-
-        // company Data
-        // location Data
-        // Store Job Data
 
         dd($data);
         // return redirect()->route('jobs.index');
@@ -51,7 +40,7 @@ class JobListingController extends Controller
 
     public function checkout()
     {
-        $jobs = JobListing::all();
+        $jobs = Joblisting::all();
         $lineItems = [];
         $lineItems = [];
         $total_price = 0;
