@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreJobListingRequest;
+use App\Http\Requests\StoreJoblistingRequest;
+use App\Http\Resources\AllJoblistingsCollection;
 use App\Jobs\NotifyPaymentSucceededJob;
 use Inertia\Inertia;
 use App\Models\Order;
 use Stripe\StripeClient;
-use App\Models\JobListing;
+use App\Models\Joblisting;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class JobListingController extends Controller
+class JoblistingController extends Controller
 {
     public function index()
     {
@@ -19,13 +20,19 @@ class JobListingController extends Controller
         return Inertia::render('Jobs', ["tinymce" => $tinymce]);
     }
 
-    public function store(StoreJobListingRequest $request)
+    public function displayJobs()
+    {
+        // Get all job_listings in descending order, orderedBy `created_at` field
+        $joblistings = Joblisting::with("enhancements")->get();
+
+        return Inertia::render('Home', ["joblistings" => $joblistings]);
+    }
+
+    public function store(StoreJoblistingRequest $request)
     {
         // The request has already been validated at this point
         // Retrieve the validated data using $request->validated()
         $data = $request->validated();
-
-        // Store Job Data
 
         dd($data);
         // return redirect()->route('jobs.index');
@@ -33,7 +40,7 @@ class JobListingController extends Controller
 
     public function checkout()
     {
-        $jobs = JobListing::all();
+        $jobs = Joblisting::all();
         $lineItems = [];
         $lineItems = [];
         $total_price = 0;

@@ -40,7 +40,22 @@ Create a notification
 
 # FormRequest Validation
 
-- $ php artisan make:request StoreJobListingRequest
+- $ php artisan make:request StoreJoblistingRequest
 
 NOTE: You can as well use Precognition
 [see - Precognition](https://laravel.com/docs/10.x/precognition#introduction)
+
+
+# Create a Resource
+
+NOTE:  Meant for Single Model customization's on specifically what to return,
+maybe cherry-pick or add even new properties which need to belong to that single
+resource. 
+
+- $ php artisan make:resource PostResource
+
+# Create a Resource Collection
+
+Similar to resource but this time with multiple models which have relationships.
+Best fit for related models.
+- $ php artisan make:resource AllJoblistingsCollection --collection

@@ -2,8 +2,11 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
+use App\Models\Joblisting;
 use App\Models\Enhancement;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class EnhancementSeeder extends Seeder
@@ -13,6 +16,6 @@ class EnhancementSeeder extends Seeder
      */
     public function run(): void
     {
-        Enhancement::factory()->count(3)->create();
+        Enhancement::factory()->count(10)->create();
     }
 }

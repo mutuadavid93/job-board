@@ -73,7 +73,9 @@
           </button>
         </div>
 
-        <JobItem v-for="image in 10" :key="image" :image="`https://picsum.photos/id/${image}/160/160`" />
+        <div v-for="joblisting in joblistings" :key="joblisting">
+          <JobItem :joblisting="joblisting" />
+        </div>
 
         <div class="my-8">
           <h2 class="font-extrabold mb-5">Tags</h2>
@@ -118,7 +120,9 @@
             <div class="text-gray-500">Note, these jobs may no longer be available</div>
           </div>
 
-          <JobItem v-for="job in 3" :key="job" />
+          <div v-for="joblisting in joblistings.slice(-3)" :key="joblisting">
+              <JobItem :joblisting="joblisting" />
+            </div>
         </div>
       </div>
     </div>
@@ -136,6 +140,9 @@ import JobItem from "@/Components/JobItem.vue";
 
 const randomNumber = Math.floor(Math.random() * (76 - 55 + 1)) + 55;
 
+const {joblistings} = defineProps({ joblistings: Object });
+
+console.log("--- ", joblistings);
 </script>
 
 <style lang="scss" scoped></style>

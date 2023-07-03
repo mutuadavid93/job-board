@@ -12,12 +12,10 @@ return new class extends Migration {
     {
         Schema::create('enhancements', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId("joblisting_id")->constrained("job_listings")->onDelete("cascade");
+            // $table->foreignId("joblisting_id")->constrained()->onDelete("cascade");
             $table->string("type"); // e.g. type of enhancement (e.g., "Logo", "Boost")
             $table->timestamp("expiration_date");
             $table->boolean("recurring");
-
             $table->timestamps();
         });
     }

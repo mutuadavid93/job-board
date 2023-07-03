@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreJobListingRequest extends FormRequest
+class StoreJoblistingRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -33,6 +33,7 @@ class StoreJobListingRequest extends FormRequest
             'experience_level' => 'required|string',
             // 'skills' => 'required|string',
             // 'remote' => 'boolean',
+            'company_name' => 'required|string',
         ];
     }
 }

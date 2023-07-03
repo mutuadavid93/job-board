@@ -11,8 +11,8 @@ class Enhancement extends Model
 
     protected $guarded = [];
 
-    public function joblisting()
-    {
-        return $this->belongsTo(JobListing::class);
-    }
+    // public function joblisting()
+    // {
+    //     return $this->belongsTo(Joblisting::class);
+    // }
 }

@@ -190,6 +190,24 @@
               </div>
 
               <div class="mt-5">
+                <label for="company_name" class="block text-[#3E4857] font-extrabold"
+                  >Company Name
+                </label>
+                <input
+                  type="text"
+                  id="company_name"
+                  v-model="form.company_name"
+                  class="w-full border border-[#D1D5DB] rounded-lg bg-[#F9FAFB] shadow-md mb-2"
+                />
+                <span
+                  v-if="$page.props.errors.company_name"
+                  class="text-red-700 block mt-2 text-[13px]"
+                >
+                  {{ $page.props.errors.company_name }}
+                </span>
+              </div>
+
+              <div class="mt-5">
                 <span class="block text-[#3E4857] font-extrabold">Company Logo</span>
                 <div
                   class="flex items-center justify-start gap-4 bg-[#F9FAFB] p-4 rounded-lg"
@@ -529,6 +547,7 @@ const form = useForm(() => {
   return {
     title: "",
     location: "",
+    company_name: "",
     description: "",
     experience_level: "Senior Level",
     employment_type: "",

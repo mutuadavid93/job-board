@@ -8,22 +8,25 @@
           type="button"
           class="flex flex-col items-center justify-center absolute -top-8 -left-6 z-10 bg-white rounded-full p-3 border border-gray-400 shadow-xl -ml-5"
         >
-          <img :src="image || '/images/nologo.svg'" class="min-w-[35px] max-h-[35px] rounded-full" />
+          <img
+            :src="joblisting?.company_logo || '/images/nologo.svg'"
+            class="min-w-[35px] max-h-[35px]"
+          />
         </button>
       </div>
       <div class="ml-8">
-        <div class="font-extralight text-[15px]">Membersy</div>
-        <div class="font-extrabold text-md">Software Engineer</div>
-        <div class="font-extralight text-[15px]">Full Time</div>
+        <div class="font-extralight text-[15px]">{{ joblisting?.company_name }}</div>
+        <div class="font-extrabold text-md">{{ joblisting?.title }}</div>
+        <div class="font-extralight text-[15px]">{{ joblisting?.employment_type }}</div>
       </div>
     </div>
 
     <div>
       <div class="flex items-center justify-end mr-2">
         <Web fillColor="#C1C5CD" :size="23" class="mr-2" />
-        <span class="text-[13px] mr-2">Remote / Austin TX / USA</span>
+        <span class="text-[13px] mr-2">{{ joblisting?.location }}</span>
         <CalendarBlankOutline fillColor="#C1C5CD" :size="23" class="mx-2" />
-        <span class="text-[13px]">2w</span>
+        <span class="text-[13px]">{{ joblisting?.created_at }}</span>
       </div>
       <div class="flex items-center justify-start mt-2">
         <button class="px-3 py-1 text-[13px] border border-gray-300 rounded-md mr-2">
@@ -49,7 +52,7 @@
 <script setup>
 import Web from "vue-material-design-icons/Web.vue";
 import CalendarBlankOutline from "vue-material-design-icons/CalendarBlankOutline.vue";
-defineProps({ image: String });
+defineProps({ joblisting: Object });
 </script>
 
 <style lang="scss" scoped></style>
