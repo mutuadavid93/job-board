@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreJoblistingRequest;
-use App\Http\Resources\AllJoblistingsCollection;
-use App\Jobs\NotifyPaymentSucceededJob;
 use Inertia\Inertia;
 use App\Models\Order;
 use Stripe\StripeClient;
 use App\Models\Joblisting;
+use App\Models\Enhancement;
 use Illuminate\Http\Request;
+use App\Jobs\NotifyPaymentSucceededJob;
+use App\Http\Requests\StoreJoblistingRequest;
+use App\Http\Resources\AllJoblistingsCollection;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class JoblistingController extends Controller
@@ -30,12 +31,29 @@ class JoblistingController extends Controller
 
     public function store(StoreJoblistingRequest $request)
     {
-        // The request has already been validated at this point
-        // Retrieve the validated data using $request->validated()
-        $data = $request->validated();
+        $id = rand(1, 100);
+        // Retrieve the validated data
+        $validatedData = $request->validated();
 
-        dd($data);
-        // return redirect()->route('jobs.index');
+        $validatedData['title'] = $request->input('title');
+        $validatedData['company_name'] = $request->input('company_name');
+        $validatedData['description'] = $request->input('description');
+        $validatedData['employment_type'] = $request->input('employment_type');
+        $validatedData['location'] = $request->input('location');
+        $validatedData['salary'] = $request->input('salary');
+        $validatedData['experience_level'] = $request->input('experience_level');
+        // Overwrite the 'company_logo' key with a new value
+        $validatedData['company_logo'] = "https://picsum.photos/id/{$id}/200/300";
+
+        // Create a new Joblisting instance and save it
+        $joblisting = Joblisting::create($validatedData);
+        // dd($validatedData);
+
+        // Attach enhancements
+        $enhancements = Enhancement::inRandomOrder()->get();
+        $joblisting->enhancements()->attach($enhancements);
+
+        return redirect()->route('home');
     }
 
     public function checkout()

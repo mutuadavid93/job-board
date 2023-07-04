@@ -26,7 +26,7 @@
         <Web fillColor="#C1C5CD" :size="23" class="mr-2" />
         <span class="text-[13px] mr-2">{{ joblisting?.location }}</span>
         <CalendarBlankOutline fillColor="#C1C5CD" :size="23" class="mx-2" />
-        <span class="text-[13px]">{{ joblisting?.created_at }}</span>
+        <AppDate :timestamp="joblisting?.created_at" />
       </div>
       <div class="flex items-center justify-start mt-2">
         <button class="px-3 py-1 text-[13px] border border-gray-300 rounded-md mr-2">
@@ -52,6 +52,7 @@
 <script setup>
 import Web from "vue-material-design-icons/Web.vue";
 import CalendarBlankOutline from "vue-material-design-icons/CalendarBlankOutline.vue";
+import AppDate from "@/Components/AppDate.vue";
 defineProps({ joblisting: Object });
 </script>
 

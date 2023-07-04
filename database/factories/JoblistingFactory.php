@@ -27,7 +27,7 @@ class JoblistingFactory extends Factory
             'company_logo' => "https://picsum.photos/id/{$id}/200/300",
             'description' => $this->faker->paragraph(),
             'employment_type' => $this->faker->randomElement(['Full-time', 'Part-time', 'Contract']),
-            'location' => $this->faker->randomElement(['Remote', 'New York', 'San Francisco']),
+            'location' => $this->faker->randomElement([$this->faker->city, 'New York', 'Remote/USA']),
             'salary' => $this->faker->randomFloat(2, 1000, 50000),
             'experience_level' => $this->faker->randomElement(['Entry Level', 'Mid Level', 'Senior Level', 'Internship']),
         ];
