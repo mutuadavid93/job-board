@@ -121,8 +121,8 @@
           </div>
 
           <div v-for="joblisting in joblistings.slice(-3)" :key="joblisting">
-              <JobItem :joblisting="joblisting" />
-            </div>
+            <JobItem :joblisting="joblisting" />
+          </div>
         </div>
       </div>
     </div>
@@ -137,12 +137,7 @@ import BullhornOutline from "vue-material-design-icons/BullhornOutline.vue";
 import ArrowDownThin from "vue-material-design-icons/ArrowDownThin.vue";
 import PartnersLogo from "@/Components/PartnersLogo.vue";
 import JobItem from "@/Components/JobItem.vue";
-
-const randomNumber = Math.floor(Math.random() * (76 - 55 + 1)) + 55;
-
-const {joblistings} = defineProps({ joblistings: Object });
-
-console.log("--- ", joblistings);
+defineProps({ joblistings: Object });
 </script>
 
 <style lang="scss" scoped></style>

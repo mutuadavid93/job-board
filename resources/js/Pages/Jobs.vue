@@ -248,7 +248,8 @@
                 >
               </div>
 
-              <div class="mt-5">
+              <!-- TODO: Implement tags relationship with joblisting -->
+              <!-- <div class="mt-5">
                 <label for="tags" class="block text-[#3E4857] font-extrabold"
                   >Tags
                 </label>
@@ -265,7 +266,7 @@
                 >
                   {{ $page.props.errors.tags }}
                 </span>
-              </div>
+              </div> -->
 
               <div class="mt-5 rounded-lg border-2 border-[#D1D5DB] px-4 py-4">
                 <div class="text-center text-[16px] font-bold">
