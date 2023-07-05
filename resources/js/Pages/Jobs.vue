@@ -273,7 +273,13 @@
                   Enhance Your Listing. Get More Leads.
                 </div>
                 <div class="flex items-center justify-start gap-2 mt-4">
-                  <input type="checkbox" id="company-logo" v-model="form.logo_present" />
+                  <input
+                    type="checkbox"
+                    id="company-logo"
+                    :true-value="49"
+                    :false-value="0"
+                    v-model="form.logo_present"
+                  />
                   <label for="company-logo"
                     >Show your company logo in the listing (+$49)</label
                   >
@@ -289,6 +295,8 @@
                     type="checkbox"
                     id="highlight-listing"
                     v-model="form.list_highlighted"
+                    :true-value="399"
+                    :false-value="0"
                   />
                   <label for="highlight-listing"
                     >Boost your listing to the top of the page every 7 days (+$399)</label
@@ -305,6 +313,8 @@
                     type="checkbox"
                     id="boost-listing"
                     v-model="form.listing_boosted"
+                    :true-value="1499"
+                    :false-value="0"
                   />
                   <label for="boost-listing"
                     >Boost your listing to the top of the page every day to maximize
@@ -318,7 +328,13 @@
                   </span>
                 </div>
                 <div class="flex items-center justify-start gap-2 mt-4">
-                  <input type="checkbox" id="repost" v-model="form.tobe_reposted" />
+                  <input
+                    type="checkbox"
+                    id="repost"
+                    v-model="form.tobe_reposted"
+                    :true-value="true"
+                    :false-value="false"
+                  />
                   <label for="repost">Repost automatically when listing expires</label>
                   <span
                     v-if="$page.props.errors.tobe_reposted"
@@ -333,7 +349,7 @@
                 class="mt-5 flex items-center justify-between px-4 py-5 bg-[#E5E7EB] rounded-lg"
               >
                 <div class="font-extrabold">Price</div>
-                <div class="font-extrabold text-[#24C560]">{{ price }}</div>
+                <div class="font-extrabold text-[#24C560]">${{ total }}</div>
               </div>
 
               <!-- <div class="mt-5 bg-[#DBEAFE] rounded-lg py-5 px-4 pb-8">
@@ -504,7 +520,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, reactive, watch, computed } from "vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import OfficeBuildingOutline from "vue-material-design-icons/OfficeBuildingOutline.vue";
@@ -540,9 +556,19 @@ const submitLoginForm = () => {
   });
 };
 
-let price = ref("$747.00");
+// let price = ref("$747.00");
 let imageDisplay = ref("");
 let error = ref(null);
+
+let enhancements = reactive([]);
+
+const removeEnhancement = (_type) => {
+  enhancements.forEach((enhancement, index) => {
+    if (enhancement.type === _type) {
+      enhancements.splice(index, 1);
+    }
+  });
+};
 
 const form = useForm(() => {
   return {
@@ -555,14 +581,82 @@ const form = useForm(() => {
     company_logo: "",
     salary: 0,
     tags: "",
-    logo_present: true,
-    list_highlighted: false,
-    tobe_reposted: false,
-    listing_boosted: false,
+    logo_present: 0,
+    list_highlighted: 0,
+    tobe_reposted: false, // whether joblisting should be recurring
+    listing_boosted: 0,
+    enhancements: [],
   };
 });
 
+let currentDate = new Date();
+currentDate.setDate(currentDate.getDate() + 7);
+
+let year = currentDate.getFullYear();
+let month = String(currentDate.getMonth() + 1).padStart(2, '0');
+let day = String(currentDate.getDate()).padStart(2, '0');
+let hours = String(currentDate.getHours()).padStart(2, '0');
+let minutes = String(currentDate.getMinutes()).padStart(2, '0');
+let seconds = String(currentDate.getSeconds()).padStart(2, '0');
+
+let formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+// console.log(formattedDate);
+
+//
+/*
+|--------------------------------------------------------------------------
+|  Watch individual enhancements
+|--------------------------------------------------------------------------
+| Push each into enhancements collection
+|
+*/
+watch(
+  () => form.logo_present,
+  (logoPrice) => {
+    // If present remove it
+    removeEnhancement("Company logo");
+    enhancements.push({ type: "Company logo", price: logoPrice });
+  }
+);
+watch(
+  () => form.list_highlighted,
+  (price) => {
+    removeEnhancement("Boost every 7 days");
+    enhancements.push({ type: "Boost every 7 days", price });
+  }
+);
+watch(
+  () => form.listing_boosted,
+  (price) => {
+    removeEnhancement("Boost every day");
+    enhancements.push({ type: "Boost every day", price });
+  }
+);
+watch(
+  () => form.tobe_reposted,
+  (value) => {
+    removeEnhancement("Recurring");
+    enhancements.push({
+      type: "Recurring",
+      recurring: value,
+      // Default price
+      price: 0,
+      expiration_date: formattedDate,
+    });
+  }
+);
+
+// Grandsum
+const total = computed(() => {
+  const sum = enhancements.reduce((accu, enhancement) => {
+    return accu + enhancement.price;
+  }, 0);
+  return sum > 0 ? sum.toFixed(2) : 0;
+});
+
 const submit = () => {
+  form.enhancements = enhancements;
   form.post(route("jobs.store"), {
     forceFormData: true,
     // preserveState: true, // Preserve form input values

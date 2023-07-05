@@ -34,6 +34,7 @@ class EnhancementFactory extends Factory
         return [
             // "joblisting_id" => $jobListing->id,
             'type' => $type,
+            'price' => $this->faker->randomFloat(2, 49, 1499),
             'expiration_date' => fake()->dateTimeBetween('+1 month', '+2 months'),
             'recurring' => fake()->boolean(),
         ];
