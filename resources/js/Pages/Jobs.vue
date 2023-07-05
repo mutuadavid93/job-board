@@ -272,17 +272,20 @@
                 <div class="text-center text-[16px] font-bold">
                   Enhance Your Listing. Get More Leads.
                 </div>
-                <div class="flex items-center justify-start gap-2 mt-4">
-                  <input
-                    type="checkbox"
-                    id="company-logo"
-                    :true-value="49"
-                    :false-value="0"
-                    v-model="form.logo_present"
-                  />
-                  <label for="company-logo"
-                    >Show your company logo in the listing (+$49)</label
-                  >
+                <div class="mt-4">
+                  <div class="flex items-center justify-start gap-2">
+                    <input
+                      type="checkbox"
+                      id="company-logo"
+                      v-model="form.logo_present"
+                      :checked="form.logo_present === 49"
+                      @change="updateCheckboxValue"
+                    />
+
+                    <label for="company-logo"
+                      >Show your company logo in the listing (+$49)</label
+                    >
+                  </div>
                   <span
                     v-if="$page.props.errors.logo_present"
                     class="text-red-700 block mt-2 text-[13px]"
@@ -556,7 +559,6 @@ const submitLoginForm = () => {
   });
 };
 
-// let price = ref("$747.00");
 let imageDisplay = ref("");
 let error = ref(null);
 
@@ -578,7 +580,7 @@ const form = useForm(() => {
     description: "",
     experience_level: "Senior Level",
     employment_type: "",
-    company_logo: "",
+    company_logo: null,
     salary: 0,
     tags: "",
     logo_present: 0,
@@ -593,17 +595,14 @@ let currentDate = new Date();
 currentDate.setDate(currentDate.getDate() + 7);
 
 let year = currentDate.getFullYear();
-let month = String(currentDate.getMonth() + 1).padStart(2, '0');
-let day = String(currentDate.getDate()).padStart(2, '0');
-let hours = String(currentDate.getHours()).padStart(2, '0');
-let minutes = String(currentDate.getMinutes()).padStart(2, '0');
-let seconds = String(currentDate.getSeconds()).padStart(2, '0');
+let month = String(currentDate.getMonth() + 1).padStart(2, "0");
+let day = String(currentDate.getDate()).padStart(2, "0");
+let hours = String(currentDate.getHours()).padStart(2, "0");
+let minutes = String(currentDate.getMinutes()).padStart(2, "0");
+let seconds = String(currentDate.getSeconds()).padStart(2, "0");
 
 let formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 
-// console.log(formattedDate);
-
-//
 /*
 |--------------------------------------------------------------------------
 |  Watch individual enhancements
@@ -678,5 +677,11 @@ const getUploadedImage = (event) => {
   // convert the file into an object url
   imageDisplay.value = URL.createObjectURL(event.target.files[0]);
   form.company_logo = event.target.files[0];
+};
+
+const updateCheckboxValue = () => {
+  if (form.logo_present !== 49) {
+    form.logo_present = 49;
+  }
 };
 </script>

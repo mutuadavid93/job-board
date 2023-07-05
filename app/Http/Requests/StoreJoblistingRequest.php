@@ -24,12 +24,15 @@ class StoreJoblistingRequest extends FormRequest
         return [
             'title' => 'required|string|max:20',
             'location' => 'required|string|max:20',
-            'company_logo' => 'required|file|image|max:2048',
+            'company_logo' => 'nullable|mimes:png,jpg,jpeg',
             'description' => 'required|string|max:65535 ',
             'employment_type' => 'required|string',
             'salary' => 'required|numeric|min:0',
             'experience_level' => 'required|string',
             'company_name' => 'required|string',
+
+            // Against missing, empty, or not equal to $49
+            'logo_present' => ['required', 'integer', 'in:49']
         ];
     }
 }

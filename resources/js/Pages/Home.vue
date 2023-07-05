@@ -114,7 +114,7 @@
           </div>
         </div>
 
-        <div class="my-8">
+        <div class="my-8" v-if="joblistings.length">
           <div class="flex items-center justify-between">
             <h2 class="font-extrabold">Old Jobs</h2>
             <div class="text-gray-500">Note, these jobs may no longer be available</div>

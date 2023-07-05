@@ -8,6 +8,7 @@ use Stripe\StripeClient;
 use App\Models\Joblisting;
 use App\Models\Enhancement;
 use Illuminate\Http\Request;
+use App\Services\ImageService;
 use App\Jobs\NotifyPaymentSucceededJob;
 use App\Http\Requests\StoreJoblistingRequest;
 use App\Http\Resources\AllJoblistingsCollection;
@@ -35,6 +36,9 @@ class JoblistingController extends Controller
         // Retrieve the validated data
         $validatedData = $request->validated();
 
+        // Remove 'logo_present' from $validatedData
+        unset($validatedData['logo_present']);
+
         // Create enhancement records before joblisting
         $createdEnhancements = [];
         $enhancements = $request->input('enhancements');
@@ -50,8 +54,14 @@ class JoblistingController extends Controller
         $validatedData['location'] = $request->input('location');
         $validatedData['salary'] = $request->input('salary');
         $validatedData['experience_level'] = $request->input('experience_level');
+
         // Overwrite the 'company_logo' key with a new value
-        $validatedData['company_logo'] = "https://picsum.photos/id/{$id}/200/300";
+        if ($request->hasFile('company_logo')) {
+            $imageService = new ImageService();
+            $validatedData['company_logo'] = $imageService->updateImage($validatedData['company_logo'], $request);
+        } else {
+            $validatedData['company_logo'] = '/images/nologo.svg';
+        }
 
         // Create a new Joblisting and save it
         $joblisting = Joblisting::create($validatedData);
