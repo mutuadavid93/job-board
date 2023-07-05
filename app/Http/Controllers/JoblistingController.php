@@ -35,6 +35,14 @@ class JoblistingController extends Controller
         // Retrieve the validated data
         $validatedData = $request->validated();
 
+        // Create enhancement records before joblisting
+        $createdEnhancements = [];
+        $enhancements = $request->input('enhancements');
+        foreach ($enhancements as $enhancementData) {
+            $enhancement = Enhancement::create($enhancementData);
+            $createdEnhancements[] = $enhancement->id; // Store only the enhancement ID
+        }
+
         $validatedData['title'] = $request->input('title');
         $validatedData['company_name'] = $request->input('company_name');
         $validatedData['description'] = $request->input('description');
@@ -45,13 +53,11 @@ class JoblistingController extends Controller
         // Overwrite the 'company_logo' key with a new value
         $validatedData['company_logo'] = "https://picsum.photos/id/{$id}/200/300";
 
-        // Create a new Joblisting instance and save it
+        // Create a new Joblisting and save it
         $joblisting = Joblisting::create($validatedData);
-        // dd($validatedData);
 
-        // Attach enhancements
-        $enhancements = Enhancement::inRandomOrder()->get();
-        $joblisting->enhancements()->attach($enhancements);
+        // Insert into pivot table
+        $joblisting->enhancements()->attach($createdEnhancements);
 
         return redirect()->route('home');
     }

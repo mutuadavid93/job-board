@@ -14,8 +14,9 @@ return new class extends Migration {
             $table->id();
             // $table->foreignId("joblisting_id")->constrained()->onDelete("cascade");
             $table->string("type"); // e.g. type of enhancement (e.g., "Logo", "Boost")
-            $table->timestamp("expiration_date");
-            $table->boolean("recurring");
+            $table->timestamp("expiration_date")->nullable();
+            $table->decimal('price', 10, 2);
+            $table->boolean("recurring")->nullable();
             $table->timestamps();
         });
     }

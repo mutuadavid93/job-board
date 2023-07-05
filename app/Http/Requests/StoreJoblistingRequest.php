@@ -28,11 +28,7 @@ class StoreJoblistingRequest extends FormRequest
             'description' => 'required|string|max:65535 ',
             'employment_type' => 'required|string',
             'salary' => 'required|numeric|min:0',
-
-            // 'application_deadline' => 'required|date',
             'experience_level' => 'required|string',
-            // 'skills' => 'required|string',
-            // 'remote' => 'boolean',
             'company_name' => 'required|string',
         ];
     }
