@@ -30,9 +30,6 @@ class StoreJoblistingRequest extends FormRequest
             'salary' => 'required|numeric|min:0',
             'experience_level' => 'required|string',
             'company_name' => 'required|string',
-
-            // Against missing, empty, or not equal to $49
-            'logo_present' => ['required', 'integer', 'in:49']
         ];
     }
 }

@@ -12,6 +12,7 @@ use App\Services\ImageService;
 use App\Jobs\NotifyPaymentSucceededJob;
 use App\Http\Requests\StoreJoblistingRequest;
 use App\Http\Resources\AllJoblistingsCollection;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class JoblistingController extends Controller
@@ -32,20 +33,10 @@ class JoblistingController extends Controller
 
     public function store(StoreJoblistingRequest $request)
     {
-        $id = rand(1, 100);
-        // Retrieve the validated data
         $validatedData = $request->validated();
 
-        // Remove 'logo_present' from $validatedData
-        unset($validatedData['logo_present']);
-
-        // Create enhancement records before joblisting
-        $createdEnhancements = [];
-        $enhancements = $request->input('enhancements');
-        foreach ($enhancements as $enhancementData) {
-            $enhancement = Enhancement::create($enhancementData);
-            $createdEnhancements[] = $enhancement->id; // Store only the enhancement ID
-        }
+        // Enhancements' validations:
+        $createdEnhancements = $this->validateEnhancements($request);
 
         $validatedData['title'] = $request->input('title');
         $validatedData['company_name'] = $request->input('company_name');
@@ -69,48 +60,63 @@ class JoblistingController extends Controller
         // Insert into pivot table
         $joblisting->enhancements()->attach($createdEnhancements);
 
-        return redirect()->route('home');
+        // Make payment
+        $enhancements = $joblisting->enhancements()->get();
+        $url = $this->makeOrder($enhancements, (int) $request->total);
+        return Inertia::location($url);
     }
 
-    public function checkout()
+    public function validateEnhancements(StoreJoblistingRequest $request)
     {
-        $jobs = Joblisting::all();
-        $lineItems = [];
-        $lineItems = [];
-        $total_price = 0;
-        $stripe = new StripeClient(config("app.stripe_secret_key"));
+        $enhancementInvalid = "Invalid enhancement amount";
+        if (!empty($request->logo_present) && $request->logo_present != 49) {
+            throw new HttpException(403, $enhancementInvalid);
+        }
+        if (!empty($request->list_highlighted) && $request->list_highlighted != 399) {
+            throw new HttpException(403, $enhancementInvalid);
+        }
+        if (!empty($request->listing_boosted) && $request->listing_boosted != 1499) {
+            throw new HttpException(403, $enhancementInvalid);
+        }
 
-        foreach ($jobs as $job) {
-            $total_price += $job->salary;
+        $createdEnhancements = [];
+        $enhancements = $request->input('enhancements');
+        foreach ($enhancements as $enhancementData) {
+            $enhancement = Enhancement::create($enhancementData);
+            $createdEnhancements[] = $enhancement->id; // Store only the enhancement ID
+        }
+        return $createdEnhancements;
+    }
+
+    public function makeOrder($enhancements, $total_price)
+    {
+        $lineItems = [];
+        $stripe = new StripeClient(config("app.stripe_secret_key"));
+        foreach ($enhancements as $enhancement) {
             $lineItems[] = [
                 'price_data' => [
                     'currency' => 'usd',
                     'product_data' => [
-                        'name' => $job->title,
+                        'name' => $enhancement->type,
                     ],
-                    'unit_amount' => $job->salary * 100,
+                    'unit_amount' => $enhancement->price * 100,
                 ],
                 'quantity' => 1,
             ];
         }
-
         $checkout_session = $stripe->checkout->sessions->create([
             'line_items' => $lineItems,
             'mode' => 'payment',
             'success_url' => route('checkout.success', [], true) . "?session_id={CHECKOUT_SESSION_ID}",
             'cancel_url' => route("checkout.cancel", [], true),
         ]);
-
-        // Save the sessionID in Database. This will be used to continue the payment
         Order::create([
             // TODO: refactor to enums
             "status" => "unpaid",
             "total_price" => $total_price,
             "session_id" => $checkout_session->id
         ]);
-
-        // return Inertia::render("Checkout", ["jobs" => $jobs]);
-        return Inertia::location($checkout_session->url);
+        return $checkout_session->url;
     }
 
     public function success(Request $request)
