@@ -277,9 +277,9 @@
                     <input
                       type="checkbox"
                       id="company-logo"
+                      :true-value="49"
+                      :false-value="0"
                       v-model="form.logo_present"
-                      :checked="form.logo_present === 49"
-                      @change="updateCheckboxValue"
                     />
 
                     <label for="company-logo"
@@ -293,17 +293,20 @@
                     {{ $page.props.errors.logo_present }}
                   </span>
                 </div>
-                <div class="flex items-center justify-start gap-2 mt-4">
-                  <input
-                    type="checkbox"
-                    id="highlight-listing"
-                    v-model="form.list_highlighted"
-                    :true-value="399"
-                    :false-value="0"
-                  />
-                  <label for="highlight-listing"
-                    >Boost your listing to the top of the page every 7 days (+$399)</label
-                  >
+                <div class="mt-4">
+                  <div class="flex items-center justify-start gap-2">
+                    <input
+                      type="checkbox"
+                      id="highlight-listing"
+                      v-model="form.list_highlighted"
+                      :true-value="399"
+                      :false-value="0"
+                    />
+                    <label for="highlight-listing"
+                      >Boost your listing to the top of the page every 7 days
+                      (+$399)</label
+                    >
+                  </div>
                   <span
                     v-if="$page.props.errors.list_highlighted"
                     class="text-red-700 block mt-2 text-[13px]"
@@ -311,18 +314,20 @@
                     {{ $page.props.errors.list_highlighted }}
                   </span>
                 </div>
-                <div class="flex items-center justify-start gap-2 mt-4">
-                  <input
-                    type="checkbox"
-                    id="boost-listing"
-                    v-model="form.listing_boosted"
-                    :true-value="1499"
-                    :false-value="0"
-                  />
-                  <label for="boost-listing"
-                    >Boost your listing to the top of the page every day to maximize
-                    exposure (+$1499)</label
-                  >
+                <div class="mt-4">
+                  <div class="flex items-center justify-start gap-2">
+                    <input
+                      type="checkbox"
+                      id="boost-listing"
+                      v-model="form.listing_boosted"
+                      :true-value="1499"
+                      :false-value="0"
+                    />
+                    <label for="boost-listing"
+                      >Boost your listing to the top of the page every day to maximize
+                      exposure (+$1499)</label
+                    >
+                  </div>
                   <span
                     v-if="$page.props.errors.listing_boosted"
                     class="text-red-700 block mt-2 text-[13px]"
@@ -394,7 +399,7 @@
                   :disabled="form.processing"
                   class="rounded-lg p-2 px-4 text-white bg-blue-600 hover:bg-[#374151] my-5"
                 >
-                  Submit
+                  Checkout
                 </button>
               </div>
             </div>
@@ -575,6 +580,7 @@ const removeEnhancement = (_type) => {
 const form = useForm(() => {
   return {
     title: "",
+    total: 0,
     location: "",
     company_name: "",
     description: "",
@@ -582,7 +588,6 @@ const form = useForm(() => {
     employment_type: "",
     company_logo: null,
     salary: 0,
-    tags: "",
     logo_present: 0,
     list_highlighted: 0,
     tobe_reposted: false, // whether joblisting should be recurring
@@ -654,8 +659,15 @@ const total = computed(() => {
   return sum > 0 ? sum.toFixed(2) : 0;
 });
 
+// NOTE: This total is what stripe supports
+const totalWithoutDot = () => {
+  let num = String(total.value).split(".").join("");
+  return Number(num);
+};
+
 const submit = () => {
   form.enhancements = enhancements;
+  form.total = totalWithoutDot();
   form.post(route("jobs.store"), {
     forceFormData: true,
     // preserveState: true, // Preserve form input values
@@ -677,11 +689,5 @@ const getUploadedImage = (event) => {
   // convert the file into an object url
   imageDisplay.value = URL.createObjectURL(event.target.files[0]);
   form.company_logo = event.target.files[0];
-};
-
-const updateCheckboxValue = () => {
-  if (form.logo_present !== 49) {
-    form.logo_present = 49;
-  }
 };
 </script>
