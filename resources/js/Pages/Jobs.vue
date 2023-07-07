@@ -297,6 +297,31 @@
                   <div class="flex items-center justify-start gap-2">
                     <input
                       type="checkbox"
+                      id="custom-color"
+                      :true-value="49"
+                      :false-value="0"
+                      v-model="form.custom_color_price"
+                    />
+                    <input type="color" v-model="form.custom_color" />
+                    <label for="custom-color"
+                      >Highlight your listing in a custom color (+$49)</label
+                    >
+                  </div>
+                  <div v-if="enhancedColor">
+                    <p>You selected: {{ enhancedColor.color }}</p>
+                    <p>Price: {{ enhancedColor.price }}</p>
+                  </div>
+                  <span
+                    v-if="$page.props.errors.logo_present"
+                    class="text-red-700 block mt-2 text-[13px]"
+                  >
+                    {{ $page.props.errors.logo_present }}
+                  </span>
+                </div>
+                <div class="mt-4">
+                  <div class="flex items-center justify-start gap-2">
+                    <input
+                      type="checkbox"
                       id="highlight-listing"
                       v-model="form.list_highlighted"
                       :true-value="399"
@@ -419,11 +444,7 @@
               Checkout
             </Link>
           </form> -->
-
-          <div class="-mb-4 font-bold">Live Preview</div>
-          <!-- https://larajobs.com/logos/lX7Cf4BxhcaTRXDIL7sdEnej6rAt3sH3Q0MHzyWC.png -->
-          <JobItem image="" />
-        </div>
+          </div>
 
         <div>
           <div class="text-[#4B5563] text-center text-[1.2rem]">
@@ -541,6 +562,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import JobItem from "@/Components/JobItem.vue";
+import JobItemPreview from "@/Components/JobItemPreview.vue";
 
 defineProps({
   canResetPassword: {
@@ -566,7 +588,7 @@ const submitLoginForm = () => {
 
 let imageDisplay = ref("");
 let error = ref(null);
-
+let listingColor = ref("");
 let enhancements = reactive([]);
 
 const removeEnhancement = (_type) => {
@@ -593,6 +615,8 @@ const form = useForm(() => {
     tobe_reposted: false, // whether joblisting should be recurring
     listing_boosted: 0,
     enhancements: [],
+    custom_color: "#EE3696",
+    custom_color_price: 0,
   };
 });
 
@@ -615,6 +639,14 @@ let formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 | Push each into enhancements collection
 |
 */
+// watch(
+//   () => form.custom_color_price,
+//   (colorPrice) => {
+//     removeEnhancement("Custom color");
+//     enhancements.push({ type: "Custom color", price: colorPrice });
+//     if(colorPrice) listingColor.value = form.custom_color;
+//   }
+// );
 watch(
   () => form.logo_present,
   (logoPrice) => {
@@ -651,6 +683,19 @@ watch(
   }
 );
 
+// Watch multiple states
+watch([() => form.custom_color, () => form.custom_color_price], ([color, price]) => {
+  // Perform any desired logic based on the color and price changes
+  removeEnhancement("Custom color");
+  if (price) {
+    enhancements.push({
+      type: "Custom color",
+      price,
+      color,
+    });
+  }
+});
+
 // Grandsum
 const total = computed(() => {
   const sum = enhancements.reduce((accu, enhancement) => {
@@ -664,6 +709,31 @@ const totalWithoutDot = () => {
   let num = String(total.value).split(".").join("");
   return Number(num);
 };
+
+// HINT: Useful if you want a review of the colours on the fly.
+// The customer can see how the actual job listing will look like and adjust accordingly
+const enhancedColor = computed({
+  get() {
+    if (form.custom_color_price) {
+      return {
+        color: form.custom_color,
+        price: form.custom_color_price,
+      };
+    } else {
+      return null;
+    }
+  },
+  set(value) {
+    // When checked
+    if (value) {
+      form.custom_color = value.color;
+      form.custom_color_price = value.price;
+    } else {
+      form.custom_color = "#EE3696"; // Set default color when unchecked
+      form.custom_color_price = 0;
+    }
+  },
+});
 
 const submit = () => {
   form.enhancements = enhancements;
@@ -690,4 +760,15 @@ const getUploadedImage = (event) => {
   imageDisplay.value = URL.createObjectURL(event.target.files[0]);
   form.company_logo = event.target.files[0];
 };
+
+// function updateEnhancements(colorPrice) {
+//   removeEnhancement("Custom color");
+//   if (colorPrice) {
+//     const enhancement = {
+//       type: "Custom color",
+//       price: colorPrice,
+//     };
+//     enhancements.push(enhancement);
+//   }
+// }
 </script>

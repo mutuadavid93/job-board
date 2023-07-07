@@ -7,7 +7,10 @@
     </Link>
 
     <div class="flex items-center justify-center gap-10">
-      <Link :href="route('jobs.index')" class="text-lg text-gray-900 hover:underline cursor-pointer">
+      <Link
+        :href="route('jobs.index')"
+        class="text-lg text-gray-900 hover:underline cursor-pointer"
+      >
         Jobs
       </Link>
       <Link href="/" class="text-lg text-gray-900 hover:underline cursor-pointer">
@@ -16,7 +19,10 @@
       <Link href="/" class="text-lg text-gray-900 hover:underline cursor-pointer">
         Twitter
       </Link>
-      <Link :href="route('login')" class="text-lg text-gray-900 hover:underline cursor-pointer">
+      <Link
+        :href="route('login')"
+        class="text-lg text-gray-900 hover:underline cursor-pointer"
+      >
         Login
       </Link>
     </div>
@@ -53,7 +59,11 @@
       <div class="mt-3 text-gray-600 text-xl">Modern McGuire Productions</div>
 
       <div class="flex items-center justify-center mt-12">
-        <Link :href="route('jobs.index')" class="cursor-pointer text-gray-600 hover:text-black mr-8">Jobs</Link>
+        <Link
+          :href="route('jobs.index')"
+          class="cursor-pointer text-gray-600 hover:text-black mr-8"
+          >Jobs</Link
+        >
         <div class="cursor-pointer text-gray-600 hover:text-black mr-8">Consultants</div>
         <div class="cursor-pointer text-gray-600 hover:text-black mr-8">Contact</div>
         <div class="cursor-pointer text-gray-600 hover:text-black mr-8">RSS</div>
@@ -64,6 +74,14 @@
         Built by UserScape in partnership with Laravel News
       </div>
       <div class="text-gray-500 mt-2">© 2014 - 2023</div>
+    </div>
+  </div>
+
+  <!-- Live Preview -->
+  <div>
+    <div class="-mb-4 font-bold">Live Preview</div>
+    <div>
+      <JobItemPreview />
     </div>
   </div>
 </template>

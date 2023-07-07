@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->timestamp("expiration_date")->nullable();
             $table->decimal('price', 10, 2);
             $table->boolean("recurring")->nullable();
+            $table->string("color")->nullable(); // Some enhancements don't need it.
             $table->timestamps();
         });
     }
