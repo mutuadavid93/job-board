@@ -1,6 +1,7 @@
 <template>
   <div
-    class="flex items-center justify-between mt-8 border border-gray-300 hover:border-gray-500 shadow-md rounded-lg p-3 py-5 w-full"
+    class="flex items-center justify-between text-white mt-8 border border-gray-300 hover:border-gray-500 shadow-md rounded-lg p-3 py-5 w-full"
+    :style="{ 'bg-color': color }"
   >
     <div class="flex items-center justify-start">
       <div class="relative">
@@ -15,9 +16,9 @@
         </button>
       </div>
       <div class="ml-8">
-        <div class="font-extralight text-[15px]">{{ joblisting?.company_name }}</div>
-        <div class="font-extrabold text-md">{{ joblisting?.title }}</div>
-        <div class="font-extralight text-[15px]">{{ joblisting?.employment_type }}</div>
+        <div class="font-extralight text-[15px]">Company Name</div>
+        <div class="font-extrabold text-md">Laravel Developer</div>
+        <div class="font-extralight text-[15px]">Part Time</div>
       </div>
     </div>
 
@@ -30,19 +31,10 @@
       </div>
       <div class="flex items-center justify-start mt-2">
         <button class="px-3 py-1 text-[13px] border border-gray-300 rounded-md mr-2">
-          Fullstack
-        </button>
-        <button class="px-3 py-1 text-[13px] border border-gray-300 rounded-md mr-2">
           Laravel
         </button>
         <button class="px-3 py-1 text-[13px] border border-gray-300 rounded-md mr-2">
           PHP
-        </button>
-        <button class="px-3 py-1 text-[13px] border border-gray-300 rounded-md mr-2">
-          TailwindCSS
-        </button>
-        <button class="px-3 py-1 text-[13px] border border-gray-300 rounded-md mr-2">
-          VueJS
         </button>
       </div>
     </div>
@@ -53,7 +45,9 @@
 import Web from "vue-material-design-icons/Web.vue";
 import CalendarBlankOutline from "vue-material-design-icons/CalendarBlankOutline.vue";
 import AppDate from "@/Components/AppDate.vue";
-defineProps({ joblisting: Object });
+defineProps({ joblisting: Object});
+
+
 </script>
 
 <style lang="scss" scoped></style>
