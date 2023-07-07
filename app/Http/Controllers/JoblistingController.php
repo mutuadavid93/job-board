@@ -34,6 +34,7 @@ class JoblistingController extends Controller
     public function store(StoreJoblistingRequest $request)
     {
         $validatedData = $request->validated();
+        // dd($request->input('enhancements'));
 
         // Enhancements' validations:
         $createdEnhancements = $this->validateEnhancements($request);
@@ -76,6 +77,9 @@ class JoblistingController extends Controller
             throw new HttpException(403, $enhancementInvalid);
         }
         if (!empty($request->listing_boosted) && $request->listing_boosted != 1499) {
+            throw new HttpException(403, $enhancementInvalid);
+        }
+        if (!empty($request->custom_color_price) && $request->custom_color_price != 49) {
             throw new HttpException(403, $enhancementInvalid);
         }
 
