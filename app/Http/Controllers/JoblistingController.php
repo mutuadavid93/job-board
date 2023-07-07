@@ -148,7 +148,10 @@ class JoblistingController extends Controller
             $order = Order::where('session_id', $session->id)->where("status", "unpaid")->first();
 
             if (!$order) {
-                throw new NotFoundHttpException();
+                echo "Seems like this order was paid. Redirectly you to home page.";
+                sleep(3);
+                // throw new NotFoundHttpException();
+                return redirect()->route('home');
             }
 
             $order->status = "paid";
@@ -156,6 +159,7 @@ class JoblistingController extends Controller
             return Inertia::render("CheckoutSuccess", ["customer" => $customer]);
         } catch (\Throwable $e) {
             throw new NotFoundHttpException();
+
         }
     }
 
