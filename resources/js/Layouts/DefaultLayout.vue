@@ -77,16 +77,12 @@
     </div>
   </div>
 
-  <!-- Live Preview -->
-  <div>
-    <div class="-mb-4 font-bold">Live Preview</div>
-    <div>
-      <JobItemPreview />
-    </div>
-  </div>
+  
 </template>
 
 <script setup>
 import { Link } from "@inertiajs/vue3";
 import PartnersLogo from "@/Components/PartnersLogo.vue";
+import JobItemPreview from "@/Components/JobItemPreview.vue";
+const nzoro = ($event) => console.log($event);
 </script>

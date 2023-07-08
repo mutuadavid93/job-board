@@ -1,7 +1,9 @@
 <template>
   <div
+    :style="{ backgroundColor: jobColor, color: 'white', borderColor: 'white', cursor:'pointer' }"
     class="flex items-center justify-between mt-8 border border-gray-300 hover:border-gray-500 shadow-md rounded-lg p-3 py-5 w-full"
   >
+    <!-- :class="`bg-[${jobColor ? jobColor : ''}] text-white hover:border-white`" -->
     <div class="flex items-center justify-start">
       <div class="relative">
         <button
@@ -50,10 +52,17 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
 import Web from "vue-material-design-icons/Web.vue";
 import CalendarBlankOutline from "vue-material-design-icons/CalendarBlankOutline.vue";
 import AppDate from "@/Components/AppDate.vue";
-defineProps({ joblisting: Object });
+const { joblisting } = defineProps({ joblisting: Object });
+
+const jobColor = computed(() => {
+  return joblisting.enhancements.find((enhancement) => enhancement.color).color;
+});
+
+console.log("--- ", jobColor.value);
 </script>
 
 <style lang="scss" scoped></style>

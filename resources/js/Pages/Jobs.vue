@@ -444,7 +444,7 @@
               Checkout
             </Link>
           </form> -->
-          </div>
+        </div>
 
         <div>
           <div class="text-[#4B5563] text-center text-[1.2rem]">
@@ -545,6 +545,14 @@
         </div>
       </div>
     </div>
+
+    <!-- Live Preview -->
+  <div class="fixed bottom-0 left-[15%] z-20 min-w-[46%]">
+    <!-- <div class="-mb-4 font-bold">Live Preview</div> -->
+    <div>
+      <JobItemPreview class="bg-[#EE3696]" />
+    </div>
+  </div>
   </DefaultLayout>
 </template>
 
@@ -561,7 +569,7 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import JobItem from "@/Components/JobItem.vue";
+// import JobItem from "@/Components/JobItem.vue";
 import JobItemPreview from "@/Components/JobItemPreview.vue";
 
 defineProps({
@@ -573,6 +581,8 @@ defineProps({
   },
   tinymce: String,
 });
+// const emit = defineEmits(["preview"]);
+// setTimeout(() => {emit("preview", "Yella")}, 1000);
 
 const loginForm = useForm({
   email: "",
@@ -588,7 +598,6 @@ const submitLoginForm = () => {
 
 let imageDisplay = ref("");
 let error = ref(null);
-let listingColor = ref("");
 let enhancements = reactive([]);
 
 const removeEnhancement = (_type) => {
@@ -639,14 +648,6 @@ let formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 | Push each into enhancements collection
 |
 */
-// watch(
-//   () => form.custom_color_price,
-//   (colorPrice) => {
-//     removeEnhancement("Custom color");
-//     enhancements.push({ type: "Custom color", price: colorPrice });
-//     if(colorPrice) listingColor.value = form.custom_color;
-//   }
-// );
 watch(
   () => form.logo_present,
   (logoPrice) => {
@@ -760,15 +761,4 @@ const getUploadedImage = (event) => {
   imageDisplay.value = URL.createObjectURL(event.target.files[0]);
   form.company_logo = event.target.files[0];
 };
-
-// function updateEnhancements(colorPrice) {
-//   removeEnhancement("Custom color");
-//   if (colorPrice) {
-//     const enhancement = {
-//       type: "Custom color",
-//       price: colorPrice,
-//     };
-//     enhancements.push(enhancement);
-//   }
-// }
 </script>
