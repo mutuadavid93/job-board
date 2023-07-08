@@ -302,15 +302,20 @@
                       :false-value="0"
                       v-model="form.custom_color_price"
                     />
-                    <input type="color" v-model="form.custom_color" />
-                    <label for="custom-color"
+                    <label for="custom-color" class="block"
                       >Highlight your listing in a custom color (+$49)</label
                     >
                   </div>
-                  <div v-if="enhancedColor">
+                  <div class="flex items-center justify-start gap-2">
+                    <strong>background colour: </strong>
+                    <input type="color" v-model="form.custom_color" />
+                    <strong>text colour: </strong>
+                    <input type="color" v-model="form.custom_text_color" />
+                  </div>
+                  <!-- <div v-if="enhancedColor" custom_text_color>
                     <p>You selected: {{ enhancedColor.color }}</p>
                     <p>Price: {{ enhancedColor.price }}</p>
-                  </div>
+                  </div> -->
                   <span
                     v-if="$page.props.errors.logo_present"
                     class="text-red-700 block mt-2 text-[13px]"
@@ -547,12 +552,12 @@
     </div>
 
     <!-- Live Preview -->
-  <div class="fixed bottom-0 left-[15%] z-20 min-w-[46%]">
-    <!-- <div class="-mb-4 font-bold">Live Preview</div> -->
-    <div>
-      <JobItemPreview class="bg-[#EE3696]" />
+    <div class="fixed bottom-0 left-[15%] z-20 min-w-[46%]">
+      <!-- <div class="-mb-4 font-bold">Live Preview</div> -->
+      <div>
+        <JobItemPreview :color="form.custom_color" :textColor="form.custom_text_color" />
+      </div>
     </div>
-  </div>
   </DefaultLayout>
 </template>
 
@@ -626,6 +631,7 @@ const form = useForm(() => {
     enhancements: [],
     custom_color: "#EE3696",
     custom_color_price: 0,
+    custom_text_color: "#FFFFFF",
   };
 });
 
@@ -685,17 +691,21 @@ watch(
 );
 
 // Watch multiple states
-watch([() => form.custom_color, () => form.custom_color_price], ([color, price]) => {
-  // Perform any desired logic based on the color and price changes
-  removeEnhancement("Custom color");
-  if (price) {
-    enhancements.push({
-      type: "Custom color",
-      price,
-      color,
-    });
+watch(
+  [() => form.custom_text_color, () => form.custom_color, () => form.custom_color_price],
+  ([text_color, color, price]) => {
+    // Perform any desired logic based on the color and price changes
+    removeEnhancement("Custom color");
+    if (price) {
+      enhancements.push({
+        type: "Custom color",
+        price,
+        color,
+        text_color,
+      });
+    }
   }
-});
+);
 
 // Grandsum
 const total = computed(() => {
@@ -713,7 +723,8 @@ const totalWithoutDot = () => {
 
 // HINT: Useful if you want a review of the colours on the fly.
 // The customer can see how the actual job listing will look like and adjust accordingly
-const enhancedColor = computed({
+/*const enhancedColor = */
+computed({
   get() {
     if (form.custom_color_price) {
       return {

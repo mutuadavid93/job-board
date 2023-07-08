@@ -1,7 +1,7 @@
 <template>
   <div
     class="flex items-center justify-between text-white mt-8 border border-gray-300 hover:border-gray-500 shadow-md rounded-lg p-3 py-5 w-full"
-    :style="{ 'bg-color': color }"
+    :style="{ backgroundColor: color, color: textColor, borderColor: 'white', cursor:'pointer' }"
   >
     <div class="flex items-center justify-start">
       <div class="relative">
@@ -17,7 +17,7 @@
       </div>
       <div class="ml-8">
         <div class="font-extralight text-[15px]">Company Name</div>
-        <div class="font-extrabold text-md">Laravel Developer</div>
+        <div class="font-extrabold text-md">Position</div>
         <div class="font-extralight text-[15px]">Part Time</div>
       </div>
     </div>
@@ -36,6 +36,9 @@
         <button class="px-3 py-1 text-[13px] border border-gray-300 rounded-md mr-2">
           PHP
         </button>
+        <button class="px-3 py-1 text-[13px] border border-gray-300 rounded-md mr-2">
+          InertiaJS
+        </button>
       </div>
     </div>
   </div>
@@ -45,9 +48,9 @@
 import Web from "vue-material-design-icons/Web.vue";
 import CalendarBlankOutline from "vue-material-design-icons/CalendarBlankOutline.vue";
 import AppDate from "@/Components/AppDate.vue";
-defineProps({ joblisting: Object});
+const {color, textColor} = defineProps({ joblisting: Object, color: String, textColor:String});
 
-
+console.log("--- ", color);
 </script>
 
 <style lang="scss" scoped></style>

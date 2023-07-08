@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->decimal('price', 10, 2);
             $table->boolean("recurring")->nullable();
             $table->string("color")->nullable(); // Some enhancements don't need it.
+            $table->string("text_color")->nullable();
             $table->timestamps();
         });
     }
