@@ -83,6 +83,6 @@
 <script setup>
 import { Link } from "@inertiajs/vue3";
 import PartnersLogo from "@/Components/PartnersLogo.vue";
-import JobItemPreview from "@/Components/JobItemPreview.vue";
-const nzoro = ($event) => console.log($event);
+// import JobItemPreview from "@/Components/JobItemPreview.vue";
+// const nzoro = ($event) => console.log($event);
 </script>

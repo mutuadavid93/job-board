@@ -1,6 +1,11 @@
 <template>
   <div
-    :style="{ backgroundColor: jobColor.color, color: jobColor.text_color, borderColor: 'white', cursor:'pointer' }"
+    :style="{
+      backgroundColor: jobColor.color,
+      color: jobColor.text_color,
+      borderColor: 'white',
+      cursor: 'pointer',
+    }"
     class="flex items-center justify-between mt-8 border border-gray-300 hover:border-gray-500 shadow-md rounded-lg p-3 py-5 w-full"
   >
     <!-- :class="`bg-[${jobColor ? jobColor : ''}] text-white hover:border-white`" -->
@@ -59,10 +64,16 @@ import AppDate from "@/Components/AppDate.vue";
 const { joblisting } = defineProps({ joblisting: Object });
 
 const jobColor = computed(() => {
-  return joblisting.enhancements.find((enhancement) => enhancement.color);
-});
+  const hasEnhancements = joblisting.hasOwnProperty("enhancements");
+  if (hasEnhancements) {
+    return joblisting.enhancements.find((enhancement) => enhancement.color);
+  }
 
-console.log("--- ", jobColor.value);
+  return {
+    color: "#FFFFFF",
+    text_color: "#000000",
+  };
+});
 </script>
 
 <style lang="scss" scoped></style>

@@ -14,16 +14,6 @@ class JoblistingSeeder extends Seeder
      */
     public function run(): void
     {
-        Joblisting::factory()->count(10)->create();
-
-        $jobListings = Joblisting::all();
-        foreach($jobListings as $jobListing) {
-            //Assign Company logo enhancement
-            $jobListing->enhancements()->create([
-                'type' => 'Company Logo',
-                "expiration_date" => Carbon::now()->addDays(7),
-                "recurring" => false,
-            ]);
-        }
+        Joblisting::factory()->count(100)->create();
     }
 }

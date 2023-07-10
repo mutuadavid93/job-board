@@ -49,8 +49,6 @@ import Web from "vue-material-design-icons/Web.vue";
 import CalendarBlankOutline from "vue-material-design-icons/CalendarBlankOutline.vue";
 import AppDate from "@/Components/AppDate.vue";
 const {color, textColor} = defineProps({ joblisting: Object, color: String, textColor:String});
-
-console.log("--- ", color);
 </script>
 
 <style lang="scss" scoped></style>
