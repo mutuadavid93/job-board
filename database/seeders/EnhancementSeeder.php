@@ -16,6 +16,6 @@ class EnhancementSeeder extends Seeder
      */
     public function run(): void
     {
-        Enhancement::factory()->count(10)->create();
+        Enhancement::factory()->count(100)->create();
     }
 }

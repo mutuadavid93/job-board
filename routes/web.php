@@ -25,6 +25,7 @@ use App\Http\Controllers\JoblistingController;
 //         'phpVersion' => PHP_VERSION,
 //     ]);
 // });
+Route::get('/search', fn () =>Inertia::render('SearchJoblistings'));
 
 Route::get("/", [JoblistingController::class, "displayJobs"])->name("home");
 Route::get("/test-form", fn() => Inertia::render('TestForm'))->name("test.form");

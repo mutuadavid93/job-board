@@ -21,6 +21,7 @@
     "dependencies": {
         "@tinymce/tinymce-vue": "^5.1.0",
         "dayjs": "^1.11.9",
+        "meilisearch": "^0.33.0",
         "vue-material-design-icons": "^5.2.0"
     }
 }
