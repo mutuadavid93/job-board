@@ -76,13 +76,9 @@
       <div class="text-gray-500 mt-2">© 2014 - 2023</div>
     </div>
   </div>
-
-  
 </template>
 
 <script setup>
 import { Link } from "@inertiajs/vue3";
 import PartnersLogo from "@/Components/PartnersLogo.vue";
-// import JobItemPreview from "@/Components/JobItemPreview.vue";
-// const nzoro = ($event) => console.log($event);
 </script>
