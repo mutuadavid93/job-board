@@ -30,9 +30,9 @@
       <div class="mx-auto max-w-[850px] mt-10">
         <div class="flex items-center justify-between bg-gray-300 rounded-lg p-5">
           <div class="flex items-center">
-            <div class="text-gray-900 font-extrabold mr-2">Filter by</div>
+            <div class="text-[#838383] font-extrabold mr-2">Filter by</div>
             <select
-              class="border border-blue-300 rounded-lg min-w-[110px] mr-5 ring-0 focus:ring-0"
+              class="rounded-lg min-w-[110px] mr-5 border-0 focus:ring-0 outline-none text-[#838383]"
             >
               <option value="recent" selected>Recent</option>
               <option value="salary" selected>Salary</option>
@@ -41,15 +41,14 @@
           </div>
 
           <div
-            class="flex items-center min-w-sm rounded-full border border-blue-500 px-4 bg-white"
+            @click="store.toggleModel"
+            class="flex items-center justify-between min-w-[350px] bg-white rounded-lg cursor-pointer"
           >
-            <input
-              type="text"
-              class="w-full border-none ring-0 focus:ring-0"
-              placeholder="Search job"
-            />
-            <div>
-              <Magnify fillColor="#000000" :size="28" />
+            <div class="border-r border-r-gray-200 p-2 pr-1">
+              <Magnify fillColor="#838383" :size="27" />
+            </div>
+            <div class="w-full">
+              <span class="ml-2 text-sm text-[#838383]">Search jobs</span>
             </div>
           </div>
         </div>
@@ -128,18 +127,27 @@
         </div>
       </div>
     </div>
+
+    <SearchJoblistings v-if="store.isOpen" />
   </DefaultLayout>
 </template>
 
 <script setup>
 import { Head } from "@inertiajs/vue3";
+import { store } from '@/store';
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import Magnify from "vue-material-design-icons/Magnify.vue";
 import BullhornOutline from "vue-material-design-icons/BullhornOutline.vue";
 import ArrowDownThin from "vue-material-design-icons/ArrowDownThin.vue";
 import PartnersLogo from "@/Components/PartnersLogo.vue";
 import JobItem from "@/Components/JobItem.vue";
+import SearchJoblistings from "@/Components/SearchJoblistings.vue";
+
 defineProps({ joblistings: Object });
+
+const mimicReact = () => {
+  console.log("")
+}
 </script>
 
 <style lang="scss" scoped></style>
