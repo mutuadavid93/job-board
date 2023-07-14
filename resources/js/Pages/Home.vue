@@ -144,10 +144,6 @@ import JobItem from "@/Components/JobItem.vue";
 import SearchJoblistings from "@/Components/SearchJoblistings.vue";
 
 defineProps({ joblistings: Object });
-
-const mimicReact = () => {
-  console.log("")
-}
 </script>
 
 <style lang="scss" scoped></style>

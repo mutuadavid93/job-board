@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
 
 Route::get("/joblistings", [JoblistingController::class, "index"])->name("jobs.index");
 Route::get("/joblistings/{joblisting}", [JoblistingController::class, "show"])->name("jobs.show");
+Route::get("/edit_joblisting", [JoblistingController::class, "editJoblisting"])->name("jobs.edit");
 
 // HINT: Using Precognition
 Route::post('/joblistings', [JoblistingController::class, 'store'])->name('jobs.store');

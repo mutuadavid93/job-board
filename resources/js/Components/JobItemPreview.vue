@@ -1,7 +1,12 @@
 <template>
   <div
     class="flex items-center justify-between text-white mt-8 border border-gray-300 hover:border-gray-500 shadow-md rounded-lg p-3 py-5 w-full"
-    :style="{ backgroundColor: color, color: textColor, borderColor: 'white', cursor:'pointer' }"
+    :style="{
+      backgroundColor: color,
+      color: textColor,
+      borderColor: 'white',
+      cursor: 'pointer',
+    }"
   >
     <div class="flex items-center justify-start">
       <div class="relative">
@@ -10,7 +15,7 @@
           class="flex flex-col items-center justify-center absolute -top-8 -left-6 z-10 bg-white rounded-full p-3 border border-gray-400 shadow-xl -ml-5"
         >
           <img
-            :src="joblisting?.company_logo || '/images/nologo.svg'"
+            :src="joblisting?.company_logo || image"
             class="min-w-[35px] max-h-[35px]"
           />
         </button>
@@ -48,7 +53,12 @@
 import Web from "vue-material-design-icons/Web.vue";
 import CalendarBlankOutline from "vue-material-design-icons/CalendarBlankOutline.vue";
 import AppDate from "@/Components/AppDate.vue";
-const {color, textColor} = defineProps({ joblisting: Object, color: String, textColor:String});
+const { color, textColor } = defineProps({
+  joblisting: Object,
+  color: String,
+  textColor: String,
+  image: String,
+});
 </script>
 
 <style lang="scss" scoped></style>

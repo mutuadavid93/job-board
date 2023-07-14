@@ -2,8 +2,8 @@
   <Head title="Jobs" />
   <DefaultLayout>
     <div class="min-w-[1100px] pb-10">
-      <div class="flex gap-8 mx-[15%] mt-14">
-        <div class="w-8/12">
+      <div class="flex gap-8 px-10 mt-14">
+        <div class="min-w-[calc(100%-450px)]">
           <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
           </div>
@@ -63,14 +63,13 @@
 
           <form action="#" @submit.prevent="submit">
             <div>
-              <label for="job-title" class="block text-[#3E4857] font-extrabold"
-                >Job Title</label
-              >
-              <input
+              <InputLabel value="JOB TITLE" class="mb-1.5" />
+              <TextInput
+                class="w-full placeholder:italic placeholder:text-xs"
                 type="text"
                 id="job-title"
                 v-model="form.title"
-                class="w-full border border-gray-400 rounded-lg bg-[#F9FAFB] shadow-md mb-2"
+                placeholder="Job title"
               />
               <span class="text-[13px] text-[#6B7280]"
                 >Example: "Senior Laravel Developer", "Software Engineer"</span
@@ -84,12 +83,10 @@
             </div>
 
             <div class="mt-5">
-              <label for="experience_level" class="block text-[#3E4857] font-extrabold"
-                >Experience Level</label
-              >
+              <InputLabel value="EXPERIENCE LEVEL" class="mb-1.5" />
               <select
                 id="experience_level"
-                class="w-full border border-gray-400 bg-[#F9FAFB]"
+                class="w-full border border-gray-400 bg-[#F9FAFB] rounded-lg mb-4"
                 v-model="form.experience_level"
               >
                 <option value="Senior Level" class="text-[14px]">Senior Level</option>
@@ -99,38 +96,78 @@
               </select>
             </div>
 
-            <div class="mt-5">
-              <label for="job-description" class="block text-[#3E4857] font-extrabold"
-                >Job Description</label
-              >
-              <Editor
-                :api-key="tinymce"
-                :init="{
-                  plugins: 'lists link image table code help wordcount',
-                }"
-                id="job-description"
-                v-model="form.description"
+            <div class="mb-6">
+              <InputLabel value="COMPANY OVERVIEW" class="mb-1.5" />
+              <QuillEditor
+                v-model:content="form.company_overview"
+                contentType="html"
+                toolbar="essential"
+                placeholder="Introduction of your company"
               />
-              <span class="text-[13px] text-[#6B7280]"
-                >Example: "Introduction", "Role", "Qualifications" etc.
-              </span>
+            </div>
+
+            <div class="mb-6">
+              <InputLabel value="JOB PURPOSE – SUMMARY" class="mb-1.5" />
+              <QuillEditor
+                v-model:content="form.job_purpose"
+                contentType="html"
+                toolbar="essential"
+                placeholder="Job purpose i.e. summary"
+              />
               <span
-                v-if="$page.props.errors.description"
+                v-if="$page.props.errors.job_purpose"
                 class="text-red-700 block mt-2 text-[13px]"
               >
-                {{ $page.props.errors.description }}
+                {{ $page.props.errors.job_purpose }}
+              </span>
+            </div>
+
+            <div class="mb-6">
+              <InputLabel
+                value="KEY RESPONSIBILITIES &amp; ACCOUNTABILITIES"
+                class="mb-1.5"
+              />
+              <QuillEditor
+                v-model:content="form.responsibilities"
+                toolbar="essential"
+                contentType="html"
+                placeholder="Key responsibilities &amp; accountabilities. Kindly use bullet points"
+              />
+              <span
+                v-if="$page.props.errors.responsibilities"
+                class="text-red-700 block mt-2 text-[13px]"
+              >
+                {{ $page.props.errors.responsibilities }}
+              </span>
+            </div>
+
+            <div class="mb-4">
+              <InputLabel
+                value="PROFESSIONAL, TECHNICAL SKILLS AND PREVIOUS EXPERIENCE REQUIRED"
+                class="mb-1.5"
+              />
+              <QuillEditor
+                v-model:content="form.professional_skills"
+                contentType="html"
+                toolbar="essential"
+                placeholder="Professional, technical skills and previous experience required"
+              />
+              <span
+                v-if="$page.props.errors.professional_skills"
+                class="text-red-700 block mt-2 text-[13px]"
+              >
+                {{ $page.props.errors.professional_skills }}
               </span>
             </div>
 
             <div class="mt-5">
-              <label for="job-location" class="block text-[#3E4857] font-extrabold"
-                >Job Location</label
-              >
-              <input
-                type="text"
+              <InputLabel value="JOB LOCATION" class="mb-1.5" />
+              <TextInput
                 id="job-location"
+                type="text"
                 v-model="form.location"
-                class="w-full border border-gray-400 rounded-lg bg-[#F9FAFB] shadow-md mb-2"
+                placeholder="Job location"
+                class="w-full placeholder:italic placeholder:text-xs"
               />
               <span class="text-[13px] text-[#6B7280]"
                 >Example: "Remote", "Remote / USA", "New York City", "Remote GMT-5", etc.
@@ -144,12 +181,10 @@
             </div>
 
             <div class="mt-5">
-              <label for="employment-type" class="block text-[#3E4857] font-extrabold"
-                >Employment Type</label
-              >
+              <InputLabel value="EMPLOYMENT TYPE" class="mb-1.5" />
               <select
                 id="employment-type"
-                class="w-full border border-gray-400 bg-[#F9FAFB]"
+                class="w-full border border-gray-400 bg-[#F9FAFB] rounded-md"
                 v-model="form.employment_type"
               >
                 <option value="Full Time" class="text-[14px]">Full Time</option>
@@ -169,14 +204,12 @@
               </span>
 
               <div class="mt-5">
-                <label for="salary" class="block text-[#3E4857] font-extrabold"
-                  >Salary(optional)
-                </label>
-                <input
+                <InputLabel value="SALARY(optional)" class="mb-1.5" />
+                <TextInput
                   type="number"
                   id="salary"
                   v-model="form.salary"
-                  class="w-full border border-[#D1D5DB] rounded-lg bg-[#F9FAFB] shadow-md mb-2"
+                  class="w-full"
                 />
                 <span class="text-[13px] text-[#6B7280]"
                   >Examples: "$120,000 – $145,000 USD", "€80,000 — €102,000"
@@ -190,14 +223,13 @@
               </div>
 
               <div class="mt-5">
-                <label for="company_name" class="block text-[#3E4857] font-extrabold"
-                  >Company Name
-                </label>
-                <input
+                <InputLabel value="COMPANY NAME" class="mb-1.5" />
+                <TextInput
                   type="text"
                   id="company_name"
                   v-model="form.company_name"
-                  class="w-full border border-[#D1D5DB] rounded-lg bg-[#F9FAFB] shadow-md mb-2"
+                  placeholder="Company name"
+                  class="w-full placeholder:italic placeholder:text-xs"
                 />
                 <span
                   v-if="$page.props.errors.company_name"
@@ -208,7 +240,7 @@
               </div>
 
               <div class="mt-5">
-                <span class="block text-[#3E4857] font-extrabold">Company Logo</span>
+                <InputLabel value="COMPANY LOGO" class="mb-1.5" />
                 <div
                   class="flex items-center justify-start gap-4 bg-[#F9FAFB] p-4 rounded-lg"
                 >
@@ -247,26 +279,6 @@
                   >130x130 is best, but any works</span
                 >
               </div>
-
-              <!-- TODO: Implement tags relationship with joblisting -->
-              <!-- <div class="mt-5">
-                <label for="tags" class="block text-[#3E4857] font-extrabold"
-                  >Tags
-                </label>
-                <input
-                  type="text"
-                  id="tags"
-                  v-model="form.tags"
-                  class="w-full border border-[#D1D5DB] rounded-lg bg-[#F9FAFB] shadow-md mb-2"
-                />
-                <span class="text-[13px] text-[#6B7280]">Max of five tags </span>
-                <span
-                  v-if="$page.props.errors.tags"
-                  class="text-red-700 block mt-2 text-[13px]"
-                >
-                  {{ $page.props.errors.tags }}
-                </span>
-              </div> -->
 
               <div class="mt-5 rounded-lg border-2 border-[#D1D5DB] px-4 py-4">
                 <div class="text-center text-[16px] font-bold">
@@ -312,10 +324,6 @@
                     <strong>text colour: </strong>
                     <input type="color" v-model="form.custom_text_color" />
                   </div>
-                  <!-- <div v-if="enhancedColor" custom_text_color>
-                    <p>You selected: {{ enhancedColor.color }}</p>
-                    <p>Price: {{ enhancedColor.price }}</p>
-                  </div> -->
                   <span
                     v-if="$page.props.errors.logo_present"
                     class="text-red-700 block mt-2 text-[13px]"
@@ -390,39 +398,6 @@
                 <div class="font-extrabold text-[#24C560]">${{ total }}</div>
               </div>
 
-              <!-- <div class="mt-5 bg-[#DBEAFE] rounded-lg py-5 px-4 pb-8">
-                <div class="text-center text-[16px] font-bold">
-                  Enhance Your Listing. Get More Leads.
-                </div>
-                <div class="text-xs text-[#79818F] pl-10">
-                  To login and edit the listing later.
-                </div>
-                <div class="mt-3">
-                  <label for="name" class="block">Your Name</label>
-                  <input
-                    type="text"
-                    id="name"
-                    class="w-full bg-white border rounded-md"
-                  />
-                </div>
-                <div class="mt-3">
-                  <label for="email" class="block">Your Email</label>
-                  <input
-                    type="text"
-                    id="email"
-                    class="w-full bg-white border rounded-md"
-                  />
-                </div>
-                <div class="mt-3">
-                  <label for="password" class="block">Password</label>
-                  <input
-                    type="text"
-                    id="password"
-                    class="w-full bg-white border rounded-md"
-                  />
-                </div>
-              </div> -->
-
               <div class="flex items-center justify-center">
                 <button
                   type="submit"
@@ -434,24 +409,9 @@
               </div>
             </div>
           </form>
-
-          <!-- <form
-            action="/create-checkout-session"
-            class="flex items-center justify-center mt-5"
-          >
-            <Link
-              :href="route('checkout.index')"
-              as="button"
-              method="post"
-              class="rounded-lg p-2 px-4 text-white bg-blue-600 hover:bg-[#374151]"
-              type="button"
-            >
-              Checkout
-            </Link>
-          </form> -->
         </div>
 
-        <div>
+        <div class="w-[450px]">
           <div class="text-[#4B5563] text-center text-[1.2rem]">
             <span class="block">The official Laravel job board </span>
             <span class="block">since 2014. Trusted by </span>
@@ -552,10 +512,14 @@
     </div>
 
     <!-- Live Preview -->
-    <div class="fixed bottom-0 left-[15%] z-20 min-w-[46%]">
+    <div class="fixed bottom-0 pl-10 z-20 min-w-[63.888%]">
       <!-- <div class="-mb-4 font-bold">Live Preview</div> -->
       <div>
-        <JobItemPreview :color="form.custom_color" :textColor="form.custom_text_color" />
+        <JobItemPreview
+          :image="imageDisplay ? imageDisplay : '/images/nologo.svg'"
+          :color="form.custom_color"
+          :textColor="form.custom_text_color"
+        />
       </div>
     </div>
   </DefaultLayout>
@@ -566,15 +530,11 @@ import { ref, reactive, watch, computed } from "vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import OfficeBuildingOutline from "vue-material-design-icons/OfficeBuildingOutline.vue";
-import Editor from "@tinymce/tinymce-vue";
-
-import Checkbox from "@/Components/Checkbox.vue";
-import GuestLayout from "@/Layouts/GuestLayout.vue";
 import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import JobItemPreview from "@/Components/JobItemPreview.vue";
+import InputLabel from "@/Components/InputLabel.vue";
 
 defineProps({
   canResetPassword: {
@@ -585,8 +545,6 @@ defineProps({
   },
   tinymce: String,
 });
-// const emit = defineEmits(["preview"]);
-// setTimeout(() => {emit("preview", "Yella")}, 1000);
 
 const loginForm = useForm({
   email: "",
@@ -618,11 +576,11 @@ const form = useForm(() => {
     total: 0,
     location: "",
     company_name: "",
-    description: "",
+    // description: "",
     experience_level: "Senior Level",
-    employment_type: "",
+    employment_type: "Full Time",
     company_logo: null,
-    salary: 0,
+    salary: "0",
     logo_present: 0,
     list_highlighted: 0,
     tobe_reposted: false, // whether joblisting should be recurring
@@ -631,6 +589,11 @@ const form = useForm(() => {
     custom_color: "#EE3696",
     custom_color_price: 0,
     custom_text_color: "#FFFFFF",
+
+    company_overview: "",
+    job_purpose: "",
+    professional_skills: "",
+    responsibilities: "",
   };
 });
 
@@ -772,3 +735,13 @@ const getUploadedImage = (event) => {
   form.company_logo = event.target.files[0];
 };
 </script>
+
+<style>
+.ql-editor {
+  min-height: 5rem !important;
+}
+.ql-toolbar {
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+</style>
