@@ -23,6 +23,11 @@ class JoblistingController extends Controller
         return Inertia::render('Jobs', ["tinymce" => $tinymce]);
     }
 
+    public function show(Joblisting $joblisting)
+    {
+        return Inertia::render("JoblistingDetails", ["joblisting" => $joblisting]);
+    }
+
     public function displayJobs()
     {
         // Get all job_listings in descending order, orderedBy `created_at` field

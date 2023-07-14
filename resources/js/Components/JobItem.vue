@@ -1,11 +1,12 @@
 <template>
-  <div
+  <Link
     :style="{
       backgroundColor: jobColor.color,
       color: jobColor.text_color,
       borderColor: 'white',
       cursor: 'pointer',
     }"
+    :href="route('jobs.show', { joblisting: joblisting })"
     class="flex items-center justify-between mt-8 border border-gray-300 hover:border-gray-500 shadow-md rounded-lg p-3 py-5 w-full"
   >
     <!-- :class="`bg-[${jobColor ? jobColor : ''}] text-white hover:border-white`" -->
@@ -53,11 +54,12 @@
         </button>
       </div>
     </div>
-  </div>
+  </Link>
 </template>
 
 <script setup>
 import { computed } from "vue";
+import { Link } from "@inertiajs/vue3";
 import Web from "vue-material-design-icons/Web.vue";
 import CalendarBlankOutline from "vue-material-design-icons/CalendarBlankOutline.vue";
 import AppDate from "@/Components/AppDate.vue";
