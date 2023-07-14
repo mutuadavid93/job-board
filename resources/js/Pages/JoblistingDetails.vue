@@ -222,7 +222,7 @@
             <hr />
             <div class="text-[18px] font-light">
               <p class="mt-4">
-                WPP Scangroup Plc believes in diversity, equity and inclusivity as a
+                {{ joblisting?.company_name }} Plc believes in diversity, equity and inclusivity as a
                 competitive advantage. We are committed to a fair hiring process. To
                 minimise unconscious biases from our hiring process, we’ve taken on an
                 initiative to the #RightTheCV.
@@ -231,7 +231,7 @@
                 We encourage candidates to apply
                 <span class="font-bold text-[#30BCED]">here</span>
               </p>
-              <p class="my-2 font-semibold">Closing date: August 23,2022</p>
+              <p class="my-2 font-semibold">Closing date: <AppDate :diffForHumans="joblisting?.created_at" /></p>
               <p class="my-2 italic">
                 Employee referrals is encouraged, kindly forward CVs of any suitable
                 candidates. Nonetheless please note that
@@ -271,6 +271,10 @@
               <div class="text-[#949494]">LOCATION</div>
               <div class="font-semibold text-[16px]">{{ joblisting?.location }}</div>
             </div>
+            <div class="my-2">
+              <div class="text-[#949494]">CLOSING DATE</div>
+              <div class="font-semibold text-[16px]"><AppDate :diffForHumans="joblisting?.created_at" /></div>
+            </div>
           </div>
         </div>
       </div>
@@ -282,8 +286,11 @@
 import { Head, Link } from "@inertiajs/vue3";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue";
+import AppDate from "@/Components/AppDate.vue";
 
 defineProps({
   joblisting: Object,
 });
 </script>
+
+<style></style>
