@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use App\Services\ImageService;
 use App\Jobs\NotifyPaymentSucceededJob;
 use App\Http\Requests\StoreJoblistingRequest;
-use App\Http\Resources\AllJoblistingsCollection;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -28,9 +27,27 @@ class JoblistingController extends Controller
         return Inertia::render("JoblistingDetails", ["joblisting" => $joblisting]);
     }
 
-    public function editJoblisting()
+    public function edit(Joblisting $joblisting)
     {
-        return Inertia::render("JoblistingForm");
+        return Inertia::render("EditJoblisting", ["joblisting" => $joblisting]);
+    }
+
+    public function update(StoreJoblistingRequest $request, Joblisting $joblisting)
+    {
+        $validatedData = $request->validated();
+        if ($request->hasFile('company_logo')) {
+            $imageService = new ImageService();
+            $joblisting = $imageService->updateImage($joblisting, $request);
+            // Remove the company_logo key from the $validatedData. Since is already set in ImageService
+            // NOTE: otherwise it will be ovewritten by request from browser i.e. $validatedData['company_logo']
+            unset($validatedData['company_logo']);
+        } else {
+            $validatedData['company_logo'] = '/images/nologo.svg';
+        }
+
+        // Update the job listing with the validated data
+        $joblisting->update($validatedData);
+        return Inertia::render("EditJoblisting", ["joblisting" => $joblisting]);
     }
 
     public function displayJobs()
@@ -41,6 +58,20 @@ class JoblistingController extends Controller
         return Inertia::render('Home', ["joblistings" => $joblistings]);
     }
 
+    // TIP: &$validatedData is a pointer to the actual $validatedData argument. 
+    // Thus changes to it will be effected to store's actual object.
+    private function handleCompanyLogo(Request $request, &$validatedData)
+    {
+        if ($request->hasFile('company_logo')) {
+            $imageService = new ImageService();
+            $joblisting = new Joblisting($validatedData);
+            $joblisting = $imageService->updateImage($joblisting, $request);
+            $validatedData['company_logo'] = $joblisting->company_logo;
+        } else {
+            $validatedData['company_logo'] = '/images/nologo.svg';
+        }
+    }
+
     public function store(StoreJoblistingRequest $request)
     {
         $validatedData = $request->validated();
@@ -49,7 +80,6 @@ class JoblistingController extends Controller
         $jobPurpose = $validatedData['job_purpose'];
         $responsibilities = $validatedData['responsibilities'];
         $professionalSkills = $validatedData['professional_skills'];
-        // dd($insertData);
 
         // Enhancements' validations:
         $createdEnhancements = $this->validateEnhancements($request);
@@ -69,13 +99,8 @@ class JoblistingController extends Controller
         $validatedData['professional_skills'] = $professionalSkills;
         $validatedData['responsibilities'] = $responsibilities;
 
-        // Overwrite the 'company_logo' key with a new value
-        if ($request->hasFile('company_logo')) {
-            $imageService = new ImageService();
-            $validatedData['company_logo'] = $imageService->updateImage($validatedData['company_logo'], $request);
-        } else {
-            $validatedData['company_logo'] = '/images/nologo.svg';
-        }
+        // Handle company logo
+        $this->handleCompanyLogo($request, $validatedData);
 
         // Create a new Joblisting and save it
         $joblisting = Joblisting::create($validatedData);

@@ -37,9 +37,9 @@ Route::post("/cancel", [JoblistingController::class, "cancel"])->name("checkout.
 // stripe listen --forward-to localhost:8000/webhook
 Route::post('/webhook', [JoblistingController::class, 'webhook'])->name('checkout.webhook');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return Inertia::render('Dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -49,7 +49,8 @@ Route::middleware('auth')->group(function () {
 
 Route::get("/joblistings", [JoblistingController::class, "index"])->name("jobs.index");
 Route::get("/joblistings/{joblisting}", [JoblistingController::class, "show"])->name("jobs.show");
-Route::get("/edit_joblisting", [JoblistingController::class, "editJoblisting"])->name("jobs.edit");
+Route::get("/joblistings/{joblisting}/edit", [JoblistingController::class, "edit"])->name("joblistings.edit");
+Route::post("/joblistings/{joblisting}", [JoblistingController::class, "update"])->name("joblistings.update");
 
 // HINT: Using Precognition
 Route::post('/joblistings', [JoblistingController::class, 'store'])->name('jobs.store');
