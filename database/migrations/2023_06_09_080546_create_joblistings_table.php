@@ -16,7 +16,10 @@ return new class extends Migration {
             $table->string("location"); // "Remote", "Remote / USA", "New York City", "Remote GMT-5", etc.
             $table->string("company_name"); // 
             $table->string("company_logo"); // 
-            $table->text("description"); // Very Long Section with Titles and Lists
+            $table->text("company_overview"); // Very Long Section with Titles and Lists
+            $table->text("responsibilities"); // Very Long Section with Titles and Lists
+            $table->text("job_purpose"); // Very Long Section with Titles and Lists
+            $table->text("professional_skills"); // Very Long Section with Titles and Lists
             $table->string("employment_type"); // Full Time, Part Time
             $table->decimal('salary', 10, 2); // Precision: 10, Scale: 2 i.e. 10 digits with two decimal points
             $table->string("experience_level"); // Senior, Entry

@@ -19,7 +19,7 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
-        "@tinymce/tinymce-vue": "^5.1.0",
+        "@vueup/vue-quill": "^1.0.0",
         "dayjs": "^1.11.9",
         "meilisearch": "^0.33.0",
         "vue-material-design-icons": "^5.2.0"

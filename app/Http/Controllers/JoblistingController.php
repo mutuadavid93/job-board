@@ -28,6 +28,11 @@ class JoblistingController extends Controller
         return Inertia::render("JoblistingDetails", ["joblisting" => $joblisting]);
     }
 
+    public function editJoblisting()
+    {
+        return Inertia::render("JoblistingForm");
+    }
+
     public function displayJobs()
     {
         // Get all job_listings in descending order, orderedBy `created_at` field
@@ -39,18 +44,30 @@ class JoblistingController extends Controller
     public function store(StoreJoblistingRequest $request)
     {
         $validatedData = $request->validated();
-        // dd($request->input('enhancements'));
+
+        $companyOverview = $validatedData['company_overview'];
+        $jobPurpose = $validatedData['job_purpose'];
+        $responsibilities = $validatedData['responsibilities'];
+        $professionalSkills = $validatedData['professional_skills'];
+        // dd($insertData);
 
         // Enhancements' validations:
         $createdEnhancements = $this->validateEnhancements($request);
 
         $validatedData['title'] = $request->input('title');
         $validatedData['company_name'] = $request->input('company_name');
-        $validatedData['description'] = $request->input('description');
+        $validatedData['company_overview'] = $request->input('company_overview');
+        $validatedData['job_purpose'] = $request->input('job_purpose');
+        $validatedData['professional_skills'] = $request->input('professional_skills');
         $validatedData['employment_type'] = $request->input('employment_type');
         $validatedData['location'] = $request->input('location');
         $validatedData['salary'] = $request->input('salary');
         $validatedData['experience_level'] = $request->input('experience_level');
+
+        $validatedData['company_overview'] = $companyOverview;
+        $validatedData['job_purpose'] = $jobPurpose;
+        $validatedData['professional_skills'] = $professionalSkills;
+        $validatedData['responsibilities'] = $responsibilities;
 
         // Overwrite the 'company_logo' key with a new value
         if ($request->hasFile('company_logo')) {
@@ -69,7 +86,8 @@ class JoblistingController extends Controller
         // Make payment
         $enhancements = $joblisting->enhancements()->get();
         $url = $this->makeOrder($enhancements, (int) $request->total);
-        return Inertia::location($url);
+        // return Inertia::location($url);
+        return redirect()->route('home');
     }
 
     public function validateEnhancements(StoreJoblistingRequest $request)

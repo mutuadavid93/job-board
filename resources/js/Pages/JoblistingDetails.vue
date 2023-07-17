@@ -26,11 +26,14 @@
             </div>
           </div>
 
+          <!-- <pre>{{ joblisting }}</pre> -->
+
           <div class="mt-4">
             <h2>COMPANY OVERVIEW</h2>
             <hr />
-            <div class="mt-2 text-[18px] font-light">
-              <p>
+            <!-- <div class="mt-2 text-[18px] font-light"> -->
+              <div class="mt-2 text-[18px] font-light" v-html="joblisting?.company_overview" />
+              <!-- <p>
                 WPP emerged as the “world’s best holding company”, based on the combined
                 points total of all agencies and networks within the different parent
                 groups across the globe.
@@ -62,24 +65,28 @@
                 development :&amp; design, digital integration for several of the world's
                 biggest clients - among them; The Coca- Cola Company, Unilever, Diageo,
                 ABSA Bank & Safaricom.
-              </p>
-            </div>
+              </p> -->
+            <!-- </div> -->
 
             <br />
             <h2>JOB PURPOSE – SUMMARY</h2>
             <hr />
             <div class="mt-2 text-[18px] font-light">
-              <p>
+              <div v-html="joblisting?.job_purpose" />
+              <!-- <p>
                 The Finance Controller is responsible for establishing reliable financial
                 operations within the organization to ensure proper and effective
                 financials controls and processes are in place.
-              </p>
+              </p> -->
             </div>
 
             <br />
             <h2>KEY RESPONSIBILITIES & ACCOUNTABILITIES</h2>
             <hr />
-            <ul class="list-disc ml-4 mt-2 text-[18px] font-light">
+            <div class="list-disc ml-4 mt-2 text-[18px] font-light">
+              <ul id="responsibilities" v-html="joblisting?.responsibilities" />
+            </div>
+            <!-- <ul class="list-disc ml-4 mt-2 text-[18px] font-light">
               <li class="py-2 text-[18px]">
                 Preparing statutory consolidated reports for the Group
               </li>
@@ -190,14 +197,15 @@
               <li class="py-2 text-[18px]">
                 Perform any other duty as may be assigned by the Group Finance Director.
               </li>
-            </ul>
+            </ul> -->
 
             <br />
             <h2>PROFESSIONAL, TECHNICAL SKILLS AND PREVIOUS EXPERIENCE REQUIRED</h2>
             <hr />
 
             <div class="text-[18px] mt-4 font-light">
-              <h4 class="font-semibold">Qualifications</h4>
+            <div id="professional_skills"  v-html="joblisting?.professional_skills" />
+              <!-- <h4 class="font-semibold">Qualifications</h4>
 
               <ul class="list-disc ml-4 text-[16px]">
                 <li class="pt-2">Bachelor’s Degree</li>
@@ -214,7 +222,7 @@
                   Must possess excellent financial knowledge, analytical skills and be
                   very well organized
                 </li>
-              </ul>
+              </ul> -->
             </div>
 
             <br />
@@ -222,16 +230,18 @@
             <hr />
             <div class="text-[18px] font-light">
               <p class="mt-4">
-                WPP Scangroup Plc believes in diversity, equity and inclusivity as a
-                competitive advantage. We are committed to a fair hiring process. To
-                minimise unconscious biases from our hiring process, we’ve taken on an
-                initiative to the #RightTheCV.
+                {{ joblisting?.company_name }} Plc believes in diversity, equity and
+                inclusivity as a competitive advantage. We are committed to a fair hiring
+                process. To minimise unconscious biases from our hiring process, we’ve
+                taken on an initiative to the #RightTheCV.
               </p>
               <p class="my-2">
                 We encourage candidates to apply
                 <span class="font-bold text-[#30BCED]">here</span>
               </p>
-              <p class="my-2 font-semibold">Closing date: August 23,2022</p>
+              <p class="my-2 font-semibold">
+                Closing date: <AppDate :diffForHumans="joblisting?.created_at" />
+              </p>
               <p class="my-2 italic">
                 Employee referrals is encouraged, kindly forward CVs of any suitable
                 candidates. Nonetheless please note that
@@ -271,6 +281,12 @@
               <div class="text-[#949494]">LOCATION</div>
               <div class="font-semibold text-[16px]">{{ joblisting?.location }}</div>
             </div>
+            <div class="my-2">
+              <div class="text-[#949494]">CLOSING DATE</div>
+              <div class="font-semibold text-[16px]">
+                <AppDate :diffForHumans="joblisting?.created_at" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -282,8 +298,17 @@
 import { Head, Link } from "@inertiajs/vue3";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue";
+import AppDate from "@/Components/AppDate.vue";
 
 defineProps({
   joblisting: Object,
 });
 </script>
+
+<style>
+#responsibilities ul, #professional_skills ul {
+  list-style: disc;
+  margin-left: 22px;
+}
+
+</style>

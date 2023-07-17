@@ -47,7 +47,16 @@
           </div>
         </template>
         <template v-else>
-          <div class="text-center text-[#838383] mt-[56px]">Nothing to show here</div>
+          <div class="flex flex-col items-center text-center text-[#838383] mt-[56px]">
+            <EmoticonSadOutline :size="60" fillColor="#6B7280" />
+            Nothing to show here
+            <Link
+              @click="store.isOpen = false"
+              class="text-white bg-[#30BCED] w-md p-2 mt-4 text-xs text-center py-2 border border-[#30BCED] rounded-md"
+            >
+              BACK TO CAREERS PAGE
+            </Link>
+          </div>
         </template>
       </div>
     </div>
@@ -56,12 +65,14 @@
 </template>
 
 <script setup>
+import { Link } from "@inertiajs/vue3";
 import TextInput from "@/Components/TextInput.vue";
 import { ref, onMounted, watchEffect, watch } from "vue";
 import JobItem from "@/Components/JobItem.vue";
 import { store } from "@/store";
 import MeiliSearch from "meilisearch";
 import Close from "vue-material-design-icons/Close.vue";
+import EmoticonSadOutline from "vue-material-design-icons/EmoticonSadOutline.vue";
 
 let query = ref("");
 let client = ref(null);
