@@ -18,8 +18,27 @@ class JoblistingController extends Controller
 {
     public function index()
     {
-        $tinymce = env("TinyMCE_API_KEY");
-        return Inertia::render('Jobs', ["tinymce" => $tinymce]);
+        return Inertia::render('Jobs');
+    }
+
+    public function displayform(Request $request)
+    {
+        // dd(captcha_img());
+        return Inertia::render('SubmitApplication', ["captcha_img" => captcha_img()]);
+    }
+
+    public function submit(Request $request)
+    {
+        $request->validate([
+            'captcha' => 'required|captcha',
+            "attached_cv" => "nullable|mimes:pdf,doc,docx"
+        ]);
+        return Inertia::render('SubmitApplication', ["captcha_img" => captcha_img()]);
+    }
+
+    public function reloadCaptcha()
+    {
+        return response()->json(['captcha_img' => captcha_img()]);
     }
 
     public function show(Joblisting $joblisting)
