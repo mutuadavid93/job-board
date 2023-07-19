@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApplicationController;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
@@ -25,7 +26,7 @@ use App\Http\Controllers\JoblistingController;
 //         'phpVersion' => PHP_VERSION,
 //     ]);
 // });
-Route::get('/search', fn () =>Inertia::render('SearchJoblistings'));
+Route::get('/search', fn() => Inertia::render('SearchJoblistings'));
 
 Route::get("/", [JoblistingController::class, "displayJobs"])->name("home");
 Route::get("/test-form", fn() => Inertia::render('TestForm'))->name("test.form");
@@ -51,9 +52,10 @@ Route::get("/joblistings", [JoblistingController::class, "index"])->name("jobs.i
 Route::get("/joblistings/{joblisting}", [JoblistingController::class, "show"])->name("jobs.show");
 Route::get("/joblistings/{joblisting}/edit", [JoblistingController::class, "edit"])->name("joblistings.edit");
 Route::post("/joblistings/{joblisting}", [JoblistingController::class, "update"])->name("joblistings.update");
-Route::get("/application/{joblisting}", [JoblistingController::class, "displayform"])->name("joblistings.index");
-Route::post("/application", [JoblistingController::class, "submit"])->name("joblistings.submit");
-Route::get('/reload-captcha', [JoblistingController::class, 'reloadCaptcha']);
+
+Route::get("/application/{joblisting}", [ApplicationController::class, "apply"])->name("applications.apply");
+Route::post("/application/{joblisting}", [ApplicationController::class, "store"])->name("applications.store");
+Route::get('/reload-captcha', [ApplicationController::class, 'reloadCaptcha']);
 
 // HINT: Using Precognition
 Route::post('/joblistings', [JoblistingController::class, 'store'])->name('jobs.store');

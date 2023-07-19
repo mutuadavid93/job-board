@@ -18,6 +18,11 @@ class Joblisting extends Model
             ->withTimestamps();
     }
 
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
+
     /**
      * Get the name of the index associated with the model.
      */
