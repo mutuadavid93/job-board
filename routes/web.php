@@ -51,6 +51,9 @@ Route::get("/joblistings", [JoblistingController::class, "index"])->name("jobs.i
 Route::get("/joblistings/{joblisting}", [JoblistingController::class, "show"])->name("jobs.show");
 Route::get("/joblistings/{joblisting}/edit", [JoblistingController::class, "edit"])->name("joblistings.edit");
 Route::post("/joblistings/{joblisting}", [JoblistingController::class, "update"])->name("joblistings.update");
+Route::get("/application/{joblisting}", [JoblistingController::class, "displayform"])->name("joblistings.index");
+Route::post("/application", [JoblistingController::class, "submit"])->name("joblistings.submit");
+Route::get('/reload-captcha', [JoblistingController::class, 'reloadCaptcha']);
 
 // HINT: Using Precognition
 Route::post('/joblistings', [JoblistingController::class, 'store'])->name('jobs.store');

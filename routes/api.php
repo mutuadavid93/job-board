@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Mews\Captcha\Facades\Captcha;
 use Illuminate\Support\Facades\Route;
 
 /*
