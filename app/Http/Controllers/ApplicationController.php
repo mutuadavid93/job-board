@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
-use App\Models\{Joblisting, Application};
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use App\Models\{Joblisting, Application};
 
 class ApplicationController extends Controller
 {
@@ -45,10 +46,7 @@ class ApplicationController extends Controller
         $application->save();
 
         // TODO: Redirect to Thank You page.
-        return Inertia::render("SubmitApplication", [
-            "captcha_img" => captcha_img(),
-            "joblisting" => $joblisting
-        ]);
+        return Redirect::route('thankyou');
     }
 
     public function reloadCaptcha()

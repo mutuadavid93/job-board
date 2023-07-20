@@ -1,5 +1,5 @@
 <template>
-  <Head title="Jobs" />
+  <Head title="Apply" />
   <DefaultLayout>
     <div class="w-full px-10">
       <div class="flex items-center justify-between mb-8 mt-4">
@@ -83,7 +83,7 @@
           <InputLabel value="Portfolio URL (link)" class="mb-1.5" for="portfolio_link" />
           <TextInput
             class="w-full placeholder:text-xs bg-white"
-            type="text"
+            type="url"
             id="portfolio_link"
             v-model="form.portfolio_link"
             placeholder="Enter a link for your work"
