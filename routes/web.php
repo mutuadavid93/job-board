@@ -27,6 +27,7 @@ use App\Http\Controllers\JoblistingController;
 //     ]);
 // });
 Route::get('/search', fn() => Inertia::render('SearchJoblistings'));
+Route::get('/thank-you', fn() => Inertia::render('ThankYou'))->name("thankyou");
 
 Route::get("/", [JoblistingController::class, "displayJobs"])->name("home");
 Route::get("/test-form", fn() => Inertia::render('TestForm'))->name("test.form");
