@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
+use libphonenumber\{PhoneNumberUtil, PhoneNumberType};
 use App\Models\{Joblisting, Application};
 
 class ApplicationController extends Controller
@@ -22,10 +22,23 @@ class ApplicationController extends Controller
         $request->validate([
             'fullname' => 'required|string|min:3|max:100',
             'email' => 'required|email',
-            'phone' => 'required|digits_between:10,15',
             'portfolio_link' => 'nullable|url',
             'captcha' => 'required|captcha',
-            "attached_cv" => "required|mimes:pdf,doc,docx"
+            "attached_cv" => "required|mimes:pdf,doc,docx",
+            'phone' => [
+                'required',
+                function ($attribute, $value, $fail) use ($request) {
+                    $phoneUtil = PhoneNumberUtil::getInstance();
+                    try {
+                        $phoneNumber = $phoneUtil->parse($value, $request->countryCode);
+                        if (!$phoneUtil->isValidNumber($phoneNumber)) {
+                            throw new \Exception('Invalid phone number');
+                        }
+                    } catch (\Throwable $e) {
+                        $fail('The ' . $attribute . ' field is invalid.');
+                    }
+                }
+            ],
         ]);
 
         $file = $request->file("attached_cv");
@@ -45,8 +58,10 @@ class ApplicationController extends Controller
         $application->joblisting_id = $joblisting->id;
         $application->save();
 
-        // TODO: Redirect to Thank You page.
-        return Redirect::route('thankyou');
+        // return redirect()->route('thankyou');
+        return Inertia::render("ThankYou", [
+            "appreciation" => "Thanks for applying for the position at {$joblisting->company_name}"
+        ]);
     }
 
     public function reloadCaptcha()

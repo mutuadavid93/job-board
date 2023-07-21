@@ -19,9 +19,9 @@
       </div>
 
       <h1 class="mt-8 text-[48px] font-bold">THANK YOU!</h1>
-      <div class="text-[24px] font-bold mt-2">Application sent</div>
+      <div class="text-[24px] font-bold mt-2">{{ message }}</div>
       <p class="text-[24px] font-light mt-2 mb-10">
-        Thanks for applying! We appreciate your interest.
+        {{ appreciation }}
       </p>
 
       <Link
@@ -39,6 +39,17 @@
 import { Head, Link } from "@inertiajs/vue3";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import ChevronLeftIcon from "vue-material-design-icons/ChevronLeft.vue";
+
+defineProps({
+  message: {
+    type: String,
+    default: "Application sent",
+  },
+  appreciation: {
+    type: String,
+    default: "Thanks for applying! We appreciate your interest.",
+  },
+});
 </script>
 
 <style lang="scss" scoped></style>

@@ -18,11 +18,14 @@ import { onMounted, ref } from "vue";
 import "intl-tel-input/build/css/intlTelInput.css";
 import CustomInput from "@/Components/CustomInput.vue";
 import intlTelInput from "intl-tel-input";
+import { isValidPhoneNumber } from "libphonenumber-js";
 
 const input = ref(null);
 const telInput = ref(null);
+const countryCode = ref("");
+const countryName = ref("");
 
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "phone-data"]);
 
 const props = defineProps({
   id: String,
@@ -39,10 +42,30 @@ onMounted(() => {
     preferredCountries: ["gb", "us"],
     // your options here
   });
+
+  inputElement.addEventListener("countrychange", () => {
+    countryCode.value = telInput.value.getSelectedCountryData().iso2.toUpperCase();
+    countryName.value = telInput.value.getSelectedCountryData().name;
+  });
+
+  // Manually trigger the countrychange event initially
+  // TIP: makes sure validation is against correct countryCode
+  inputElement.dispatchEvent(new Event("countrychange"));
 });
 
 function onInput() {
   const formattedNumber = telInput.value.getNumber();
+  const valid = isValidPhoneNumber(formattedNumber, countryCode.value);
+
+  // Emit the custom event with countryCode, countryName, and valid values
+  emit("phone-data", {
+    countryCode: countryCode.value,
+    countryName: countryName.value,
+    phone: formattedNumber,
+    valid,
+  });
+
+  // Actual phone number
   emit("update:modelValue", formattedNumber);
 }
 </script>
