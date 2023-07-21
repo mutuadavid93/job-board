@@ -3,7 +3,7 @@
   <DefaultLayout>
     <div class="w-full px-10">
       <div class="flex items-center justify-between mb-8 mt-4">
-        <Link :href="route('home')" class="flex items-center tex-xs">
+        <Link :href="route('jobs.show', { joblisting })" class="flex items-center tex-xs">
           <ChevronLeftIcon :size="24" fillColor="#000" />
           Back
         </Link>
@@ -14,36 +14,38 @@
           <div class="flex items-center gap-2">
             <div class="max-h-[89px]">
               <img
-                src="/images/career-logo.jpg"
+                :src="joblisting?.company_logo"
                 class="rounded-full min-w-[89px] max-h-[89px]"
               />
             </div>
             <div class="">
-              <h2 class="text-[24px] font-extrabold">WPP - Scangroup</h2>
-              <p class="text-[20px]">Finance Controller</p>
+              <h2 class="text-[24px] font-extrabold">{{ joblisting?.company_name }}</h2>
+              <p class="text-[20px]">{{ joblisting?.title }}</p>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="mx-24 pl-10 mt-4">
+    <!-- <pre>{{ joblisting }}</pre> -->
+
+    <div class="mx-24 pl-10 mt-4 mb-10">
       <div class="text-font text-[24px]">SUBMIT YOUR APPLICATION</div>
 
       <form action="" @submit.prevent="submit" class="grid grid-cols-2 gap-4 mt-2">
         <div class="mb-2">
-          <InputLabel value="Full Name" class="mb-1.5" for="job-title" required />
+          <InputLabel value="Full Name" class="mb-1.5" for="fullname" required />
           <TextInput
             class="w-full placeholder:text-xs bg-white"
             type="text"
-            id="job-title"
-            v-model="form.title"
+            id="fullname"
+            v-model="form.fullname"
             placeholder="Enter full name"
           />
           <InputError
             class="lowercase"
-            v-if="$page.props.errors.title"
-            :message="$page.props.errors.title"
+            v-if="$page.props.errors.fullname"
+            :message="$page.props.errors.fullname"
           />
         </div>
         <div class="mb-2">
@@ -61,15 +63,16 @@
             :message="$page.props.errors.email"
           />
         </div>
+
         <div class="mb-2">
-          <InputLabel value="Phone" class="mb-1.5" for="phone" required />
-          <TextInput
-            class="w-full placeholder:text-xs bg-white"
-            type="tel"
-            id="phone"
-            v-model="form.phone"
-            placeholder="e.g. 712 123456"
-          />
+          <!-- 
+          NOTE: Below v-model binding is similar to listening to 
+          @update:modelValue="(newValue) => (someValue = newValue)"
+          :modelValue="number"
+          -->
+          <Vue3IntlInput ref="contact_number" id="phone" v-model="form.phone" required>
+            Phone
+          </Vue3IntlInput>
           <InputError
             class="lowercase"
             v-if="$page.props.errors.phone"
@@ -80,15 +83,15 @@
           <InputLabel value="Portfolio URL (link)" class="mb-1.5" for="portfolio_link" />
           <TextInput
             class="w-full placeholder:text-xs bg-white"
-            type="tel"
+            type="text"
             id="portfolio_link"
-            v-model="form.phone"
+            v-model="form.portfolio_link"
             placeholder="Enter a link for your work"
           />
           <InputError
             class="lowercase"
-            v-if="$page.props.errors.phone"
-            :message="$page.props.errors.phone"
+            v-if="$page.props.errors.portfolio_link"
+            :message="$page.props.errors.portfolio_link"
           />
         </div>
         <div class="mb-2">
@@ -109,6 +112,12 @@
             class="hidden"
             @change="getUploadedFile"
           />
+          <span
+            v-if="!$page.props.errors.attached_cv && fileName"
+            class="lowercase text-[#008400]"
+          >
+            {{ fileName.slice(0, 30) + ".." + "." + fileName.split(".").pop() }}
+          </span>
           <InputError
             class="lowercase"
             v-if="$page.props.errors.attached_cv"
@@ -166,38 +175,38 @@ import ReloadIcon from "vue-material-design-icons/Reload.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
+import Vue3IntlInput from "@/Components/Vue3IntlInput.vue";
 
-const { captcha_img } = defineProps({ captcha_img: String });
+const { captcha_img, joblisting } = defineProps({
+  captcha_img: String,
+  joblisting: Object,
+});
 
+const fileName = ref("");
 const image = ref(captcha_img);
+// const number = ref("");
+const contact_number = ref("contact_number");
 
 const imageSrc = computed(() => {
   return image.value.split('"')[1] || "";
 });
 
 const form = useForm({
-  title: "",
+  fullname: "",
   email: "",
   phone: "",
   captcha: "",
+  portfolio_link: "",
   attached_cv: null,
 });
 
 const submit = () => {
-  form.post(route("joblistings.submit"), {
-    preserveScroll: true,
-    data: form.value,
-    onSuccess: () => {
-      // Handle success
-    },
-    onError: () => {
-      // Handle error
-    },
-  });
+  form.post(route("applications.store", { joblisting }));
 };
 
 const getUploadedFile = (event) => {
   form.attached_cv = event.target.files[0];
+  fileName.value = event.target.files[0].name;
 };
 
 async function fetchCaptcha() {

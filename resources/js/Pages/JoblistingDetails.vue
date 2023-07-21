@@ -95,11 +95,13 @@
         <!-- end first column -->
 
         <div class="w-[316px] -mt-12">
-          <button
+          <div
             class="text-white bg-[#30BCED] w-full text-[1rem] text-center py-2 border border-[#30BCED] rounded-md"
           >
-            APPLY NOW
-          </button>
+            <Link :href="route('applications.apply', { joblisting: joblisting })">
+              APPLY NOW
+            </Link>
+          </div>
 
           <div class="w-full mt-4 bg-white shadow-xl p-4 rounded-md text-[14px]">
             <div class="my-2">
