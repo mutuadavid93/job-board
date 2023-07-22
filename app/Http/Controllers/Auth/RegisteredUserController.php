@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\Permission\Models\{Role, Permission};
 
 class RegisteredUserController extends Controller
 {
@@ -34,22 +35,27 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:' . User::class,
-            'phone' => "bail|required|string",
-            'bio' => "bail|required|string",
-            'profile_picture' => "bail|required|string",
-            'address' => "bail|required|string",
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'phone' => $request->phone,
-            'bio' => $request->bio,
-            'profile_picture' => $request->profile_picture,
-            'address' => $request->address,
             'password' => Hash::make($request->password),
         ]);
+
+        // Create the employer role if it doesn't exist
+        $employerRole = Role::firstOrCreate(['name' => 'employer']);
+
+        // Assign the employer role to the user
+        $user->assignRole($employerRole);
+
+        // Create the necessary permissions if they don't exist
+        $createJobListingPermission = Permission::firstOrCreate(['name' => 'create joblisting']);
+        $editJobListingPermission = Permission::firstOrCreate(['name' => 'edit joblisting']);
+
+        // Assign the permissions to the employer role
+        $employerRole->givePermissionTo([$createJobListingPermission, $editJobListingPermission]);
 
         event(new Registered($user));
 

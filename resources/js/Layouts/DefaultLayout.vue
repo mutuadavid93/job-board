@@ -20,6 +20,16 @@
         Twitter
       </Link>
       <Link
+        v-if="$page.props.auth.user"
+        as="button"
+        method="post"
+        :href="route('logout')"
+        class="text-lg text-gray-900 hover:underline cursor-pointer"
+      >
+        Logout
+      </Link>
+      <Link
+        v-else
         :href="route('login')"
         class="text-lg text-gray-900 hover:underline cursor-pointer"
       >
