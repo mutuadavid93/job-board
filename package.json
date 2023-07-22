@@ -22,6 +22,7 @@
         "@vueup/vue-quill": "^1.0.0",
         "dayjs": "^1.11.9",
         "intl-tel-input": "^18.1.8",
+        "libphonenumber-js": "^1.10.37",
         "meilisearch": "^0.33.0",
         "vue-material-design-icons": "^5.2.0"
     }

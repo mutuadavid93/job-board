@@ -70,13 +70,24 @@
           @update:modelValue="(newValue) => (someValue = newValue)"
           :modelValue="number"
           -->
-          <Vue3IntlInput ref="contact_number" id="phone" v-model="form.phone" required>
+          <Vue3IntlInput
+            ref="contact_number"
+            id="phone"
+            v-model="form.phone"
+            @phone-data="onPhoneData"
+            required
+          >
             Phone
           </Vue3IntlInput>
           <InputError
             class="lowercase"
             v-if="$page.props.errors.phone"
             :message="$page.props.errors.phone"
+          />
+          <InputError
+            class="lowercase"
+            v-if="phoneValidation"
+            :message="phoneValidation"
           />
         </div>
         <div class="mb-2">
@@ -116,7 +127,7 @@
             v-if="!$page.props.errors.attached_cv && fileName"
             class="lowercase text-[#008400]"
           >
-            {{ fileName.slice(0, 30) + ".." + "." + fileName.split(".").pop() }}
+            {{ filename }}
           </span>
           <InputError
             class="lowercase"
@@ -132,13 +143,14 @@
             <div class="flex items-center justify-center w-full">
               <button
                 @click.prevent="fetchCaptcha"
-                class="bg-[#DBD6D7] border-r border-r-gray-400 rounded-l-md px-2 py-3 mr-0.5"
+                title="Refresh"
+                class="bg-[#DBD6D7] border-r border-r-gray-400 rounded-r-md px-2 py-3 mr-0.5 transform rotate-180"
               >
                 <ReloadIcon :size="17" />
               </button>
               <img :src="imageSrc" alt="" />
               <TextInput
-                class="w-full placeholder:text-xs bg-white rounded-none rounded-r-md border-none ring-0 focus:ring-0"
+                class="w-full placeholder:text-xs bg-white rounded-none rounded-l-md border-none ring-0 focus:ring-0"
                 type="tel"
                 id="captcha"
                 v-model="form.captcha"
@@ -183,12 +195,20 @@ const { captcha_img, joblisting } = defineProps({
 });
 
 const fileName = ref("");
+const phoneValidation = ref("");
 const image = ref(captcha_img);
-// const number = ref("");
+const countrycode = ref(null);
 const contact_number = ref("contact_number");
 
 const imageSrc = computed(() => {
   return image.value.split('"')[1] || "";
+});
+
+const filename = computed(() => {
+  const fileLength = fileName.value.length;
+  return fileLength <= 30
+    ? fileName.value
+    : fileName.value.slice(0, 30) + "..." + fileName.value.split(".").pop();
 });
 
 const form = useForm({
@@ -198,9 +218,11 @@ const form = useForm({
   captcha: "",
   portfolio_link: "",
   attached_cv: null,
+  countryCode: null,
 });
 
 const submit = () => {
+  form.countryCode = countrycode.value;
   form.post(route("applications.store", { joblisting }));
 };
 
@@ -212,6 +234,16 @@ const getUploadedFile = (event) => {
 async function fetchCaptcha() {
   const response = await axios.get("/reload-captcha");
   image.value = response.data.captcha_img;
+}
+
+// Receive emitted values
+function onPhoneData({ countryCode, countryName, valid, phone }) {
+  countrycode.value = countryCode;
+  if (!valid) {
+    phoneValidation.value = `${phone} isn't a valid ${countryName} mobile number.`;
+  } else {
+    phoneValidation.value = "";
+  }
 }
 </script>
 

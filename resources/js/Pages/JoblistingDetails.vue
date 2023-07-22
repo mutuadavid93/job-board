@@ -76,7 +76,11 @@
               </p>
               <p class="my-2">
                 We encourage candidates to apply
-                <span class="font-bold text-[#30BCED]">here</span>
+                <Link
+                  :href="route('applications.apply', { joblisting: joblisting })"
+                  class="font-bold text-[#30BCED]"
+                  >here</Link
+                >
               </p>
               <p class="my-2 font-semibold">
                 Closing date: <AppDate :diffForHumans="joblisting?.created_at" />
@@ -95,13 +99,13 @@
         <!-- end first column -->
 
         <div class="w-[316px] -mt-12">
-          <div
-            class="text-white bg-[#30BCED] w-full text-[1rem] text-center py-2 border border-[#30BCED] rounded-md"
-          >
-            <Link :href="route('applications.apply', { joblisting: joblisting })">
+          <Link :href="route('applications.apply', { joblisting: joblisting })">
+            <div
+              class="text-white bg-[#30BCED] w-full text-[1rem] text-center py-2 border border-[#30BCED] rounded-md"
+            >
               APPLY NOW
-            </Link>
-          </div>
+            </div>
+          </Link>
 
           <div class="w-full mt-4 bg-white shadow-xl p-4 rounded-md text-[14px]">
             <div class="my-2">

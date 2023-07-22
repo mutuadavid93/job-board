@@ -110,8 +110,7 @@ class JoblistingController extends Controller
         // Make payment
         $enhancements = $joblisting->enhancements()->get();
         $url = $this->makeOrder($enhancements, (int) $request->total);
-        // return Inertia::location($url);
-        return redirect()->route('home');
+        return Inertia::location($url);
     }
 
     public function validateEnhancements(StoreJoblistingRequest $request)
@@ -203,10 +202,13 @@ class JoblistingController extends Controller
 
             $order->status = "paid";
             $order->save();
-            return Inertia::render("CheckoutSuccess", ["customer" => $customer]);
+
+            return Inertia::render("ThankYou", [
+                "message" => "Job posted successfully.",
+                "appreciation" => "Thanks, {$customer->name}! Your job posting and payment were successful."
+            ]);
         } catch (\Throwable $e) {
             throw new NotFoundHttpException();
-
         }
     }
 
