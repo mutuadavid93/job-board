@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use App\Models\Company;
 use App\Models\Joblisting;
 use App\Models\Enhancement;
@@ -22,6 +23,7 @@ class JoblistingFactory extends Factory
     {
         $id = rand(1, 100);
         return [
+            "user_id" => User::pluck("id")->random(),
             'title' => $this->faker->jobTitle(),
             'company_name' => $this->faker->company(),
             'company_logo' => "https://picsum.photos/id/{$id}/200/300",
