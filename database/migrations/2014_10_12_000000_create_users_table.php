@@ -14,13 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-
-            $table->string("phone");
-            $table->text("bio");
-            $table->string("profile_picture"); // Hook this to S3 or Disk to actual file
-            $table->text("address");
-            $table->boolean("banned")->default(false);
-
+            $table->string('image')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
