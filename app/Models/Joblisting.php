@@ -30,4 +30,9 @@ class Joblisting extends Model
     {
         return 'joblistings_index';
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

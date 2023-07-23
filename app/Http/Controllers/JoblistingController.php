@@ -83,6 +83,7 @@ class JoblistingController extends Controller
         // Enhancements' validations:
         $createdEnhancements = $this->validateEnhancements($request);
 
+        $validatedData['user_id'] = $request->user()->id;
         $validatedData['title'] = $request->input('title');
         $validatedData['company_name'] = $request->input('company_name');
         $validatedData['company_overview'] = $request->input('company_overview');

@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('joblistings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("user_id")->constrained()->onDelete("cascade");
             $table->string("title"); // e.g. Software Engineer
             $table->string("location"); // "Remote", "Remote / USA", "New York City", "Remote GMT-5", etc.
             $table->string("company_name"); // 

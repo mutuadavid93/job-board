@@ -27,12 +27,15 @@
             </div>
 
             <Link
+              v-if="canEditResource()"
               :href="route('joblistings.edit', { joblisting: joblisting })"
               class="rounded-full cursor-pointer p-2"
             >
               <PencilBoxOutline :size="38" fillColor="#000000" />
             </Link>
           </div>
+
+          <!-- <pre>{{ canEditResource() }}</pre>  -->
 
           <div class="mt-4">
             <h2>COMPANY OVERVIEW</h2>
@@ -140,15 +143,29 @@
 </template>
 
 <script setup>
-import { Head, Link } from "@inertiajs/vue3";
+import { Head, Link, usePage } from "@inertiajs/vue3";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import ChevronLeft from "vue-material-design-icons/ChevronLeft.vue";
 import PencilBoxOutline from "vue-material-design-icons/PencilBoxOutline.vue";
 import AppDate from "@/Components/AppDate.vue";
+import usePermission from "@/Composables/permissions.js";
 
-defineProps({
+const { joblisting } = defineProps({
   joblisting: Object,
 });
+
+const { hasPermission } = usePermission();
+
+const canEditResource = () => {
+  const user = usePage().props.auth.user;
+  const canEdit = hasPermission("edit joblisting");
+  const ownsResource = user && user.id === joblisting.user_id;
+
+  if (canEdit && user && ownsResource) {
+    return true;
+  }
+  return false;
+};
 </script>
 
 <style>

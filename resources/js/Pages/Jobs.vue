@@ -8,58 +8,59 @@
             {{ status }}
           </div>
 
-          <form
-            @submit.prevent="submitLoginForm"
-            class="flex items-center justify-between p-4 bg-[#F3F4F6] rounded-lg mb-2"
-          >
-            <div>
-              <TextInput
-                id="login-email"
-                type="email"
-                class="mt-1 w-full rounded-none"
-                v-model="loginForm.email"
-                required
-                placeholder="Email"
-                autocomplete="off"
-              />
+          <form @submit.prevent="submitLoginForm" v-if="!$page.props.auth.user">
+            <div
+              class="flex items-center justify-between p-4 bg-[#F3F4F6] rounded-lg mb-2"
+            >
+              <div>
+                <TextInput
+                  id="login-email"
+                  type="email"
+                  class="mt-1 w-full rounded-none"
+                  v-model="loginForm.email"
+                  required
+                  placeholder="Email"
+                  autocomplete="off"
+                />
 
-              <InputError class="mt-2" :message="loginForm.errors.email" />
+                <InputError class="mt-2" :message="loginForm.errors.email" />
+              </div>
+
+              <div>
+                <TextInput
+                  id="login-password"
+                  type="password"
+                  class="mt-1 w-full rounded-none"
+                  v-model="loginForm.password"
+                  required
+                  placeholder="Password"
+                  autocomplete="off"
+                />
+
+                <InputError class="mt-2" :message="loginForm.errors.password" />
+              </div>
+
+              <div>
+                <PrimaryButton
+                  class="ml-4 py-3 bg-red-600 text-white rounded-none hover:bg-white hover:text-blue-500"
+                  :class="{ 'opacity-25': loginForm.processing }"
+                  :disabled="loginForm.processing"
+                >
+                  Log in
+                </PrimaryButton>
+              </div>
             </div>
 
-            <div>
-              <TextInput
-                id="login-password"
-                type="password"
-                class="mt-1 w-full rounded-none"
-                v-model="loginForm.password"
-                required
-                placeholder="Password"
-                autocomplete="off"
-              />
+            <div class="flex items-center justify-between">
+              <Link :href="route('password.request')" class="text-sm mb-4 text-blue-500">
+                Forgot your password?
+              </Link>
 
-              <InputError class="mt-2" :message="loginForm.errors.password" />
-            </div>
-
-            <div>
-              <PrimaryButton
-                class="ml-4 py-3 bg-red-600 text-white rounded-none hover:bg-white hover:text-blue-500"
-                :class="{ 'opacity-25': loginForm.processing }"
-                :disabled="loginForm.processing"
-              >
-                Log in
-              </PrimaryButton>
+              <Link :href="route('register')" class="text-sm mb-4 text-gray-600">
+                No account? We'll set one up below.
+              </Link>
             </div>
           </form>
-
-          <div class="flex items-center justify-between">
-            <Link :href="route('password.request')" class="text-sm mb-4 text-blue-500">
-              Forgot your password?
-            </Link>
-
-            <Link :href="route('register')" class="text-sm mb-4 text-gray-600">
-              No account? We'll set one up below.
-            </Link>
-          </div>
 
           <form action="#" @submit.prevent="submit">
             <div>
@@ -644,8 +645,10 @@ const getUploadedImage = (event) => {
 <style>
 .ql-editor {
   min-height: 5rem !important;
+  background-color: white;
 }
 .ql-toolbar {
+  background-color: white;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
 }

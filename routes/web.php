@@ -51,7 +51,12 @@ Route::middleware('auth')->group(function () {
 
 Route::get("/joblistings", [JoblistingController::class, "index"])->name("jobs.index");
 Route::get("/joblistings/{joblisting}", [JoblistingController::class, "show"])->name("jobs.show");
-Route::get("/joblistings/{joblisting}/edit", [JoblistingController::class, "edit"])->name("joblistings.edit");
+
+// only users with the "employer" role or the "edit joblisting" permission can access the route.
+Route::get("/joblistings/{joblisting}/edit", [JoblistingController::class, "edit"])
+    ->middleware(["role_or_permission:employer|edit joblisting"])
+    ->name("joblistings.edit");
+
 Route::post("/joblistings/{joblisting}", [JoblistingController::class, "update"])->name("joblistings.update");
 
 Route::get("/application/{joblisting}", [ApplicationController::class, "apply"])->name("applications.apply");
