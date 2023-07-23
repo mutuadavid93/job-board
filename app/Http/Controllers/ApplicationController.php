@@ -11,6 +11,8 @@ class ApplicationController extends Controller
 {
     public function apply(Joblisting $joblisting)
     {
+        $joblisting->load("company");
+        
         return Inertia::render("SubmitApplication", [
             "captcha_img" => captcha_img(),
             "joblisting" => $joblisting

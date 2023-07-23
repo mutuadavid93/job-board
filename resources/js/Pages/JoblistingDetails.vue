@@ -16,12 +16,12 @@
             <div class="flex items-center gap-2">
               <div class="max-h-[89px]">
                 <img
-                  :src="joblisting?.company_logo"
+                  :src="joblisting.company?.logo ?? '/images/nologo.jpg'"
                   class="rounded-full min-w-[89px] max-h-[89px]"
                 />
               </div>
               <div class="">
-                <h2 class="text-[24px] font-extrabold">{{ joblisting?.company_name }}</h2>
+                <h2 class="text-[24px] font-extrabold">{{ joblisting.company?.name }}</h2>
                 <p class="text-[20px]">{{ joblisting?.title }}</p>
               </div>
             </div>
@@ -35,14 +35,12 @@
             </Link>
           </div>
 
-          <!-- <pre>{{ canEditResource() }}</pre>  -->
-
           <div class="mt-4">
             <h2>COMPANY OVERVIEW</h2>
             <hr />
             <div
               class="mt-2 text-[18px] font-light"
-              v-html="joblisting?.company_overview"
+              v-html="joblisting.company?.overview"
             />
 
             <br />
@@ -113,7 +111,7 @@
           <div class="w-full mt-4 bg-white shadow-xl p-4 rounded-md text-[14px]">
             <div class="my-2">
               <div class="text-[#949494]">COMPANY</div>
-              <div class="font-semibold text-[16px]">{{ joblisting?.company_name }}</div>
+              <div class="font-semibold text-[16px]">{{ joblisting.company?.name }}</div>
             </div>
             <div class="my-2">
               <div class="text-[#949494]">ROLE</div>

@@ -63,7 +63,9 @@ Route::get("/application/{joblisting}", [ApplicationController::class, "apply"])
 Route::post("/application/{joblisting}", [ApplicationController::class, "store"])->name("applications.store");
 Route::get('/reload-captcha', [ApplicationController::class, 'reloadCaptcha']);
 
-// HINT: Using Precognition
-Route::post('/joblistings', [JoblistingController::class, 'store'])->name('jobs.store');
+// User must be authorized to create a Joblisting
+Route::post('/joblistings', [JoblistingController::class, 'store'])
+    ->middleware("auth")
+    ->name('jobs.store');
 
 require __DIR__ . '/auth.php';

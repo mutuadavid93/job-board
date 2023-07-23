@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\{UpdateJoblistingRequest, StoreJoblistingRequest};
 use Inertia\Inertia;
-use App\Models\Order;
+use App\Models\{Order, Company, Joblisting, Enhancement};
 use Stripe\StripeClient;
-use App\Models\Joblisting;
-use App\Models\Enhancement;
 use Illuminate\Http\Request;
 use App\Services\ImageService;
 use App\Jobs\NotifyPaymentSucceededJob;
-use App\Http\Requests\StoreJoblistingRequest;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\{HttpException, NotFoundHttpException};
 
 class JoblistingController extends Controller
 {
@@ -23,26 +20,41 @@ class JoblistingController extends Controller
 
     public function show(Joblisting $joblisting)
     {
+        // Load the related company data when returning the joblisting payload
+        $joblisting->load('company');
+
         return Inertia::render("JoblistingDetails", ["joblisting" => $joblisting]);
     }
 
     public function edit(Joblisting $joblisting)
     {
+        $joblisting->load("company");
         return Inertia::render("EditJoblisting", ["joblisting" => $joblisting]);
     }
 
-    public function update(StoreJoblistingRequest $request, Joblisting $joblisting)
+    public function update(UpdateJoblistingRequest $request, Joblisting $joblisting)
     {
         $validatedData = $request->validated();
-        if ($request->hasFile('company_logo')) {
+        // Find or create a Company instance;
+        // If found, return the Company instance without creating a new one.
+        $company = $this->saveCompany($request);
+        $validatedData['company_id'] = $company->id;
+
+        // Remove the company-related fields from the validated data
+        unset($validatedData['name']);
+        unset($validatedData['overview']);
+        unset($validatedData['email']);
+
+        // Handle the company logo using your ImageService class
+        if ($request->hasFile('logo')) {
             $imageService = new ImageService();
-            $joblisting = $imageService->updateImage($joblisting, $request);
-            // Remove the company_logo key from the $validatedData. Since is already set in ImageService
-            // NOTE: otherwise it will be ovewritten by request from browser i.e. $validatedData['company_logo']
-            unset($validatedData['company_logo']);
-        } else {
-            $validatedData['company_logo'] = '/images/nologo.svg';
+            $company = $imageService->updateImage($company, $request);
+            // Save the updated company instance
+            $company->save();
         }
+
+        // Refrain logo column from $joblisting table
+        unset($validatedData['logo']);
 
         // Update the job listing with the validated data
         $joblisting->update($validatedData);
@@ -51,56 +63,31 @@ class JoblistingController extends Controller
 
     public function displayJobs()
     {
-        // Get all job_listings in descending order, orderedBy `created_at` field
-        $joblistings = Joblisting::with("enhancements")->get();
+        // $joblistings = Joblisting::with("enhancements")->get();
+        // Get all joblistings with their related enhancements and company data
+        $joblistings = Joblisting::with(["enhancements", "company"])->get();
 
         return Inertia::render('Home', ["joblistings" => $joblistings]);
-    }
-
-    // TIP: &$validatedData is a pointer to the actual $validatedData argument. 
-    // Thus changes to it will be effected to store's actual object.
-    private function handleCompanyLogo(Request $request, &$validatedData)
-    {
-        if ($request->hasFile('company_logo')) {
-            $imageService = new ImageService();
-            $joblisting = new Joblisting($validatedData);
-            $joblisting = $imageService->updateImage($joblisting, $request);
-            $validatedData['company_logo'] = $joblisting->company_logo;
-        } else {
-            $validatedData['company_logo'] = '/images/nologo.svg';
-        }
     }
 
     public function store(StoreJoblistingRequest $request)
     {
         $validatedData = $request->validated();
 
-        $companyOverview = $validatedData['company_overview'];
-        $jobPurpose = $validatedData['job_purpose'];
-        $responsibilities = $validatedData['responsibilities'];
-        $professionalSkills = $validatedData['professional_skills'];
+        // Return key-value pairs from the first array whose keys are not present in the other arrays.
+        // i.e. remove company fields from $validatedData
+        $companyFields = ['name', 'logo', 'overview', 'email'];
+        $validatedData = array_diff_key($validatedData, array_flip($companyFields));
 
         // Enhancements' validations:
         $createdEnhancements = $this->validateEnhancements($request);
 
+        // HINT: user id is only available when a user is authenticated
         $validatedData['user_id'] = $request->user()->id;
-        $validatedData['title'] = $request->input('title');
-        $validatedData['company_name'] = $request->input('company_name');
-        $validatedData['company_overview'] = $request->input('company_overview');
-        $validatedData['job_purpose'] = $request->input('job_purpose');
-        $validatedData['professional_skills'] = $request->input('professional_skills');
-        $validatedData['employment_type'] = $request->input('employment_type');
-        $validatedData['location'] = $request->input('location');
-        $validatedData['salary'] = $request->input('salary');
-        $validatedData['experience_level'] = $request->input('experience_level');
 
-        $validatedData['company_overview'] = $companyOverview;
-        $validatedData['job_purpose'] = $jobPurpose;
-        $validatedData['professional_skills'] = $professionalSkills;
-        $validatedData['responsibilities'] = $responsibilities;
-
-        // Handle company logo
-        $this->handleCompanyLogo($request, $validatedData);
+        $company = $this->saveCompany($request);
+        // Relate Company to Joblisting
+        $validatedData['company_id'] = $company->id;
 
         // Create a new Joblisting and save it
         $joblisting = Joblisting::create($validatedData);
@@ -112,6 +99,24 @@ class JoblistingController extends Controller
         $enhancements = $joblisting->enhancements()->get();
         $url = $this->makeOrder($enhancements, (int) $request->total);
         return Inertia::location($url);
+    }
+
+    public function saveCompany(Request $request)
+    {
+        // Create or find a Company instance
+        $company = Company::firstOrCreate(
+            ['name' => $request->input('name')],
+            [
+                'overview' => $request->input("overview"),
+                'email' => $request->input('email')
+            ]
+        );
+
+        // update logo
+        $company = (new ImageService)->updateImage($company, $request);
+        $company->save(); // Save the updated company instance
+
+        return $company;
     }
 
     public function validateEnhancements(StoreJoblistingRequest $request)
