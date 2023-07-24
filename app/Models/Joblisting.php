@@ -18,6 +18,11 @@ class Joblisting extends Model
             ->withTimestamps();
     }
 
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'joblisting_tag');
+    }
+
     public function applications()
     {
         return $this->hasMany(Application::class);

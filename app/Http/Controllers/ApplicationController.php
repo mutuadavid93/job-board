@@ -25,7 +25,7 @@ class ApplicationController extends Controller
             'fullname' => 'required|string|min:3|max:100',
             'email' => 'required|email',
             'portfolio_link' => 'nullable|url',
-            'captcha' => 'required|captcha',
+            // 'captcha' => 'required|captcha',
             "attached_cv" => "required|mimes:pdf,doc,docx",
             'phone' => [
                 'required',
