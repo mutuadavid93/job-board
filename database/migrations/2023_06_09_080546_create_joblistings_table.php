@@ -15,9 +15,7 @@ return new class extends Migration {
             $table->foreignId("user_id")->constrained()->onDelete("cascade");
             $table->string("title"); // e.g. Software Engineer
             $table->string("location"); // "Remote", "Remote / USA", "New York City", "Remote GMT-5", etc.
-            $table->string("company_name"); // 
-            $table->string("company_logo"); // 
-            $table->text("company_overview"); // Very Long Section with Titles and Lists
+            $table->foreignId("company_id")->constrained()->onDelete("cascade");
             $table->text("responsibilities"); // Very Long Section with Titles and Lists
             $table->text("job_purpose"); // Very Long Section with Titles and Lists
             $table->text("professional_skills"); // Very Long Section with Titles and Lists

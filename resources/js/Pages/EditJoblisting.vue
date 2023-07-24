@@ -43,7 +43,7 @@
             <div class="mb-6">
               <InputLabel value="COMPANY OVERVIEW" class="mb-1.5" />
               <QuillEditor
-                v-model:content="form.company_overview"
+                v-model:content="form.overview"
                 contentType="html"
                 toolbar="essential"
                 placeholder="Introduction of your company"
@@ -170,18 +170,35 @@
                 <InputLabel value="COMPANY NAME" class="mb-1.5" />
                 <TextInput
                   type="text"
-                  id="company_name"
-                  v-model="form.company_name"
+                  id="name"
+                  v-model="form.name"
                   placeholder="Company name"
                   class="w-full placeholder:italic placeholder:text-xs"
                 />
                 <span
-                  v-if="$page.props.errors.company_name"
+                  v-if="$page.props.errors.name"
                   class="text-red-700 block mt-2 text-[13px]"
                 >
-                  {{ $page.props.errors.company_name }}
+                  {{ $page.props.errors.name }}
                 </span>
               </div>
+
+              <!-- <div class="mt-5">
+                <InputLabel value="COMPANY EMAIL" class="mb-1.5" />
+                <TextInput
+                  type="email"
+                  id="email"
+                  v-model="form.email"
+                  placeholder="Company email"
+                  class="w-full placeholder:italic placeholder:text-xs"
+                />
+                <span
+                  v-if="$page.props.errors.email"
+                  class="text-red-700 block mt-2 text-[13px]"
+                >
+                  {{ $page.props.errors.email }}
+                </span>
+              </div> -->
 
               <div class="mt-5">
                 <InputLabel value="COMPANY LOGO" class="mb-1.5" />
@@ -254,18 +271,19 @@ import TextInput from "@/Components/TextInput.vue";
 import OfficeBuildingOutline from "vue-material-design-icons/OfficeBuildingOutline.vue";
 
 const props = defineProps({ joblisting: Object });
-let imageDisplay = ref(props.joblisting?.company_logo || "");
+let imageDisplay = ref(props.joblisting.company?.logo || "");
 const form = useForm(() => {
   return {
     title: props.joblisting?.title || "",
     location: props.joblisting?.location || "",
-    company_name: props.joblisting?.company_name || "",
+    name: props.joblisting.company?.name || "",
+    // email: props.joblisting.company?.email || "",
+    logo: props.joblisting.company?.logo || null,
     experience_level: props.joblisting?.experience_level || "Senior Level",
     employment_type: props.joblisting?.employment_type || "Full Time",
-    company_logo: props.joblisting?.company_logo || null,
     salary: props.joblisting?.salary || "0",
 
-    company_overview: props.joblisting?.company_overview || "",
+    overview: props.joblisting.company?.overview || "",
     job_purpose: props.joblisting?.job_purpose || "",
     professional_skills: props.joblisting?.professional_skills || "",
     responsibilities: props.joblisting?.responsibilities || "",
@@ -273,9 +291,10 @@ const form = useForm(() => {
 });
 
 const update = () => {
+  console.log(form.data());
   form.post(route("joblistings.update", { joblisting: props.joblisting.id }), {
     preserveScroll: true,
-    data: form.value,
+    // data: form.value,
     onSuccess: () => {
       // Handle success
     },
@@ -288,7 +307,7 @@ const update = () => {
 const getUploadedImage = (event) => {
   // convert the file into an object url
   imageDisplay.value = URL.createObjectURL(event.target.files[0]);
-  form.company_logo = event.target.files[0];
+  form.logo = event.target.files[0];
 };
 
 async function setExistingImageAsFile(imagePath) {
@@ -296,12 +315,34 @@ async function setExistingImageAsFile(imagePath) {
   const response = await fetch(imagePath);
   const imageData = await response.blob();
 
-  // Create a File object from the image data
-  const imageFile = new File([imageData], 'existing-image.jpg', { type: imageData.type });
+  // Get the file extension based on the MIME type
+  const mimeToExtensionMap = {
+    "image/png": ".png",
+    "image/jpeg": ".jpg",
+    "image/jpg": ".jpg",
+  };
+  const fileExtension = mimeToExtensionMap[imageData.type] || "";
 
-  // Set the imageDisplay value and form.company_logo with the fetched image
+  // Create a File object from the image data
+  const imageFile = new File([imageData], `existing-image${fileExtension}`, {
+    type: imageData.type,
+  });
+
+  // Set the imageDisplay value and form.logo with the fetched image
   imageDisplay.value = URL.createObjectURL(imageFile);
-  form.company_logo = imageFile;
+  form.logo = imageFile;
 }
-setExistingImageAsFile(props.joblisting?.company_logo);
+setExistingImageAsFile(props.joblisting.company?.logo || "/images/nologo.jpg");
 </script>
+
+<style>
+.ql-editor {
+  min-height: 5rem !important;
+  background-color: white;
+}
+.ql-toolbar {
+  background-color: white;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+</style>

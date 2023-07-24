@@ -14,20 +14,18 @@
           <div class="flex items-center gap-2">
             <div class="max-h-[89px]">
               <img
-                :src="joblisting?.company_logo"
+                :src="joblisting.company?.logo ?? '/images/nologo.jpg'"
                 class="rounded-full min-w-[89px] max-h-[89px]"
               />
             </div>
             <div class="">
-              <h2 class="text-[24px] font-extrabold">{{ joblisting?.company_name }}</h2>
+              <h2 class="text-[24px] font-extrabold">{{ joblisting.company?.name }}</h2>
               <p class="text-[20px]">{{ joblisting?.title }}</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- <pre>{{ joblisting }}</pre> -->
 
     <div class="mx-24 pl-10 mt-4 mb-10">
       <div class="text-font text-[24px]">SUBMIT YOUR APPLICATION</div>

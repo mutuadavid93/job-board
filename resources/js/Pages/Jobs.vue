@@ -100,7 +100,7 @@
             <div class="mb-6">
               <InputLabel value="COMPANY OVERVIEW" class="mb-1.5" />
               <QuillEditor
-                v-model:content="form.company_overview"
+                v-model:content="form.overview"
                 contentType="html"
                 toolbar="essential"
                 placeholder="Introduction of your company"
@@ -227,16 +227,16 @@
                 <InputLabel value="COMPANY NAME" class="mb-1.5" />
                 <TextInput
                   type="text"
-                  id="company_name"
-                  v-model="form.company_name"
+                  id="name"
+                  v-model="form.name"
                   placeholder="Company name"
                   class="w-full placeholder:italic placeholder:text-xs"
                 />
                 <span
-                  v-if="$page.props.errors.company_name"
+                  v-if="$page.props.errors.name"
                   class="text-red-700 block mt-2 text-[13px]"
                 >
-                  {{ $page.props.errors.company_name }}
+                  {{ $page.props.errors.name }}
                 </span>
               </div>
 
@@ -270,15 +270,32 @@
                     {{ form.progress.percentage }}%
                   </progress>
                   <span
-                    v-if="$page.props.errors.company_logo"
+                    v-if="$page.props.errors.logo"
                     class="text-red-700 block mt-2 text-[13px]"
                   >
-                    {{ $page.props.errors.company_logo }}
+                    {{ $page.props.errors.logo }}
                   </span>
                 </div>
                 <span class="text-[13px] text-[#6B7280]"
                   >130x130 is best, but any works</span
                 >
+              </div>
+
+              <div class="mt-5">
+                <InputLabel value="COMPANY EMAIL" class="mb-1.5" />
+                <TextInput
+                  type="email"
+                  id="email"
+                  v-model="form.email"
+                  placeholder="Company email"
+                  class="w-full placeholder:italic placeholder:text-xs"
+                />
+                <span
+                  v-if="$page.props.errors.email"
+                  class="text-red-700 block mt-2 text-[13px]"
+                >
+                  {{ $page.props.errors.email }}
+                </span>
               </div>
 
               <div class="mt-5 rounded-lg border-2 border-[#D1D5DB] px-4 py-4">
@@ -421,7 +438,7 @@
       <!-- <div class="-mb-4 font-bold">Live Preview</div> -->
       <div>
         <JobItemPreview
-          :image="imageDisplay ? imageDisplay : '/images/nologo.svg'"
+          :image="imageDisplay ? imageDisplay : '/images/nologo.jpg'"
           :color="form.custom_color"
           :textColor="form.custom_text_color"
         />
@@ -481,11 +498,15 @@ const form = useForm(() => {
     title: "",
     total: 0,
     location: "",
-    company_name: "",
-    // description: "",
+
+    // Company matadata
+    name: "",
+    logo: null,
+    overview: "",
+    email: "",
+
     experience_level: "Senior Level",
     employment_type: "Full Time",
-    company_logo: null,
     salary: "0",
     logo_present: 0,
     list_highlighted: 0,
@@ -496,7 +517,6 @@ const form = useForm(() => {
     custom_color_price: 0,
     custom_text_color: "#FFFFFF",
 
-    company_overview: "",
     job_purpose: "",
     professional_skills: "",
     responsibilities: "",
@@ -630,7 +650,7 @@ const submit = () => {
       form.clearErrors();
     },
     onError: (errors) => {
-      errors && errors.company_logo ? (error.value = errors.company_logo) : "";
+      errors && errors.logo ? (error.value = errors.logo) : "";
     },
   });
 };
@@ -638,7 +658,7 @@ const submit = () => {
 const getUploadedImage = (event) => {
   // convert the file into an object url
   imageDisplay.value = URL.createObjectURL(event.target.files[0]);
-  form.company_logo = event.target.files[0];
+  form.logo = event.target.files[0];
 };
 </script>
 

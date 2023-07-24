@@ -10,7 +10,6 @@
     @click="store.isOpen = false"
     class="flex items-center justify-between mt-8 border border-gray-300 hover:border-gray-500 shadow-md rounded-lg p-3 py-5 w-full"
   >
-    <!-- :class="`bg-[${jobColor ? jobColor : ''}] text-white hover:border-white`" -->
     <div class="flex items-center justify-start">
       <div class="relative">
         <button
@@ -18,13 +17,13 @@
           class="flex flex-col items-center justify-center absolute -top-8 -left-6 z-10 bg-white rounded-full p-3 border border-gray-400 shadow-xl -ml-5"
         >
           <img
-            :src="joblisting?.company_logo || '/images/nologo.svg'"
+            :src="joblisting.company?.logo ?? '/images/nologo.jpg'"
             class="min-w-[35px] max-h-[35px]"
           />
         </button>
       </div>
       <div class="ml-8">
-        <div class="font-extralight text-[15px]">{{ joblisting?.company_name }}</div>
+        <div class="font-extralight text-[15px]">{{ joblisting.company?.name }}</div>
         <div class="font-extrabold text-md">{{ joblisting?.title }}</div>
         <div class="font-extralight text-[15px]">{{ joblisting?.employment_type }}</div>
       </div>

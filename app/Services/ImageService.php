@@ -2,41 +2,41 @@
 
 namespace App\Services;
 
-use App\Models\Joblisting;
+use App\Models\Company;
 use Image;
 use Illuminate\Http\Request;
 
 class ImageService
 {
-    public function updateImage(Joblisting $model, Request $request)
+    public function updateImage(Company $model, Request $request)
     {
-        // Make sure the request has a 'company_logo' file. Otherwise we return early
-        if (!$request->hasFile('company_logo')) {
+        // Make sure the request has a 'logo' file. Otherwise we return early
+        if (!$request->hasFile('logo')) {
             return $model;
         }
 
-        $image = Image::make($request->file('company_logo'));
+        $image = Image::make($request->file('logo'));
 
-        if (!empty($model->company_logo)) {
-            $currentImage = public_path() . $model->company_logo;
+        if (!empty($model->logo)) {
+            $currentImage = public_path() . $model->logo;
 
             // If file exists and not the default logo
-            if (file_exists($currentImage) && $currentImage != public_path() . "/images/nologo.svg") {
+            if (file_exists($currentImage) && $currentImage != public_path() . "/images/nologo.jpg") {
                 // Delete it.
                 unlink($currentImage);
             }
         }
 
         // Otherwise create it
-        $file = $request->file('company_logo');
+        $file = $request->file('logo');
         $extension = $file->getClientOriginalExtension();
         $name = time() . '.' . $extension;
 
         // Save the new file by its name into the public/images directory
         $image->save(public_path() . '/images/' . $name);
 
-        // Update the model's company_logo attribute
-        $model->company_logo = '/images/' . $name;
+        // Update the model's logo attribute
+        $model->logo = '/images/' . $name;
 
         return $model;
     }

@@ -122,8 +122,6 @@
           <div v-for="joblisting in joblistings.slice(-3)" :key="joblisting">
             <JobItem :joblisting="joblisting" />
           </div>
-
-          <!-- <pre>{{ joblistings[0] }}</pre> -->
         </div>
       </div>
     </div>
