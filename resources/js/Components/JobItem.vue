@@ -1,4 +1,6 @@
 <template>
+  <!-- <pre>{{ joblisting.tags }}</pre> -->
+
   <Link
     :style="{
       backgroundColor: jobColor?.color,
@@ -36,11 +38,15 @@
         <CalendarBlankOutline fillColor="#C1C5CD" :size="23" class="mx-2" />
         <AppDate :timestamp="joblisting?.created_at" />
       </div>
-      <div class="flex items-center justify-start mt-2">
-        <button class="px-3 py-1 text-[13px] border border-gray-300 rounded-md mr-2">
-          Fullstack
+      <div class="flex items-center justify-start mt-2" v-if="joblisting.tags.length">
+        <button
+          v-for="tag in joblisting.tags"
+          :key="tag.id"
+          class="px-3 py-1 text-[13px] border border-gray-300 rounded-md mr-2"
+        >
+          {{ tag?.name }}
         </button>
-        <button class="px-3 py-1 text-[13px] border border-gray-300 rounded-md mr-2">
+        <!-- <button class="px-3 py-1 text-[13px] border border-gray-300 rounded-md mr-2">
           Laravel
         </button>
         <button class="px-3 py-1 text-[13px] border border-gray-300 rounded-md mr-2">
@@ -51,7 +57,7 @@
         </button>
         <button class="px-3 py-1 text-[13px] border border-gray-300 rounded-md mr-2">
           VueJS
-        </button>
+        </button> -->
       </div>
     </div>
   </Link>

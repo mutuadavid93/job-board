@@ -65,7 +65,7 @@ Route::get('/reload-captcha', [ApplicationController::class, 'reloadCaptcha']);
 
 // User must be authorized to create a Joblisting
 Route::post('/joblistings', [JoblistingController::class, 'store'])
-    ->middleware("auth")
+    // ->middleware("auth")
     ->name('jobs.store');
 
 require __DIR__ . '/auth.php';

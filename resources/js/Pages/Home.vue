@@ -76,44 +76,20 @@
           <JobItem :joblisting="joblisting" />
         </div>
 
-        <div class="my-8">
+        <div class="my-8" v-if="commontags.length">
           <h2 class="font-extrabold mb-5">Tags</h2>
           <div class="grid grid-cols-7 gap-4">
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">VueJS</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">PHP</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">Fullstack</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">
-              TailwindCSS
+            <button
+              v-for="tag in commontags"
+              :key="tag"
+              class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]"
+            >
+              {{ tag?.name }}
             </button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">JavaScript</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">Angular</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">Laravel</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">Python</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">Ruby</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">Java</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">C#</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">C++</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">Go</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">Swift</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">PHP</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">Rust</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">TypeScript</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">Kotlin</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">Perl</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">Scala</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">Haskell</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">Lua</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">Racket</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">Shell</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">Perl</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">Scala</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">Haskell</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">Lua</button>
-            <button class="text-[14px] text-gray-700 p-2 bg-[#E5E7EB]">R</button>
           </div>
         </div>
 
-        <div class="my-8" v-if="joblistings.length">
+        <!-- <div class="my-8" v-if="joblistings.length">
           <div class="flex items-center justify-between">
             <h2 class="font-extrabold">Old Jobs</h2>
             <div class="text-gray-500">Note, these jobs may no longer be available</div>
@@ -122,7 +98,7 @@
           <div v-for="joblisting in joblistings.slice(-3)" :key="joblisting">
             <JobItem :joblisting="joblisting" />
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -132,7 +108,7 @@
 
 <script setup>
 import { Head } from "@inertiajs/vue3";
-import { store } from '@/store';
+import { store } from "@/store";
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import Magnify from "vue-material-design-icons/Magnify.vue";
 import BullhornOutline from "vue-material-design-icons/BullhornOutline.vue";
@@ -141,7 +117,9 @@ import PartnersLogo from "@/Components/PartnersLogo.vue";
 import JobItem from "@/Components/JobItem.vue";
 import SearchJoblistings from "@/Components/SearchJoblistings.vue";
 
-defineProps({ joblistings: Object });
+const { commontags } = defineProps({ joblistings: Object, commontags: Object });
+
+console.log("--- ", commontags);
 </script>
 
 <style lang="scss" scoped></style>

@@ -161,6 +161,22 @@
               </span>
             </div>
 
+            <div class="mb-4">
+              <InputLabel value="TAGS, KEYWORDS OR STACK" class="mb-1.5" required />
+              <VueMultiselect
+                v-model="taggingSelected"
+                :options="taggingOptions"
+                :multiple="true"
+                :taggable="true"
+                @tag="addTag"
+                tag-placeholder="Add this as new tag"
+                placeholder="Type to search or add tag"
+                label="name"
+                track-by="code"
+                :max="3"
+              />
+            </div>
+
             <div class="mt-5">
               <InputLabel value="JOB LOCATION" class="mb-1.5" />
               <TextInput
@@ -484,6 +500,24 @@ const submitLoginForm = () => {
 let imageDisplay = ref("");
 let error = ref(null);
 let enhancements = reactive([]);
+const taggingSelected = ref([]);
+const taggingOptions = ref([
+  { code: "1", name: "Fullstack" },
+  { code: "2", name: "Laravel" },
+  { code: "3", name: "TailwindCSS" },
+  { code: "4", name: "PHP" },
+  { code: "5", name: "VueJS" },
+  { code: "6", name: "Nuxt" },
+]);
+
+const addTag = (newTag) => {
+  const tag = {
+    name: newTag,
+    code: newTag.substring(0, 2) + Math.floor(Math.random() * 10000000),
+  };
+  this.taggingOptions.push(tag);
+  this.taggingSelected.push(tag);
+};
 
 const removeEnhancement = (_type) => {
   enhancements.forEach((enhancement, index) => {
@@ -504,6 +538,9 @@ const form = useForm(() => {
     logo: null,
     overview: "",
     email: "",
+
+    // Tags
+    tags: null,
 
     experience_level: "Senior Level",
     employment_type: "Full Time",
@@ -637,6 +674,7 @@ computed({
 
 const submit = () => {
   form.enhancements = enhancements;
+  form.tags = taggingSelected.value;
   form.total = totalWithoutDot();
   form.post(route("jobs.store"), {
     forceFormData: true,
@@ -663,6 +701,7 @@ const getUploadedImage = (event) => {
 </script>
 
 <style>
+@import "vue-multiselect/dist/vue-multiselect.css";
 .ql-editor {
   min-height: 5rem !important;
   background-color: white;
@@ -671,5 +710,20 @@ const getUploadedImage = (event) => {
   background-color: white;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
+}
+
+.multiselect__input {
+  border-radius: 0;
+  padding: 0.5rem 0.5rem;
+}
+.multiselect__tag {
+  background-color: #30bced;
+}
+.multiselect__option:hover {
+  background-color: #30bced;
+}
+.multiselect__option--highlight::after,
+.multiselect__option--highlight {
+  background-color: #30bced;
 }
 </style>

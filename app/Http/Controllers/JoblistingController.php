@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\{UpdateJoblistingRequest, StoreJoblistingRequest};
+use App\Models\Tag;
 use Inertia\Inertia;
-use App\Models\{Order, Company, Joblisting, Enhancement};
 use Stripe\StripeClient;
 use Illuminate\Http\Request;
 use App\Services\ImageService;
 use App\Jobs\NotifyPaymentSucceededJob;
+use App\Models\{Order, Company, Joblisting, Enhancement};
+use App\Http\Requests\{UpdateJoblistingRequest, StoreJoblistingRequest};
 use Symfony\Component\HttpKernel\Exception\{HttpException, NotFoundHttpException};
+use Carbon\Carbon;
 
 class JoblistingController extends Controller
 {
@@ -65,19 +67,29 @@ class JoblistingController extends Controller
     {
         // $joblistings = Joblisting::with("enhancements")->get();
         // Get all joblistings with their related enhancements and company data
-        $joblistings = Joblisting::with(["enhancements", "company"])->get();
+        $joblistings = Joblisting::with(["enhancements", "company", "tags"])->get();
+        $distinctTags = Tag::select('name')->distinct()->get();
+        // $oldJobs = $this->getOldJobs();
 
-        return Inertia::render('Home', ["joblistings" => $joblistings]);
+        return Inertia::render('Home', [
+            "joblistings" => $joblistings,
+            "commontags" => $distinctTags,
+            // "oldJobs" => $oldJobs,
+        ]);
     }
 
     public function store(StoreJoblistingRequest $request)
     {
         $validatedData = $request->validated();
 
+        // Extract the tag IDs from the payload
+        $createdTags = $this->createTags($request);
+
         // Return key-value pairs from the first array whose keys are not present in the other arrays.
         // i.e. remove company fields from $validatedData
         $companyFields = ['name', 'logo', 'overview', 'email'];
         $validatedData = array_diff_key($validatedData, array_flip($companyFields));
+        // $validatedData = array_diff($validatedData, array_flip($request));
 
         // Enhancements' validations:
         $createdEnhancements = $this->validateEnhancements($request);
@@ -94,11 +106,34 @@ class JoblistingController extends Controller
 
         // Insert into pivot table
         $joblisting->enhancements()->attach($createdEnhancements);
+        $joblisting->tags()->attach($createdTags);
 
         // Make payment
         $enhancements = $joblisting->enhancements()->get();
         $url = $this->makeOrder($enhancements, (int) $request->total);
         return Inertia::location($url);
+        // return Inertia::render('Jobs');
+    }
+
+    public function createTags(Request $request)
+    {
+        $createdTags = [];
+        $tags = $request->input('tags', []);
+        foreach ($tags as $tag) {
+            // dd($tag['name']);
+            $tag = Tag::create(["name" => $tag['name']]);
+            $createdTags[] = $tag->id;
+        }
+        return $createdTags;
+    }
+
+    public function getOldJobs()
+    {
+        $daysAgo = 30;
+        $dateThreshold = Carbon::now()->subDays($daysAgo);
+
+        $oldJobs = Joblisting::where('created_at', '<', $dateThreshold)->get();
+        return $oldJobs;
     }
 
     public function saveCompany(Request $request)

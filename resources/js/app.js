@@ -7,6 +7,7 @@ import { createInertiaApp } from "@inertiajs/vue3";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 import { QuillEditor } from "@vueup/vue-quill";
+import VueMultiselect from "vue-multiselect";
 
 const appName =
     window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
@@ -23,6 +24,7 @@ createInertiaApp({
             .use(plugin)
             .use(ZiggyVue, Ziggy)
             .component("QuillEditor", QuillEditor)
+            .component("VueMultiselect", VueMultiselect)
             .mount(el);
     },
     progress: {
