@@ -1,78 +1,50 @@
-##### Job Board
+# Job Board
 
-Create UserFactory
-- $ php artisan make:factory UserFactory --model=User
+Welcome to the README for Job Board project. This document provides an overview of the project and showcases various screenshots to give you a visual insight into its features and functionality.
 
-Create UserSeeder
-- $ php artisan make:seeder UserSeeder
+## Screenshots
 
+### Login
+![Login](readme-artifacts/login.png)
 
-# Jobs and Queues :: 
+### Register
+![Register](readme-artifacts/register.png)
 
-Create Queue table
-- $ php artisan queue:table
+### Forgot Password
+![Forgot Password](readme-artifacts/forgot-password.png)
 
-Run a Job's migration
-- $ php artisan migrate
+### Home - Layout One
+![Home - Layout One](readme-artifacts/home-one.png)
 
-Create the Job to run in the queue
-- $ php artisan make:job NotifyPaymentSucceededJob
+### Home - Layout Two
+![Home - Layout Two](readme-artifacts/home-two.png)
 
-Finally run the worker to execute jobs on the queue
-- $ php artisan queue:work
+### Home Footer
+![Home Footer](readme-artifacts/home-footer.png)
 
+### Post a Job
+![Post a Job](readme-artifacts/post-job.png)
 
-# Tasks are scheduled using command:
+### Enhancements
+![Enhancements](readme-artifacts/enhancements.png)
 
-Create a command. Remind these are suited for tasks that need to happen regularly 
-without manual intervention e.g. Sending Reminders To Customers, Clearing Trash Bin e.t.c.
-- $ php artisan make:command RemindOfUnpaidOrders
+### Job Post Testimony
+![Job Post Testimony](readme-artifacts/job-post-testimony.png)
 
-Start the Scheduled Command
-- $ php artisan app:remind-of-unpaid-orders
+### Payment
+![Payment](readme-artifacts/payment.png)
 
+### View Job
+![View Job](readme-artifacts/view-job.png)
 
-# Send Notifications 
+### Edit Job
+![Edit Job](readme-artifacts/edit-job.png)
 
-Create a notification
-- $ php artisan make:notification RemindOfUnpaidOrdersNotification
+### Thank You
+![Thank You](readme-artifacts/thank-you.png)
 
+### Empty Search
+![Empty Search](readme-artifacts/empty-search.png)
 
-# FormRequest Validation
-
-- $ php artisan make:request StoreJoblistingRequest
-
-NOTE: You can as well use Precognition
-[see - Precognition](https://laravel.com/docs/10.x/precognition#introduction)
-
-
-# Create a Resource
-
-NOTE:  Meant for Single Model customization's on specifically what to return,
-maybe cherry-pick or add even new properties which need to belong to that single
-resource. 
-
-- $ php artisan make:resource PostResource
-
-# Create a Resource Collection
-
-Similar to resource but this time with multiple models which have relationships.
-Best fit for related models.
-- $ php artisan make:resource AllJoblistingsCollection --collection
-
-
-## Normalization
-
-- Avoid data redundancy and ensures data consistency. 
-
-For example, if a company's name or logo changes, you only need to update it in one place (the companies table), and all related job listings will automatically reflect the change.
-
-
-### HINT: Company::firstOrCreate()
-Try to find the first record in the companies table that matches the given attributes i.e. company_name
-but don't save it to the database yet.
-
-###  NOTE: $company->save()
-If it's a new instance (created by firstOrCreate()), it will be inserted as a new row in the companies table. 
-If it's an existing instance (found by firstOrCreate()), any changes made to the instance 
-(e.g., updating the logo) will be saved to the corresponding row in the table.
+### Search Results
+![Search Results](readme-artifacts/search-results.png)
