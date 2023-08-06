@@ -40,6 +40,9 @@ Welcome to the README for Job Board project. This document provides an overview 
 ### Edit Job
 ![Edit Job](readme-artifacts/edit-job.png)
 
+### Application Form
+![Edit Job](readme-artifacts/application-form.png)
+
 ### Thank You
 ![Thank You](readme-artifacts/thank-you.png)
 
