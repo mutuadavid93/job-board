@@ -31,14 +31,20 @@ Welcome to the README for Job Board project. This document provides an overview 
 ### Job Post Testimony
 ![Job Post Testimony](readme-artifacts/job-post-testimony.png)
 
-### Payment
+### Payment Thank You
 ![Payment](readme-artifacts/payment.png)
+
+### Stripe Payment
+![Edit Job](readme-artifacts/stripe-payment.png)
 
 ### View Job
 ![View Job](readme-artifacts/view-job.png)
 
 ### Edit Job
 ![Edit Job](readme-artifacts/edit-job.png)
+
+### Application Form
+![Edit Job](readme-artifacts/application-form.png)
 
 ### Thank You
 ![Thank You](readme-artifacts/thank-you.png)
