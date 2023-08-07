@@ -8,7 +8,7 @@
 
     <div class="flex items-center justify-center gap-10">
       <Link
-        :href="route('jobs.index')"
+        :href="route('home')"
         class="text-lg text-gray-900 hover:underline cursor-pointer"
       >
         Jobs
@@ -45,11 +45,11 @@
       >
         Hire a Consultant
       </button>
-      <button
+      <Link :href="route('jobs.index')"
         class="p-2 text-[#FFFFFF] px-4 border text-md hover:border-blue-600 hover:border bg-blue-600 hover:bg-white hover:text-blue-500"
       >
         Post a Job
-      </button>
+      </Link>
     </div>
   </header>
 
